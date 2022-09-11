@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-flashlearningui-dev-100022-authRole",
+      "UnauthRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-dev-100022-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-dev-100022-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-flashlearningui-dev-100022-deployment",
+      "UnauthRoleName": "amplify-flashlearningui-dev-100022-unauthRole",
+      "StackName": "amplify-flashlearningui-dev-100022",
+      "StackId": "arn:aws:cloudformation:us-east-1:472424854907:stack/amplify-flashlearningui-dev-100022/14ceeb90-31da-11ed-97e4-0a03ada548f7",
+      "AmplifyAppId": "d38j7hxrca4p4q"
+    }
+  },
+  "ui": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-flashlearningui-ui-193353-authRole",
+      "UnauthRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-ui-193353-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-ui-193353-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-flashlearningui-ui-193353-deployment",
+      "UnauthRoleName": "amplify-flashlearningui-ui-193353-unauthRole",
+      "StackName": "amplify-flashlearningui-ui-193353",
+      "StackId": "arn:aws:cloudformation:us-east-1:472424854907:stack/amplify-flashlearningui-ui-193353/32a060e0-322a-11ed-90aa-0af69e5ba25f",
+      "AmplifyAppId": "d38j7hxrca4p4q"
+    }
+  }
+}
