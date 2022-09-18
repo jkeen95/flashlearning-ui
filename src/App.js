@@ -10,6 +10,7 @@ import React from "react";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Header from "./Header";
+import SignOut from "./pages/SignOut";
 
 Amplify.configure(awsExports);
 
@@ -18,13 +19,6 @@ class App extends React.Component {
     state = {
         currentUser: {},
     };
-async signOut() {
-    try {
-        await Auth.signOut();
-    } catch (error) {
-        console.log('error signing out: ', error);
-    }
-}
 
 async checkUser() {
     return await Auth.currentAuthenticatedUser()
@@ -46,34 +40,20 @@ componentDidUpdate() {
     console.log(JSON.stringify(this.state.currentUser))
 }
 
-loggedInNav() {
-    // return(
-    //     <div>
-    //         <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-    //             <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-    //             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-    //             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-    //         </DropdownButton>
-    //         <button onClick={this.signOut}>Sign out</button>
-    //     </div>
-    // );
-}
-
 render() {
     console.log("render")
     return (
       <div className="App">
-          {/*<Router>*/}
-          {/*    <div>*/}
-          {/*        <NavLink to="/">Home</NavLink>*/}
-          {/*        {JSON.stringify(this.state.currentUser) === "{}" ? <NavLink to="/login">Log In</NavLink> : this.loggedInNav()}*/}
-          {/*    </div>*/}
-          {/*    <Routes>*/}
-          {/*        <Route path="/" element={<Home currentUser={this.state.currentUser}/>}></Route>*/}
-          {/*        {JSON.stringify(this.state.currentUser) === "{}" ? <Route path="/login" element={<Login />}></Route> : ""}*/}
-          {/*    </Routes>*/}
-          {/*</Router>*/}
           <Header currentUser={this.state.currentUser}/>
+          <Router>
+              <Routes>
+                  <Route path="/" element={<Home currentUser={this.state.currentUser}/>} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/create/set" element={<Login />} />
+                  <Route path="/create/class" element={<Login />} />
+                  <Route path="/signout" element={<SignOut />} />
+              </Routes>
+          </Router>
       </div>
   );
 }

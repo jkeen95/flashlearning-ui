@@ -23,4 +23,17 @@ function getCurrentUser() {
     return currentUser;
 }
 
-export {checkUser, getCurrentUser, checkSession}
+async function signOut() {
+    try {
+        await Auth.signOut();
+        return true;
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
+
+function callSignOut() {
+    signOut();
+}
+
+export {checkUser, getCurrentUser, checkSession, callSignOut}

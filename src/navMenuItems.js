@@ -8,7 +8,7 @@ export const menuItems = [
         url: '/login',
     },
     {
-        title: 'Creates',
+        title: 'Create',
         url: '/create',
         submenu: [
             {
