@@ -1,4 +1,10 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - chmod a+x ./headless_init_env_auth.sh
+        - ./headless_init_env_auth.sh
 frontend:
   phases:
     # IMPORTANT - Please verify your build commands
