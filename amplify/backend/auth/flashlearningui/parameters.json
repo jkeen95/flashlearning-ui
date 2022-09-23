@@ -1,0 +1,23 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "flashlearningui",
+  "serviceType": "imported",
+  "region": "us-east-1",
+  "requiredAttributes": [
+    "name",
+    "email",
+    "birthdate"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers",
+    "Requires Symbols"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

@@ -1,53 +1,11 @@
 {
   "auth": {
-    "flashlearningui83bdca53": {
+    "flashlearningui": {
       "service": "Cognito",
+      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false,
-      "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [],
-        "signupAttributes": [
-          "BIRTHDATE",
-          "EMAIL",
-          "NAME"
-        ],
-        "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": []
-        },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
-        ],
-        "verificationMechanisms": [
-          "EMAIL"
-        ]
-      }
-    }
-  },
-  "function": {
-    "flashlearningfuction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "api": {
-    "flashlearningapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "flashlearningfuction",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
+      "customAuth": false
     }
   }
 }

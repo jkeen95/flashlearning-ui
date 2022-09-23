@@ -10,6 +10,27 @@
       "StackName": "amplify-flashlearningui-dev-100022",
       "StackId": "arn:aws:cloudformation:us-east-1:472424854907:stack/amplify-flashlearningui-dev-100022/14ceeb90-31da-11ed-97e4-0a03ada548f7",
       "AmplifyAppId": "d38j7hxrca4p4q"
+    },
+    "categories": {
+      "auth": {
+        "flashlearningui83bdca53": {},
+        "flashlearningui": {
+          "userPoolId": "us-east-1_EKiOVpdqH",
+          "userPoolName": "flashlearningui83bdca53_userpool_83bdca53-ui",
+          "webClientId": "29idvltcrusbuv6les4qekpl94",
+          "nativeClientId": "3st7jg2nlmi3mreaojsmpgm0ff",
+          "identityPoolId": "us-east-1:d43d64bd-0412-40f4-a6af-5c048b7abe45",
+          "identityPoolName": "flashlearningui83bdca53_identitypool_83bdca53__ui",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-ui-193353-authRole",
+          "authRoleName": "amplify-flashlearningui-ui-193353-authRole",
+          "unauthRoleArn": "arn:aws:iam::472424854907:role/amplify-flashlearningui-ui-193353-unauthRole",
+          "unauthRoleName": "amplify-flashlearningui-ui-193353-unauthRole"
+        }
+      },
+      "function": {
+        "flashlearningfuction": {}
+      }
     }
   },
   "ui": {
