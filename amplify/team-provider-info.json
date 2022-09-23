@@ -26,7 +26,8 @@
     },
     "categories": {
       "auth": {
-        "flashlearningui83bdca53": {}
+        "flashlearningui83bdca53": {},
+        "true": {}
       }
     }
   }
