@@ -11,6 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Header from "./Header";
 import SignOut from "./pages/SignOut";
+import CreateSet from "./pages/CreateSet";
 
 Amplify.configure(awsExports);
 
@@ -49,7 +50,7 @@ render() {
               <Routes>
                   <Route path="/" element={<Home currentUser={this.state.currentUser}/>} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/create/set" element={<Login />} />
+                  <Route path="/create/set" element={<CreateSet />} />
                   <Route path="/create/class" element={<Login />} />
                   <Route path="/signout" element={<SignOut />} />
               </Routes>
