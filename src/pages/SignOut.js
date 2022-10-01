@@ -1,11 +1,9 @@
 import {Auth} from "aws-amplify";
 
 const SignOut = () => {
-    return (
-        <div>
-            {signOut()}
-        </div>
-    );
+    signOut()
+    localStorage.clear()
+    window.location.replace(document.location.origin)
 };
 
 async function signOut() {

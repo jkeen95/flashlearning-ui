@@ -1,6 +1,5 @@
 import Dropdown from './Dropdown';
-import { useState } from "react";
-import {callSignOut} from "./utils/Utils";
+import {useState} from "react";
 
 const MenuItems = ({ items }) => {
     const [dropdown, setDropdown] = useState(false);
