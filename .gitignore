@@ -44,4 +44,6 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 .idea/
 
+cypress.config.js
+
 package-lock.json

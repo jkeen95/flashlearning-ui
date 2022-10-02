@@ -23,3 +23,21 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+import { Auth } from 'aws-amplify'
+
+const awsconfig = {
+    aws_user_pools_id: Cypress.env("userPoolId"),
+    aws_user_pools_web_client_id: Cypress.env("clientId"),
+};
+
+Auth.configure(awsconfig);
+
+Cypress.Commands.add('deleteCurrentUser', () => {
+    try {
+        const result = Auth.deleteUser();
+        console.log(result);
+    } catch (error) {
+        console.log('Error deleting user', error);
+    }
+})

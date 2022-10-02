@@ -1,6 +1,6 @@
 {
   "auth": {
-    "flashlearningui": {
+    "flashlearninguie0fc3f92": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",

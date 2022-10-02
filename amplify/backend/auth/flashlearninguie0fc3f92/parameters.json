@@ -1,6 +1,6 @@
 {
   "authSelections": "identityPoolAndUserPool",
-  "resourceName": "flashlearningui",
+  "resourceName": "flashlearninguie0fc3f92",
   "serviceType": "imported",
   "region": "us-east-1",
   "requiredAttributes": [
@@ -16,8 +16,5 @@
     "Requires Symbols"
   ],
   "mfaConfiguration": "OFF",
-  "autoVerifiedAttributes": [
-    "email"
-  ],
   "mfaTypes": []
 }
