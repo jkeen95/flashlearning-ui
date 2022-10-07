@@ -1,0 +1,17 @@
+type Class @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  FlashcardSets: [FlashcardSet] @hasMany(indexName: "byClass", fields: ["id"])
+}
+
+type FlashcardSet @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  visibility: String!
+  titles: [String!]
+  definitions: [String!]
+  owner: String!
+  classID: ID @index(name: "byClass")
+}
