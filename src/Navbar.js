@@ -11,7 +11,6 @@ const Navbar = ({ currentUser }) => {
             <ul className="menus">
 
                 {items = menuItems
-                    .filter(filterMenuItems)
                     .map((menu, index) => {
                          console.log("map " + menu)
                          return <MenuItems items={menu} key={index}/>;
@@ -21,14 +20,5 @@ const Navbar = ({ currentUser }) => {
         </nav>
     );
 };
-
-function filterMenuItems(menu) {
-    if(JSON.stringify(userToCheck) === "{}" && menu.title !== "Create" && menu.title !== "Sign Out") {
-        return true;
-    }
-    else if(JSON.stringify(userToCheck) !== "{}" && menu.title !== "Login") {
-        return true;
-    }
-}
 
 export default Navbar;

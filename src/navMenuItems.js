@@ -4,10 +4,6 @@ export const menuItems = [
         url: '/',
     },
     {
-        title: 'Login',
-        url: '/login',
-    },
-    {
         title: 'Create',
         url: '/create',
         submenu: [
