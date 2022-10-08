@@ -1,17 +1,19 @@
 import React, {useState} from "react";
 import Flashcard from "./Flashcard";
+import flashcardDefinition from "./FlashcardDefinition";
+import flashcard from "./Flashcard";
 
 class CreateSetInfo extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {setName: '',
-            setVisibility: '',
-            setDescription: '',
+        this.state = {
+            flashSetName: '',
+            flashSetVisibility: '',
+            flashSetDescription: '',
             count: 1,
-            flashcards: [<Flashcard key={1}/>]
+            flashcards: []
         };
-
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -19,69 +21,97 @@ class CreateSetInfo extends React.Component {
     }
 
     handleNameChange(event) {
-        this.setState({setName: event.target.value});
+        this.setState({flashSetName: event.target.value});
     }
 
     handleVisibilityChange(event) {
-        this.setState({setVisibility: event.target.value});
+        this.setState({flashSetVisibility: event.target.value});
     }
 
     handleDescriptionChange(event) {
-        this.setState({setDescription: event.target.value});
+        this.setState({flashSetDescription: event.target.value});
+    }
+
+    handleTitleChange = (event, index) =>{
+        const updatedFlashcard = this.state.flashcards.map((flashcard, i) => {
+            if(index === i) {
+                flashcard.title = event.target.value;
+                return flashcard;
+            }
+            return flashcard;
+        });
+        this.setState({flashcards: updatedFlashcard})
+    }
+
+    handleDefChange = (event, index) =>{
+        console.log("defChange: " + event.target.value + " " + index)
+        const updatedFlashcard = this.state.flashcards.map((flashcard, i) => {
+            if(index === i) {
+                flashcard.definition = event.target.value;
+                return flashcard;
+            }
+            return flashcard;
+        });
+        this.setState({flashcards: updatedFlashcard})
     }
 
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.setName + "\n" +
-            'A visibility was submitted: ' + this.state.setVisibility + "\n" +
-            'A description was submitted: ' + this.state.setDescription + "\n"
+        alert('A name was submitted: ' + this.state.flashSetName + "\n" +
+            'A visibility was submitted: ' + this.state.flashSetVisibility + "\n" +
+            'A description was submitted: ' + this.state.flashSetDescription + "\n" +
+            'Flashcards were submitted: ' + JSON.stringify(this.state.flashcards) + "\n"
         );
         event.preventDefault();
     }
 
-    addFlashcards = () => {
-        this.state.count++
+    addFlashcard = () => {
         this.setState({
-            flashcards: [...this.state.flashcards, <Flashcard key={this.state.count}/>]
+            flashcards: [...this.state.flashcards, {"title": "", "definition": ''}]
         })
         console.log("count " + this.state.count)
+        this.state.count++
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("createset update")
-    }
-
-    updateCount() {
-        this.state.count = (this.state.count++)
-        console.log("updateCount " + this.state.count)
+    componentDidMount() {
+        if(this.state.flashcards.length === 0) {
+            this.state.count = 1;
+            this.state.flashcards = [];
+            this.setState({flashcards: [...this.state.flashcards, {"title": "", "definition": ''}]});
+            this.addFlashcard();
+        }
     }
 
     render() {
-
         return <div>
             <form onSubmit={this.handleSubmit}>
                 <div>
                     <label>
                         Set Name:
-                        <input type="text" value={this.state.setName} onChange={this.handleNameChange} />
+                        <input type="text" onBlur={this.handleNameChange} />
                     </label>
                     <label>
                         Visibility:
-                        <select value={this.state.setVisibility} onChange={this.handleVisibilityChange}>
+                        <select value={this.state.flashSetVisibility} onChange={this.handleVisibilityChange}>
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
                     </label>
                     <label>
                         Description:
-                        <textarea value={this.state.setDescription} onChange={this.handleDescriptionChange} />
+                        <textarea value={this.state.flashSetDescription} onChange={this.handleDescriptionChange} />
                     </label>
                 </div>
                 <br/>
                 <hr/>
                 <br/>
-                {this.state.flashcards}
-                <button type="button" onClick={this.addFlashcards}>Add Flashcard</button>
+                {this.state.flashcards.map((flashcard, index) => {
+                    console.log(JSON.stringify(flashcard))
+                    return (
+                        <Flashcard key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} title={flashcard.title} definition={flashcard.definition}/>
+                    )
+                })}
+                <button type="button" onClick={this.addFlashcard}>Add Flashcard</button>
                 <br/>
                 <hr/>
                 <br/>
