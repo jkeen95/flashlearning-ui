@@ -1,7 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
 import Flashcard from "./Flashcard";
-import flashcardDefinition from "./FlashcardDefinition";
-import flashcard from "./Flashcard";
 
 class CreateSetInfo extends React.Component {
 

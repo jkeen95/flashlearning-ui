@@ -3,13 +3,7 @@ import React from "react";
 class FlashcardDefinition extends React.Component {
     constructor(props) {
         super(props);
-
-        //this.handleDefChange = this.handleDefChange.bind(this);
     }
-
-    // handleDefChange(event) {
-    //     this.setState({setDef: event.target.value});
-    // }
 
     handleDefChange = (event, index) => {
         console.log("lower event " + index)

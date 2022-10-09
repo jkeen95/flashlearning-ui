@@ -5,21 +5,7 @@ import FlashcardDefinition from "./FlashcardDefinition";
 class Flashcard extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     flashSetTitle: "",
-        //     flashSetDef: ""
-        // }
-
     }
-
-    // handleTitleChange = (event) =>{
-    //     this.setState({flashSetTitle: event.target.value})
-    // }
-    //
-    // handleDefChange = (event) =>{
-    //     this.setState({flashSetDef: event.target.value})
-    // }
-
 
     render() {
         return (
