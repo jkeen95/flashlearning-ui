@@ -1,7 +1,6 @@
 import React from "react";
 import Flashcard from "./Flashcard";
-import {API, DataStore} from 'aws-amplify'
-import { createFlashcardSet } from '../graphql/mutations'
+import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 
 class CreateSetInfo extends React.Component {
@@ -10,7 +9,7 @@ class CreateSetInfo extends React.Component {
         super(props);
         this.state = {
             flashSetName: '',
-            flashSetVisibility: '',
+            flashSetVisibility: 'public',
             flashSetDescription: '',
             count: 1,
             flashcards: []
@@ -58,26 +57,44 @@ class CreateSetInfo extends React.Component {
 
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.flashSetName + "\n" +
-            'A visibility was submitted: ' + this.state.flashSetVisibility + "\n" +
-            'A description was submitted: ' + this.state.flashSetDescription + "\n" +
-            'Flashcards were submitted: ' + JSON.stringify(this.state.flashcards) + "\n"
+        this.saveFlashcardSet()
+        alert('A new flashcard set was saved: ' + this.state.flashSetName + "\n" +
+            'A visibility was saved: ' + this.state.flashSetVisibility + "\n" +
+            'A description was saved: ' + this.state.flashSetDescription + "\n" +
+            'Flashcards were saved: ' + JSON.stringify(this.state.flashcards) + "\n"
         );
         event.preventDefault();
     }
 
-    // async saveFlashcardSet() {
-    //     await DataStore.save(
-    //         new FlashcardSet({
-    //             name: this.state.flashSetName,
-    //             description: this.state.flashSetDescription,
-    //             visibility: this.state.flashSetVisibility,
-    //             owner: ,
-    //             titles: ,
-    //             definitions: ,
-    //         })
-    //     );
-    // }
+    async saveFlashcardSet() {
+        const flashSetTitles = this.state.flashcards
+            .map(flashcard => {
+                return flashcard.title;
+            })
+            .filter(title => title !== "");
+
+        const flashSetDefs = this.state.flashcards
+            .map((flashcard, i) => {
+                return flashcard.definition;
+            })
+            .filter(def => def !== "");
+
+        // console.log(JSON.stringify("titles " + flashSetTitles));
+        // console.log(JSON.stringify("defs " + flashSetDefs));
+        // console.log(this.state.flashSetVisibility);
+        // console.log(this.props.currentUser.username);
+
+        await DataStore.save(
+            new FlashcardSet({
+                name: this.state.flashSetName,
+                description: this.state.flashSetDescription,
+                visibility: this.state.flashSetVisibility,
+                owner: JSON.stringify(this.props.currentUser.username),
+                titles: flashSetTitles,
+                definitions: flashSetDefs,
+            })
+        );
+    }
 
     addFlashcard = () => {
         this.setState({

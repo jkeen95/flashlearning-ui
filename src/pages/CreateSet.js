@@ -1,8 +1,8 @@
 import CreateSetInfo from "../components/CreateSetInfo";
 
-const CreateSet = () => {
+const CreateSet = ({ currentUser }) => {
     return (
-        <CreateSetInfo />
+        <CreateSetInfo currentUser={currentUser}/>
     );
 };
 

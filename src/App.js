@@ -30,8 +30,8 @@ class App extends React.Component {
                           <Router>
                               <Routes>
                                   <Route path="/" element={<Home currentUser={user}/>} />
-                                  <Route path="/create/set" element={<CreateSet />} />
-                                  <Route path="/create/class" element={<CreateSet />} />
+                                  <Route path="/create/set" element={<CreateSet currentUser={user}/>} />
+                                  <Route path="/create/class" element={<CreateSet currentUser={user}/>} />
                                   <Route path="/signout" element={<SignOut />} />
                               </Routes>
                           </Router>
