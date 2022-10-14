@@ -1,5 +1,8 @@
 import React from "react";
 import Flashcard from "./Flashcard";
+import {API, DataStore} from 'aws-amplify'
+import { createFlashcardSet } from '../graphql/mutations'
+import {FlashcardSet} from "../models";
 
 class CreateSetInfo extends React.Component {
 
@@ -62,6 +65,19 @@ class CreateSetInfo extends React.Component {
         );
         event.preventDefault();
     }
+
+    // async saveFlashcardSet() {
+    //     await DataStore.save(
+    //         new FlashcardSet({
+    //             name: this.state.flashSetName,
+    //             description: this.state.flashSetDescription,
+    //             visibility: this.state.flashSetVisibility,
+    //             owner: ,
+    //             titles: ,
+    //             definitions: ,
+    //         })
+    //     );
+    // }
 
     addFlashcard = () => {
         this.setState({

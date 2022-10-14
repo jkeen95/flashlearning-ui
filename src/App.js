@@ -1,5 +1,5 @@
 import './App.css';
-import {Amplify} from 'aws-amplify';
+import {Amplify, API, graphqlOperation} from 'aws-amplify';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import '@aws-amplify/ui-react/styles.css';
 
