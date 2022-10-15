@@ -1,5 +1,5 @@
 import './App.css';
-import {Amplify, API, graphqlOperation} from 'aws-amplify';
+import {Amplify} from 'aws-amplify';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import '@aws-amplify/ui-react/styles.css';
 
@@ -10,6 +10,7 @@ import Header from "./Header";
 import SignOut from "./pages/SignOut";
 import CreateSet from "./pages/CreateSet";
 import {Authenticator} from "@aws-amplify/ui-react";
+import BrowseSetPage from "./pages/BrowseSetPage";
 
 Amplify.configure(awsExports);
 
@@ -33,6 +34,7 @@ class App extends React.Component {
                                   <Route path="/create/set" element={<CreateSet currentUser={user}/>} />
                                   <Route path="/create/class" element={<CreateSet currentUser={user}/>} />
                                   <Route path="/signout" element={<SignOut />} />
+                                  <Route path="/set/:id/browse" element={<BrowseSetPage currentUser={user}/>} />
                               </Routes>
                           </Router>
                       </div>

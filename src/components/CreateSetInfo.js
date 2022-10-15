@@ -56,14 +56,9 @@ class CreateSetInfo extends React.Component {
     }
 
 
-    handleSubmit(event) {
-        this.saveFlashcardSet()
-        alert('A new flashcard set was saved: ' + this.state.flashSetName + "\n" +
-            'A visibility was saved: ' + this.state.flashSetVisibility + "\n" +
-            'A description was saved: ' + this.state.flashSetDescription + "\n" +
-            'Flashcards were saved: ' + JSON.stringify(this.state.flashcards) + "\n"
-        );
+    async handleSubmit(event) {
         event.preventDefault();
+        await this.saveFlashcardSet();
     }
 
     async saveFlashcardSet() {
@@ -89,11 +84,21 @@ class CreateSetInfo extends React.Component {
                 name: this.state.flashSetName,
                 description: this.state.flashSetDescription,
                 visibility: this.state.flashSetVisibility,
-                owner: JSON.stringify(this.props.currentUser.username),
+                owner: this.props.currentUser.username,
                 titles: flashSetTitles,
                 definitions: flashSetDefs,
             })
-        );
+        ).then(result => {
+            console.log(JSON.stringify(result))
+            alert('A new flashcard set was saved: ' + this.state.flashSetName + "\n" +
+                'A visibility was saved: ' + this.state.flashSetVisibility + "\n" +
+                'A description was saved: ' + this.state.flashSetDescription + "\n" +
+                'Flashcards were saved: ' + JSON.stringify(this.state.flashcards) + "\n"
+            );
+            const url = "" + window.location.origin + "/set/" + result.id + "/browse";
+            console.log(url)
+            window.location.replace(url)
+        });
     }
 
     addFlashcard = () => {
