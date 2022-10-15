@@ -54,7 +54,9 @@
       "!src/aws-exports.js",
       "!src/index.js",
       "!src/reportWebVitals.js",
-      "!src/models/schema.js"
+      "!src/models/schema.js",
+      "!src/graphql/*.js",
+      "!src/awsDeployedCode/**/*.js"
     ]
   }
 }

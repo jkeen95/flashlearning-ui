@@ -44,7 +44,6 @@ class EditSet extends React.Component {
     }
 
     handleDefChange = (event, index) =>{
-        //console.log("defChange: " + event.target.value + " " + index)
         const updatedDefinitions = this.state.definitions.map((def, i) => {
             if(index === i) {
                 def = event.target.value;
@@ -116,7 +115,6 @@ class EditSet extends React.Component {
 
     addFlashcard = () => {
         this.setState({
-            // flashcards: [...this.state.flashcards, {"title": "", "definition": ''}]
             titles: [...this.state.titles, ""],
             definitions: [...this.state.definitions, ""],
         })
