@@ -1,9 +1,9 @@
 import React from "react";
-import Flashcard from "./Flashcard";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
+import Flashcard from "./Flashcard";
 
-class CreateSetInfo extends React.Component {
+class EditSet extends React.Component {
 
     constructor(props) {
         super(props);
@@ -11,7 +11,6 @@ class CreateSetInfo extends React.Component {
             flashSetName: '',
             flashSetVisibility: 'public',
             flashSetDescription: '',
-            count: 1,
             titles: [],
             definitions: []
         };
@@ -45,6 +44,7 @@ class CreateSetInfo extends React.Component {
     }
 
     handleDefChange = (event, index) =>{
+        //console.log("defChange: " + event.target.value + " " + index)
         const updatedDefinitions = this.state.definitions.map((def, i) => {
             if(index === i) {
                 def = event.target.value;
@@ -58,24 +58,47 @@ class CreateSetInfo extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        await this.saveFlashcardSet();
+        await this.updateFlashcardSet();
     }
 
-    async saveFlashcardSet() {
+    componentDidMount() {
+        this.fillSetInformation()
+    }
+
+    async fetchSetInformation() {
+        console.log(this.props.setId.id)
+        console.log(this.props.currentUser.username)
+        return await DataStore.query(FlashcardSet, (set) =>
+            set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
+        )
+    }
+
+    async fillSetInformation() {
+        const currentSet = await this.fetchSetInformation()
+        console.log(JSON.stringify(currentSet))
+        this.setState({
+            flashSetName: currentSet[0].name,
+            flashSetVisibility: currentSet[0].visibility,
+            flashSetDescription: currentSet[0].description,
+            titles: currentSet[0].titles,
+            definitions: currentSet[0].definitions
+        });
+    }
+
+    async updateFlashcardSet() {
         const flashSetTitles = this.state.titles.filter(title => title !== "");
         const flashSetDefs = this.state.definitions.filter(def => def !== "");
 
-        console.log(flashSetTitles)
-        console.log(flashSetDefs)
-
+        const original = await DataStore.query(FlashcardSet, (set) =>
+            set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
+        );
         await DataStore.save(
-            new FlashcardSet({
-                name: this.state.flashSetName,
-                description: this.state.flashSetDescription,
-                visibility: this.state.flashSetVisibility,
-                owner: this.props.currentUser.username,
-                titles: flashSetTitles,
-                definitions: flashSetDefs,
+            FlashcardSet.copyOf(original[0], updated => {
+                updated.name = this.state.flashSetName;
+                updated.description = this.state.flashSetDescription;
+                updated.visibility = this.state.flashSetVisibility;
+                updated.titles = flashSetTitles;
+                updated.definitions =  flashSetDefs;
             })
         ).then(result => {
             console.log(JSON.stringify(result))
@@ -93,24 +116,12 @@ class CreateSetInfo extends React.Component {
 
     addFlashcard = () => {
         this.setState({
+            // flashcards: [...this.state.flashcards, {"title": "", "definition": ''}]
             titles: [...this.state.titles, ""],
             definitions: [...this.state.definitions, ""],
         })
         console.log("count " + this.state.count)
         this.state.count++
-    }
-
-    componentDidMount() {
-        if(this.state.titles.length === 0) {
-            this.state.count = 1;
-            this.state.titles = [];
-            this.state.definitions = [];
-            this.setState({
-                titles: [...this.state.titles, ""],
-                definitions: [...this.state.definitions, ""],
-            });
-            this.addFlashcard();
-        }
     }
 
     render() {
@@ -119,7 +130,7 @@ class CreateSetInfo extends React.Component {
                 <div>
                     <label>
                         Set Name:
-                        <input type="text" onBlur={this.handleNameChange} />
+                        <input value={this.state.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
                     </label>
                     <label>
                         Visibility:
@@ -152,4 +163,4 @@ class CreateSetInfo extends React.Component {
     }
 }
 
-export default CreateSetInfo;
+export default EditSet;
