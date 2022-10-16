@@ -1,11 +1,12 @@
 import Navbar from './Navbar';
+import {Link} from "react-router-dom";
 
 const Header = ({ currentUser }) => {
     return (
         <header>
-            <div className="nav-area">
+            <div id="nav-area">
                 <a href="/" className="logo">
-                    Logo
+                    <img id="flashLearningLogo" src={require("./images/flashlearning-logo.png")}/>
                 </a>
                 <Navbar currentUser={currentUser}/>
             </div>
