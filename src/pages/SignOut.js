@@ -1,7 +1,7 @@
-import {Auth} from "aws-amplify";
+import {Auth, DataStore} from "aws-amplify";
 
-const SignOut = () => {
-    signOut()
+const SignOut = async () => {
+    await signOut()
     localStorage.clear()
     window.location.replace(document.location.origin)
 };
@@ -9,6 +9,7 @@ const SignOut = () => {
 async function signOut() {
     try {
         await Auth.signOut();
+        await DataStore.clear();
     } catch (error) {
         console.log('error signing out: ', error);
     }

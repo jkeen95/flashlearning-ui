@@ -5,15 +5,15 @@ export const menuItems = [
     },
     {
         title: 'Create',
-        url: '/create',
+        url: '/',
         submenu: [
             {
                 title: 'New Flashcard Set',
-                url: 'create/set',
+                url: '/create/set',
             },
             {
                 title: 'New Class',
-                url: 'create/class',
+                url: '/create/class',
             },
         ],
     },

@@ -1,59 +1,23 @@
 import React from "react";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
-import Flashcard from "./Flashcard";
+import EditableSetInfo from "./EditableSetInfo";
 
 class EditSet extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            flashSetName: '',
-            flashSetVisibility: 'public',
-            flashSetDescription: '',
-            titles: [],
-            definitions: []
+            setInfo: {
+                flashSetName: '',
+                flashSetVisibility: 'public',
+                flashSetDescription: '',
+                titles: [""],
+                definitions: [""]
+            }
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    handleNameChange(event) {
-        this.setState({flashSetName: event.target.value});
-    }
-
-    handleVisibilityChange(event) {
-        this.setState({flashSetVisibility: event.target.value});
-    }
-
-    handleDescriptionChange(event) {
-        this.setState({flashSetDescription: event.target.value});
-    }
-
-    handleTitleChange = (event, index) =>{
-        const updatedTitles = this.state.titles.map((title, i) => {
-            if(index === i) {
-                title = event.target.value;
-                return title;
-            }
-            return title;
-        });
-        this.setState({titles: updatedTitles})
-    }
-
-    handleDefChange = (event, index) =>{
-        const updatedDefinitions = this.state.definitions.map((def, i) => {
-            if(index === i) {
-                def = event.target.value;
-                return def;
-            }
-            return def;
-        });
-        this.setState({definitions: updatedDefinitions})
-    }
-
 
     async handleSubmit(event) {
         event.preventDefault();
@@ -75,13 +39,17 @@ class EditSet extends React.Component {
     async fillSetInformation() {
         const currentSet = await this.fetchSetInformation()
         console.log(JSON.stringify(currentSet))
-        this.setState({
-            flashSetName: currentSet[0].name,
-            flashSetVisibility: currentSet[0].visibility,
-            flashSetDescription: currentSet[0].description,
-            titles: currentSet[0].titles,
-            definitions: currentSet[0].definitions
-        });
+        this.setState(prevState => ({
+            setInfo: {
+                ...prevState.setInfo,
+                flashSetName: currentSet[0].name,
+                flashSetVisibility: currentSet[0].visibility,
+                flashSetDescription: currentSet[0].description,
+                titles: currentSet[0].titles,
+                definitions: currentSet[0].definitions
+            }
+        }));
+        console.log(this.state.setInfo)
     }
 
     async updateFlashcardSet() {
@@ -113,51 +81,14 @@ class EditSet extends React.Component {
         });
     }
 
-    addFlashcard = () => {
-        this.setState({
-            titles: [...this.state.titles, ""],
-            definitions: [...this.state.definitions, ""],
-        })
-        console.log("count " + this.state.count)
-        this.state.count++
-    }
-
     render() {
-        return <div>
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <label>
-                        Set Name:
-                        <input value={this.state.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
-                    </label>
-                    <label>
-                        Visibility:
-                        <select value={this.state.flashSetVisibility} onChange={this.handleVisibilityChange}>
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
-                    </label>
-                    <label>
-                        Description:
-                        <textarea value={this.state.flashSetDescription} onChange={this.handleDescriptionChange} />
-                    </label>
-                </div>
-                <br/>
-                <hr/>
-                <br/>
-                {this.state.titles.map((title, index) => {
-                    console.log(JSON.stringify(title))
-                    return (
-                        <Flashcard key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} title={title} definition={this.state.definitions[index]}/>
-                    )
-                })}
-                <button type="button" onClick={this.addFlashcard}>Add Flashcard</button>
-                <br/>
-                <hr/>
-                <br/>
-                <input type="submit" value="Submit" />
-            </form>
-        </div>;
+        console.log(this.state.setInfo)
+        if(this.state.setInfo.flashSetName === '')
+            return <div />
+        else
+            return (
+                <EditableSetInfo currentUser={this.props.currentUser} setInfo={this.state.setInfo} handleSubmit={this.handleSubmit}/>
+            );
     }
 }
 

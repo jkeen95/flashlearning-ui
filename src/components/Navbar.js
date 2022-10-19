@@ -1,4 +1,4 @@
-import {menuItems} from './navMenuItems';
+import {menuItems} from '../data/navMenuItems';
 import MenuItems from "./MenuItems";
 
 let userToCheck = {}

@@ -12,22 +12,20 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.fillSetInformation()
+        this.fetchSetInformation()
     }
 
     async fetchSetInformation() {
         console.log(this.props.currentUser.username)
-        return await DataStore.query(FlashcardSet, (set) =>
+        await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
+        ).then(result => {
+                console.log(result)
+                this.setState({
+                    usersSets: result
+                })
+            }
         )
-    }
-
-    async fillSetInformation() {
-         const usersSets = await this.fetchSetInformation()
-        console.log(JSON.stringify(JSON.stringify(usersSets)))
-        this.setState({
-            usersSets: usersSets
-        });
     }
 
     checkUsersFlashsets() {
@@ -61,13 +59,18 @@ class Home extends React.Component {
 
 
     render() {
-        return <div>
-            <h1 id="welcomeMessage">Welcome {this.props.currentUser.attributes.name}</h1>;
-            <br />
-            <br />
-            <h2>Your Flashcard Sets</h2>
-            {this.checkUsersFlashsets()}
-        </div>;
+        if(this.state.usersSets === [])
+            return <div />
+        else
+            return (
+                <div>
+                    <h1 id="welcomeMessage">Welcome {this.props.currentUser.attributes.name}</h1>;
+                    <br />
+                    <br />
+                    <h2>Your Flashcard Sets</h2>
+                    {this.checkUsersFlashsets()}
+                </div>
+            )
     }
 }
 
