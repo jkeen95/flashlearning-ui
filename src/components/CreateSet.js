@@ -46,8 +46,8 @@ class CreateSet extends React.Component {
             alert('A new flashcard set was saved: ' + setInfo.flashSetName + "\n" +
                 'A visibility was saved: ' + setInfo.flashSetVisibility + "\n" +
                 'A description was saved: ' + setInfo.flashSetDescription + "\n" +
-                'Flashcard titles were saved: ' + JSON.stringify(flashSetTitles) + "\n" +
-                'Flashcard definitions were saved: ' + JSON.stringify(flashSetDefs) + "\n"
+                'FlashcardInput titles were saved: ' + JSON.stringify(flashSetTitles) + "\n" +
+                'FlashcardInput definitions were saved: ' + JSON.stringify(flashSetDefs) + "\n"
             );
             const url = "" + window.location.origin + "/set/" + result.id + "/browse";
             console.log(url)

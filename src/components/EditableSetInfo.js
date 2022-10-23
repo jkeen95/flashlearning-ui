@@ -1,5 +1,5 @@
 import React from "react";
-import Flashcard from "./Flashcard";
+import FlashcardInput from "./FlashcardInput";
 
 class EditableSetInfo extends React.Component {
 
@@ -124,7 +124,7 @@ class EditableSetInfo extends React.Component {
                 {this.state.setInfo.titles.map((title, index) => {
                     console.log(JSON.stringify(title))
                     return (
-                        <Flashcard key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} title={title} definition={this.state.setInfo.definitions[index]}/>
+                        <FlashcardInput key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} title={title} definition={this.state.setInfo.definitions[index]}/>
                     )
                 })}
                 <button type="button" onClick={this.addFlashcard}>Add Flashcard</button>

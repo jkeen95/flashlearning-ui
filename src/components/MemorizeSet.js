@@ -2,9 +2,9 @@ import React from "react";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import FlipFlashcard from "./FlipFlashcard";
-import {SwitchField, ToggleButton} from "@aws-amplify/ui-react";
+import {SwitchField} from "@aws-amplify/ui-react";
 
-class BrowseSet extends React.Component {
+class MemorizeSet extends React.Component {
 
     constructor(props) {
         super(props);
@@ -101,8 +101,8 @@ class BrowseSet extends React.Component {
     }
 
     formOriginalOrderFlashcardsToBrowse = () => {
-          if(this.state.originalOrderFlashcards.length === 0) {
-              //console.log("inside")
+        if(this.state.originalOrderFlashcards.length === 0) {
+            //console.log("inside")
             const originalOrderFlashcards = this.state.setInfo.titles.map((title, index) => {
                 const card = {}
                 card["title"] = title
@@ -111,8 +111,8 @@ class BrowseSet extends React.Component {
             })
             this.state.flashcardsToBrowse = originalOrderFlashcards
             this.state.originalOrderFlashcards = JSON.parse(JSON.stringify(originalOrderFlashcards))
-          }
-          else
+        }
+        else
             this.state.flashcardsToBrowse = JSON.parse(JSON.stringify(this.state.originalOrderFlashcards))
         console.log("original " + JSON.stringify(this.state.flashcardsToBrowse));
     }
@@ -121,16 +121,16 @@ class BrowseSet extends React.Component {
         const originalOrderFlashcards = this.state.originalOrderFlashcards
         let currentRange = this.state.flashcardsToBrowse.length
         //console.log("checkhere " + JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
-         do {
-             while (currentRange !== 0) {
-                 const index = Math.floor(Math.random() * currentRange);
-                 //console.log(index)
-                 const temp = this.state.flashcardsToBrowse[index];
-                 this.state.flashcardsToBrowse[index] = this.state.flashcardsToBrowse[currentRange - 1];
-                 this.state.flashcardsToBrowse[currentRange - 1] = temp;
-                 currentRange = currentRange - 1;
-             }
-         }while(JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
+        do {
+            while (currentRange !== 0) {
+                const index = Math.floor(Math.random() * currentRange);
+                //console.log(index)
+                const temp = this.state.flashcardsToBrowse[index];
+                this.state.flashcardsToBrowse[index] = this.state.flashcardsToBrowse[currentRange - 1];
+                this.state.flashcardsToBrowse[currentRange - 1] = temp;
+                currentRange = currentRange - 1;
+            }
+        }while(JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
         console.log("random " + JSON.stringify(this.state.flashcardsToBrowse));
     }
 
@@ -192,4 +192,4 @@ class BrowseSet extends React.Component {
     }
 }
 
-export default BrowseSet;
+export default MemorizeSet;

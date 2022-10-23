@@ -1,6 +1,6 @@
 import React from "react";
 
-class FlashcardDefinition extends React.Component {
+class FlashcardDefinitionInput extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -15,4 +15,4 @@ class FlashcardDefinition extends React.Component {
     }
 }
 
-export default FlashcardDefinition;
+export default FlashcardDefinitionInput;

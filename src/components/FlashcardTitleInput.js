@@ -1,6 +1,6 @@
 import React from "react";
 
-class FlashcardTitle extends React.Component {
+class FlashcardTitleInput extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,4 +14,4 @@ class FlashcardTitle extends React.Component {
     }
 }
 
-export default FlashcardTitle;
+export default FlashcardTitleInput;

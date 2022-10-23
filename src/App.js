@@ -13,6 +13,7 @@ import BrowseSetPage from "./pages/BrowseSetPage";
 import EditSetPage from "./pages/EditSetPage";
 import {Image} from "react-bootstrap";
 import CreateSetPage from "./pages/CreateSetPage";
+import MemorizeSetPage from "./pages/MemorizeSetPage";
 
 Amplify.configure(awsExports);
 
@@ -72,6 +73,7 @@ class App extends React.Component {
                                   <Route path="/signout" element={<SignOut />} />
                                   <Route path="/set/:id/browse" element={<BrowseSetPage currentUser={user}/>} />
                                   <Route path="/set/:id/edit" element={<EditSetPage currentUser={user}/>} />
+                                  <Route path="/set/:id/memorize" element={<MemorizeSetPage currentUser={user}/>} />
                               </Routes>
                           </Router>
                       </div>
