@@ -48,7 +48,10 @@
       "\\.(css|less|scss)$": "<rootDir>/__mocks__/styleMock.js"
     },
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/setup-jest.js", "<rootDir>/src/setupTests.js"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-jest.js",
+      "<rootDir>/src/setupTests.js"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
       "!src/aws-exports.js",

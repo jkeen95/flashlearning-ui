@@ -64,7 +64,7 @@ class Home extends React.Component {
         else
             return (
                 <div>
-                    <h1 id="welcomeMessage">Welcome {this.props.currentUser.attributes.name}</h1>;
+                    <h1 id="welcomeMessage">Welcome {this.props.currentUser.attributes.name}</h1>
                     <br />
                     <br />
                     <h2>Your Flashcard Sets</h2>
