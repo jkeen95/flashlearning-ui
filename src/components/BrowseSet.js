@@ -148,6 +148,7 @@ class BrowseSet extends React.Component {
     }
 
     render() {
+        console.log("flascardtobrowse " + JSON.stringify(this.state.flashcardsToBrowse))
         if(this.state.flashcardsToBrowse.length !== 0) {
             const frontHeader = this.state.showSetTitleSide ? "Title" : "Definition"
             const backHeader = this.state.showSetTitleSide ? "Definition" : "Title"
