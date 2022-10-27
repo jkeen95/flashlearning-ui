@@ -56,6 +56,8 @@ class BrowseSet extends React.Component {
             ...prevState.currentCardOnFront
 
         }));
+        console.log(currentSet)
+        console.log("before original" + this.state.setInfo)
         this.formOriginalOrderFlashcardsToBrowse()
         console.log(this.state.setInfo)
     }
