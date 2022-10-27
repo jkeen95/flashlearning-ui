@@ -57,7 +57,7 @@ class BrowseSet extends React.Component {
 
         }));
         console.log(currentSet)
-        console.log("before original" + this.state.setInfo)
+        console.log("before original" + JSON.stringify(this.state.setInfo))
         this.formOriginalOrderFlashcardsToBrowse()
         console.log(this.state.setInfo)
     }
