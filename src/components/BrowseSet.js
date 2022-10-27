@@ -91,6 +91,7 @@ class BrowseSet extends React.Component {
             fetchedSets: currentSet
         })
         console.log("after setstate " + JSON.stringify(this.state))
+        console.log(JSON.stringify(this.state.fetchedSets))
     }
 
     swapSide = () => {
