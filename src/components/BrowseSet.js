@@ -17,6 +17,7 @@ class BrowseSet extends React.Component {
                 definitions: [],
                 flashSetId: ""
             },
+            fetchedSets: [],
             index: 0,
             currentCardOnFront: true,
             showSetTitleSide: true,
@@ -76,17 +77,20 @@ class BrowseSet extends React.Component {
     async fillSetInformation() {
         const currentSet = await this.fetchSetInformation()
         console.log(JSON.stringify(currentSet))
-        this.setState(prevState => ({
-            setInfo: {
-                ...prevState.setInfo,
-                flashSetName: currentSet[0].name,
-                flashSetVisibility: currentSet[0].visibility,
-                flashSetDescription: currentSet[0].description,
-                titles: currentSet[0].titles,
-                definitions: currentSet[0].definitions
-            }
-        }));
-        console.log("after setstate " + JSON.stringify(this.state.setInfo))
+        // this.setState(prevState => ({
+        //     setInfo: {
+        //         ...prevState.setInfo,
+        //         flashSetName: currentSet[0].name,
+        //         flashSetVisibility: currentSet[0].visibility,
+        //         flashSetDescription: currentSet[0].description,
+        //         titles: currentSet[0].titles,
+        //         definitions: currentSet[0].definitions
+        //     }
+        // }));
+        this.setState({
+            fetchedSets: currentSet
+        })
+        console.log("after setstate " + JSON.stringify(this.state))
     }
 
     swapSide = () => {
