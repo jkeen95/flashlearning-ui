@@ -8,7 +8,7 @@ export const menuItems = [
         url: '/',
         submenu: [
             {
-                title: 'New FlashcardInput Set',
+                title: 'New Flashcard Set',
                 url: '/create/set',
             },
             {

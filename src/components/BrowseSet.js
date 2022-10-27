@@ -41,7 +41,7 @@ class BrowseSet extends React.Component {
 
     async fillSetInformation() {
         const currentSet = await this.fetchSetInformation()
-        console.log(JSON.stringify(currentSet))
+        console.log("fillCurrentSet info " + JSON.stringify(currentSet))
         this.setState(prevState => ({
             setInfo: {
                 ...prevState.setInfo,
@@ -121,7 +121,7 @@ class BrowseSet extends React.Component {
         const originalOrderFlashcards = this.state.originalOrderFlashcards
         let currentRange = this.state.flashcardsToBrowse.length
         //console.log("checkhere " + JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
-         do {
+         //do {
              while (currentRange !== 0) {
                  const index = Math.floor(Math.random() * currentRange);
                  //console.log(index)
@@ -130,7 +130,7 @@ class BrowseSet extends React.Component {
                  this.state.flashcardsToBrowse[currentRange - 1] = temp;
                  currentRange = currentRange - 1;
              }
-         }while(JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
+        // }while(JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
         console.log("random " + JSON.stringify(this.state.flashcardsToBrowse));
     }
 

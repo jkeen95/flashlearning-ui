@@ -2,6 +2,7 @@ import React from "react";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import EditableSetInfo from "./EditableSetInfo";
+import {removeEmpties} from "../utils/utils";
 
 class EditSet extends React.Component {
 
@@ -53,8 +54,10 @@ class EditSet extends React.Component {
     }
 
     async updateFlashcardSet() {
-        const flashSetTitles = this.state.titles.filter(title => title !== "");
-        const flashSetDefs = this.state.definitions.filter(def => def !== "");
+        // const flashSetTitles = this.state.titles.filter(title => title !== "");
+        // const flashSetDefs = this.state.definitions.filter(def => def !== "");
+        const response = removeEmpties(this.state.titles, this.state.definitions)
+
 
         const original = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
@@ -64,16 +67,16 @@ class EditSet extends React.Component {
                 updated.name = this.state.flashSetName;
                 updated.description = this.state.flashSetDescription;
                 updated.visibility = this.state.flashSetVisibility;
-                updated.titles = flashSetTitles;
-                updated.definitions =  flashSetDefs;
+                updated.titles = response.validTitles;
+                updated.definitions =  response.validDefs;
             })
         ).then(result => {
             console.log(JSON.stringify(result))
             alert('A new flashcard set was saved: ' + this.state.flashSetName + "\n" +
                 'A visibility was saved: ' + this.state.flashSetVisibility + "\n" +
                 'A description was saved: ' + this.state.flashSetDescription + "\n" +
-                'FlashcardInput titles were saved: ' + JSON.stringify(flashSetTitles) + "\n" +
-                'FlashcardInput definitions were saved: ' + JSON.stringify(flashSetDefs) + "\n"
+                'FlashcardInput titles were saved: ' + JSON.stringify(response.validTitles) + "\n" +
+                'FlashcardInput definitions were saved: ' + JSON.stringify(response.validDefs) + "\n"
             );
             const url = "" + window.location.origin + "/set/" + result.id + "/browse";
             console.log(url)

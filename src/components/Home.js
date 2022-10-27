@@ -1,6 +1,7 @@
 import React from "react";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
+import {deleteSet} from "../utils/utils";
 
 class Home extends React.Component {
 
@@ -29,7 +30,8 @@ class Home extends React.Component {
     }
 
     checkUsersFlashsets() {
-        if(this.state.usersSets !== []) {
+        console.log(this.state.usersSets)
+        if(this.state.usersSets.length !== 0) {
             return (
                 this.renderFlashSetOptions()
             )
@@ -41,6 +43,12 @@ class Home extends React.Component {
         }
     }
 
+    async removeSet(setId) {
+        await deleteSet(setId)
+        await this.fetchSetInformation()
+
+    }
+
     renderFlashSetOptions() {
         return this.state.usersSets.map((set, index) => {
             const browseUrl = "" + window.location.origin +"/set/" + set.id + "/browse";
@@ -50,6 +58,8 @@ class Home extends React.Component {
                     <a href={browseUrl}>{set.name}</a>
                     <br />
                     <a href={editUrl}>Edit</a>
+                    <br />
+                    <button onClick={() => this.removeSet(set.id)} className="deleteButton">Delete</button>
                     <br />
                     <br />
                 </div>
