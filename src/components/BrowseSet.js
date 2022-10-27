@@ -83,8 +83,7 @@ class BrowseSet extends React.Component {
                 flashSetVisibility: currentSet[0].visibility,
                 flashSetDescription: currentSet[0].description,
                 titles: currentSet[0].titles,
-                definitions: currentSet[0].definitions,
-                flashSetId: currentSet[0].id
+                definitions: currentSet[0].definitions
             }
         }));
         console.log("after setstate " + JSON.stringify(this.state.setInfo))
