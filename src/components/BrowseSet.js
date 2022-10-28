@@ -19,6 +19,7 @@ class BrowseSet extends React.Component {
                 flashSetId: ""
             },
             index: 0,
+            returnedSet: {},
             currentCardOnFront: true,
             showSetTitleSide: true,
             flashcardsToBrowse: [],
@@ -31,9 +32,10 @@ class BrowseSet extends React.Component {
     async componentDidMount() {
         // await this.fetchSetInformation()
         // console.log("browse mount " + JSON.stringify(this.state))
-        await this.setState({
-            index: 10
-        })
+        // await this.setState({
+        //     index: 10,
+        //     returnedSet
+        // })
         // console.log("browse mount change " + JSON.stringify(this.state))
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
