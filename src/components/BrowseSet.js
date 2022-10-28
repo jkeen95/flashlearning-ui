@@ -39,11 +39,17 @@ class BrowseSet extends React.Component {
         // console.log("browse mount change " + JSON.stringify(this.state))
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        );
-        console.log(JSON.stringify(result))
-        await this.setState({
-            index: 10
-        })
+        ).then(result => {
+            console.log(JSON.stringify(result))
+            this.setState({
+                index: 10
+            })
+            console.log("after then " + JSON.stringify(this.state))
+        });
+        // console.log(JSON.stringify(result))
+        // await this.setState({
+        //     index: 10
+        // })
             // this.state.setInfo.flashSetName = result[0].name
             // this.state.setInfo.flashSetVisibility = result[0].visibility
             // this.state.setInfo.flashSetDescription = result[0].description
