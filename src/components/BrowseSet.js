@@ -35,10 +35,10 @@ class BrowseSet extends React.Component {
         //     index: 10
         // })
         // console.log("browse mount change " + JSON.stringify(this.state))
-        await DataStore.query(FlashcardSet, (set) =>
+        const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        ).then(result => {
-            console.log(JSON.stringify(result))
+        );
+        console.log(JSON.stringify(result))
             // this.state.setInfo.flashSetName = result[0].name
             // this.state.setInfo.flashSetVisibility = result[0].visibility
             // this.state.setInfo.flashSetDescription = result[0].description
@@ -49,20 +49,19 @@ class BrowseSet extends React.Component {
             // this.formOriginalOrderFlashcardsToBrowse()
             // console.log("after original" + JSON.stringify(this.state))
             // this.render()
-            this.setState({
-                setInfo: {
-                    ...this.state.setInfo,
-                    flashSetName: result[0].name,
-                    flashSetVisibility: result[0].visibility,
-                    flashSetDescription: result[0].description,
-                    titles: result[0].titles,
-                    definitions: result[0].definitions,
-                    flashSetId: result[0].id
-                }
-            })
-            console.log("before form " + JSON.stringify(this.state))
-            this.formOriginalOrderFlashcardsToBrowse()
+        await this.setState({
+            setInfo: {
+                ...this.state.setInfo,
+                flashSetName: result[0].name,
+                flashSetVisibility: result[0].visibility,
+                flashSetDescription: result[0].description,
+                titles: result[0].titles,
+                definitions: result[0].definitions,
+                flashSetId: result[0].id
+            }
         })
+        console.log("before form " + JSON.stringify(this.state))
+        await this.formOriginalOrderFlashcardsToBrowse()
     }
 
     // async fetchSetInformation() {
