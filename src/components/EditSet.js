@@ -20,9 +20,10 @@ class EditSet extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async handleSubmit(event) {
-        event.preventDefault();
-        await this.updateFlashcardSet();
+    async handleSubmit(setToSave) {
+        // event.preventDefault();
+        //console.log(JSON.stringify(setToSave))
+        await this.updateFlashcardSet(setToSave);
     }
 
     componentDidMount() {
@@ -30,8 +31,8 @@ class EditSet extends React.Component {
     }
 
     async fetchSetInformation() {
-        console.log(this.props.setId.id)
-        console.log(this.props.currentUser.username)
+        // console.log(this.props.setId.id)
+        // console.log(this.props.currentUser.username)
         return await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         )
@@ -39,7 +40,7 @@ class EditSet extends React.Component {
 
     async fillSetInformation() {
         const currentSet = await this.fetchSetInformation()
-        console.log(JSON.stringify(currentSet))
+        // console.log(JSON.stringify(currentSet))
         this.setState(prevState => ({
             setInfo: {
                 ...prevState.setInfo,
@@ -53,10 +54,10 @@ class EditSet extends React.Component {
         console.log(this.state.setInfo)
     }
 
-    async updateFlashcardSet() {
+    async updateFlashcardSet(setToSave) {
         // const flashSetTitles = this.state.titles.filter(title => title !== "");
         // const flashSetDefs = this.state.definitions.filter(def => def !== "");
-        const response = removeEmpties(this.state.titles, this.state.definitions)
+        // const response = removeEmpties(this.state.titles, this.state.definitions)
 
 
         const original = await DataStore.query(FlashcardSet, (set) =>
@@ -64,28 +65,28 @@ class EditSet extends React.Component {
         );
         await DataStore.save(
             FlashcardSet.copyOf(original[0], updated => {
-                updated.name = this.state.flashSetName;
-                updated.description = this.state.flashSetDescription;
-                updated.visibility = this.state.flashSetVisibility;
-                updated.titles = response.validTitles;
-                updated.definitions =  response.validDefs;
+                updated.name = setToSave.flashSetName;
+                updated.description = setToSave.flashSetDescription;
+                updated.visibility = setToSave.flashSetVisibility;
+                updated.titles = setToSave.titles;
+                updated.definitions =  setToSave.definitions;
             })
         ).then(result => {
-            console.log(JSON.stringify(result))
-            alert('A new flashcard set was saved: ' + this.state.flashSetName + "\n" +
-                'A visibility was saved: ' + this.state.flashSetVisibility + "\n" +
-                'A description was saved: ' + this.state.flashSetDescription + "\n" +
-                'FlashcardInput titles were saved: ' + JSON.stringify(response.validTitles) + "\n" +
-                'FlashcardInput definitions were saved: ' + JSON.stringify(response.validDefs) + "\n"
+            //console.log(JSON.stringify(result))
+            alert('A new flashcard set was saved: ' + result.name + "\n" +
+                'A visibility was saved: ' + result.visibility + "\n" +
+                'A description was saved: ' + result.description + "\n" +
+                'FlashcardInput titles were saved: ' + result.titles + "\n" +
+                'FlashcardInput definitions were saved: ' + result.definitions + "\n"
             );
             const url = "" + window.location.origin + "/set/" + result.id + "/browse";
-            console.log(url)
+            //console.log(url)
             window.location.replace(url)
         });
     }
 
     render() {
-        console.log(this.state.setInfo)
+        //console.log(this.state.setInfo)
         if(this.state.setInfo.flashSetName === '')
             return <div />
         else

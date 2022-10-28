@@ -1,11 +1,14 @@
 import React from "react";
 import FlashcardInput from "./FlashcardInput";
+import {removeEmpties} from "../utils/utils";
+import {DataStore} from "aws-amplify";
+import {FlashcardSet} from "../models";
 
 class EditableSetInfo extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props)
+        //console.log(props)
         this.state = {
             setInfo: {
                 flashSetName: this.props.setInfo.flashSetName,
@@ -13,7 +16,11 @@ class EditableSetInfo extends React.Component {
                 flashSetDescription: this.props.setInfo.flashSetDescription,
                 titles: this.props.setInfo.titles,
                 definitions: this.props.setInfo.definitions
-            }
+            },
+            duplicates: [],
+            blankNameError: false,
+            flashcardError: false
+
         };
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
@@ -79,15 +86,78 @@ class EditableSetInfo extends React.Component {
         }));
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault()
-        console.log(this.state.setInfo)
-        this.props.handleSubmit(this.state.setInfo)
+        //console.log(this.state.setInfo)
+        const response = removeEmpties(this.state.setInfo.titles, this.state.setInfo.definitions)
+        //console.log("response before submit " + JSON.stringify(response))
+
+        if(this.state.setInfo.flashSetName === "") {
+            await this.setState({
+                blankNameError: true
+            })
+        }
+        else {
+            await this.setState({
+                blankNameError: false
+            })
+        }
+        if(response.validTitles.length === 0 ) {
+            //console.log("validdddddd")
+            //alert("At Least One Complete Flashcard is Required")
+            await this.setState({
+                flashcardError: true
+            })
+        }
+        else {
+            await this.setState({
+                flashcardError: false
+            })
+        }
+
+        // console.log("blankNameError " + !this.state.blankNameError)
+        // console.log("flashcardError " + !this.state.flashcardError)
+
+        if(!this.state.blankNameError && !this.state.flashcardError) {
+            //console.log("error inside")
+            let tempObj = this.state.setInfo
+            tempObj.titles = response.validTitles
+            tempObj.definitions = response.validDefs
+            this.props.handleSubmit(tempObj)
+        }
+        // this.props.handleSubmit(this.state.setInfo)
     };
 
-    checkForDuplicates = (event, index) => {
-        console.log(this.state.setInfo.titles)
-        console.log(this.state.setInfo.titles[index])
+    checkForDuplicates = () => {
+        const tempArray = this.state.setInfo.titles
+        const arr_size = tempArray.length
+        // console.log(this.state.setInfo.titles)
+        // console.log(this.state.setInfo.titles[index])
+        let duplicateTracker = []
+        let titleIndices = {}
+
+        this.state.setInfo.titles.filter((title, index) => {
+            if(title === "") return
+            if(title in titleIndices) {
+                titleIndices[title].push(index)
+            }
+            else {
+                titleIndices[title] = [index]
+            }
+        })
+
+        let duplicateIndices = []
+        Object.values(titleIndices).filter(indices => {
+            if(indices.length > 1) {
+                indices.filter(index => {
+                    duplicateIndices.push(index)
+                })
+            }
+        })
+        //console.log(duplicateIndices)
+        this.setState({duplicates : duplicateIndices})
+
+        // console.log(JSON.stringify(titleIndices))
     }
 
     addFlashcard = () => {
@@ -98,12 +168,12 @@ class EditableSetInfo extends React.Component {
                 definitions: [...this.state.setInfo.definitions, ""],
             }
         }));
-        console.log("count " + this.state.count)
+        //console.log("count " + this.state.count)
         this.state.count++
     }
 
     render() {
-        console.log(JSON.stringify(this.state.setInfo.flashSetDescription))
+        //console.log(JSON.stringify(this.state.setInfo.flashSetDescription))
         return <div>
             <form onSubmit={this.handleSubmit}>
                 <div>
@@ -123,20 +193,25 @@ class EditableSetInfo extends React.Component {
                         <textarea value={this.state.setInfo.flashSetDescription} onChange={this.handleDescriptionChange} />
                     </label>
                 </div>
+                {this.state.blankNameError ? <p className="errorMessage">The set must have a name</p> : ""}
                 <br/>
                 <hr/>
                 <br/>
                 {this.state.setInfo.titles.map((title, index) => {
-                    console.log(JSON.stringify(title))
+                    // console.log(JSON.stringify(title))
+                    // console.log(this.state.duplicates)
+                    // console.log(index)
+                    // console.log("checkthtissss " + JSON.stringify(this.state.duplicates.includes(index)) + "  " + title)
                     return (
-                        <FlashcardInput key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
+                        <FlashcardInput duplicateTitle={this.state.duplicates.includes(index)} key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
                     )
                 })}
+                {this.state.flashcardError ? <p className="errorMessage">At Least One Complete Flashcard is Required</p> : ""}
+                <br />
                 <button type="button" onClick={this.addFlashcard}>Add Flashcard</button>
                 <br/>
-                <hr/>
                 <br/>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Submit" disabled={this.state.duplicates.length > 0} />
             </form>
         </div>;
     }

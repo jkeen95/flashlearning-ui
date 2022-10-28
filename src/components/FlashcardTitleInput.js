@@ -14,7 +14,8 @@ class FlashcardTitleInput extends React.Component {
     };
 
     render() {
-        return <input type="text" value={this.props.title} onChange={event => this.handleTitleChange(event, this.props.index)} onBlur={event => this.checkForDuplicates(event, this.props.index)} placeholder="Title"/>;
+        //console.log(this.props.duplicateTitle)
+        return <input className={this.props.duplicateTitle ? "duplicate" : ''} type="text" value={this.props.title} onChange={event => this.handleTitleChange(event, this.props.index)} onBlur={event => this.checkForDuplicates(event, this.props.index)} placeholder="Title"/>;
     }
 }
 
