@@ -27,9 +27,11 @@ class BrowseSet extends React.Component {
             originalOrderFlashcards: [],
             randomizeOn: true
         };
-        //this.formOriginalOrderFlashcardsToBrowse()
     }
 
+    async componentDidMount() {
+        this.formOriginalOrderFlashcardsToBrowse()
+    }
 
     // async componentDidMount() {
     //     // await this.fetchSetInformation()
@@ -270,7 +272,7 @@ class BrowseSet extends React.Component {
     render() {
         //console.log("flascardtobrowserender " + JSON.stringify(this.state.flashcardsToBrowse))
         console.log("rendereee " + JSON.stringify(this.state))
-          // if(this.state.flashcardsToBrowse.length !== 0) {
+           if(this.state.flashcardsToBrowse.length !== 0) {
             //console.log("inside")
             // const frontHeader = this.state.showSetTitleSide ? "Title" : "Definition"
             // const backHeader = this.state.showSetTitleSide ? "Definition" : "Title"
@@ -313,7 +315,7 @@ class BrowseSet extends React.Component {
                 </div>
             )
          }
-     // }
+      }
 }
 
 export default BrowseSet;
