@@ -31,14 +31,17 @@ class BrowseSet extends React.Component {
     async componentDidMount() {
         // await this.fetchSetInformation()
         // console.log("browse mount " + JSON.stringify(this.state))
-        // await this.setState({
-        //     index: 10
-        // })
+        await this.setState({
+            index: 10
+        })
         // console.log("browse mount change " + JSON.stringify(this.state))
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         );
         console.log(JSON.stringify(result))
+        await this.setState({
+            index: 10
+        })
             // this.state.setInfo.flashSetName = result[0].name
             // this.state.setInfo.flashSetVisibility = result[0].visibility
             // this.state.setInfo.flashSetDescription = result[0].description
@@ -49,19 +52,19 @@ class BrowseSet extends React.Component {
             // this.formOriginalOrderFlashcardsToBrowse()
             // console.log("after original" + JSON.stringify(this.state))
             // this.render()
-        await this.setState({
-            setInfo: {
-                ...this.state.setInfo,
-                flashSetName: result[0].name,
-                flashSetVisibility: result[0].visibility,
-                flashSetDescription: result[0].description,
-                titles: result[0].titles,
-                definitions: result[0].definitions,
-                flashSetId: result[0].id
-            }
-        })
-        console.log("before form " + JSON.stringify(this.state))
-        await this.formOriginalOrderFlashcardsToBrowse()
+        // await this.setState({
+        //     setInfo: {
+        //         ...this.state.setInfo,
+        //         flashSetName: result[0].name,
+        //         flashSetVisibility: result[0].visibility,
+        //         flashSetDescription: result[0].description,
+        //         titles: result[0].titles,
+        //         definitions: result[0].definitions,
+        //         flashSetId: result[0].id
+        //     }
+        // })
+         console.log("before form " + JSON.stringify(this.state))
+        // await this.formOriginalOrderFlashcardsToBrowse()
     }
 
     // async fetchSetInformation() {
