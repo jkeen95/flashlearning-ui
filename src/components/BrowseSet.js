@@ -3,6 +3,7 @@ import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import FlipFlashcard from "./FlipFlashcard";
 import {SwitchField, ToggleButton} from "@aws-amplify/ui-react";
+import {logDOM} from "@testing-library/react";
 
 class BrowseSet extends React.Component {
 
@@ -17,7 +18,6 @@ class BrowseSet extends React.Component {
                 definitions: [],
                 flashSetId: ""
             },
-            fetchedSets: [],
             index: 0,
             currentCardOnFront: true,
             showSetTitleSide: true,
@@ -29,7 +29,7 @@ class BrowseSet extends React.Component {
 
 
     componentDidMount() {
-        this.fillSetInformation()
+         this.fetchSetInformation()
     }
 
     async fetchSetInformation() {
@@ -42,9 +42,28 @@ class BrowseSet extends React.Component {
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         ).then(result =>{
             console.log(JSON.stringify(result))
-            this.state.setInfo.flashSetId = result[0].id
-            console.log("after fetch " + JSON.stringify(this.state))
-            console.log(JSON.stringify(this.state.fetchedSets))
+            // this.state.setInfo.flashSetName = result[0].name
+            // this.state.setInfo.flashSetVisibility = result[0].visibility
+            // this.state.setInfo.flashSetDescription = result[0].description
+            // this.state.setInfo.titles = result[0].titles
+            // this.state.setInfo.definitions = result[0].definitions
+            // this.state.setInfo.flashSetId = result[0].id
+            // console.log("after fetch " + JSON.stringify(this.state))
+            // this.formOriginalOrderFlashcardsToBrowse()
+            // console.log("after original" + JSON.stringify(this.state))
+            // this.render()
+            this.setState({
+                setInfo: {
+                    ...this.state.setInfo,
+                    flashSetName: result[0].name,
+                    flashSetVisibility: result[0].visibility,
+                    flashSetDescription: result[0].description,
+                    titles: result[0].titles,
+                    definitions: result[0].definitions,
+                    flashSetId: result[0].id
+                }})
+            console.log("before form " + JSON.stringify(this.state))
+            this.formOriginalOrderFlashcardsToBrowse()
         })
     }
 
@@ -82,25 +101,25 @@ class BrowseSet extends React.Component {
     //     console.log(this.state.setInfo)
     // }
 
-    async fillSetInformation() {
-        const currentSet = await this.fetchSetInformation()
-        console.log(JSON.stringify(currentSet))
-        // this.setState(prevState => ({
-        //     setInfo: {
-        //         ...prevState.setInfo,
-        //         flashSetName: currentSet[0].name,
-        //         flashSetVisibility: currentSet[0].visibility,
-        //         flashSetDescription: currentSet[0].description,
-        //         titles: currentSet[0].titles,
-        //         definitions: currentSet[0].definitions
-        //     }
-        // }));
-        // this.setState({
-        //     fetchedSets: currentSet
-        // })
-        console.log("after setstate " + JSON.stringify(this.state))
-        console.log(JSON.stringify(this.state.fetchedSets))
-    }
+    // async fillSetInformation() {
+    //     const currentSet = await this.fetchSetInformation()
+    //     console.log(JSON.stringify(currentSet))
+    //     // this.setState(prevState => ({
+    //     //     setInfo: {
+    //     //         ...prevState.setInfo,
+    //     //         flashSetName: currentSet[0].name,
+    //     //         flashSetVisibility: currentSet[0].visibility,
+    //     //         flashSetDescription: currentSet[0].description,
+    //     //         titles: currentSet[0].titles,
+    //     //         definitions: currentSet[0].definitions
+    //     //     }
+    //     // }));
+    //     // this.setState({
+    //     //     fetchedSets: currentSet
+    //     // })
+    //     console.log("after setstate " + JSON.stringify(this.state))
+    //     console.log(JSON.stringify(this.state.fetchedSets))
+    // }
 
     swapSide = () => {
         console.log(this.state)
@@ -144,18 +163,28 @@ class BrowseSet extends React.Component {
 
     formOriginalOrderFlashcardsToBrowse = () => {
           if(this.state.originalOrderFlashcards.length === 0) {
-              //console.log("inside")
-            const originalOrderFlashcards = this.state.setInfo.titles.map((title, index) => {
+              console.log("inside")
+              const originalOrder = this.state.setInfo.titles.map((title, index) => {
                 const card = {}
                 card["title"] = title
                 card["definition"] = this.state.setInfo.definitions[index]
+                  console.log(JSON.stringify(card))
                 return card
             })
-            this.state.flashcardsToBrowse = originalOrderFlashcards
-            this.state.originalOrderFlashcards = JSON.parse(JSON.stringify(originalOrderFlashcards))
+            // this.state.flashcardsToBrowse = originalOrderFlashcards
+            // this.state.originalOrderFlashcards = JSON.parse(JSON.stringify(originalOrderFlashcards))
+              console.log("originalOrder " + originalOrder)
+              this.setState({
+                  flashcardsToBrowse: originalOrder,
+                  originalOrderFlashcards: JSON.parse(JSON.stringify(originalOrder))
+              })
           }
-          else
-            this.state.flashcardsToBrowse = JSON.parse(JSON.stringify(this.state.originalOrderFlashcards))
+          else {
+              // this.state.flashcardsToBrowse = JSON.parse(JSON.stringify(this.state.originalOrderFlashcards))
+              this.setState({
+                  flashcardsToBrowse: JSON.parse(JSON.stringify(this.state.originalOrderFlashcards))
+              })
+          }
         console.log("original " + JSON.stringify(this.state.flashcardsToBrowse));
     }
 
@@ -164,14 +193,18 @@ class BrowseSet extends React.Component {
         let currentRange = this.state.flashcardsToBrowse.length
         //console.log("checkhere " + JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
          //do {
-             while (currentRange !== 0) {
-                 const index = Math.floor(Math.random() * currentRange);
-                 //console.log(index)
-                 const temp = this.state.flashcardsToBrowse[index];
-                 this.state.flashcardsToBrowse[index] = this.state.flashcardsToBrowse[currentRange - 1];
-                 this.state.flashcardsToBrowse[currentRange - 1] = temp;
-                 currentRange = currentRange - 1;
-             }
+        const tempArray = this.state.flashcardsToBrowse
+        while (currentRange !== 0) {
+            const index = Math.floor(Math.random() * currentRange);
+            //console.log(index)
+            const temp = tempArray[index];
+            tempArray[index] = tempArray[currentRange - 1];
+            tempArray[currentRange - 1] = temp;
+            currentRange = currentRange - 1;
+        }
+        this.setState({
+            flashcardsToBrowse: tempArray
+        })
         // }while(JSON.stringify(originalOrderFlashcards)===JSON.stringify(this.state.flashcardsToBrowse))
         console.log("random " + JSON.stringify(this.state.flashcardsToBrowse));
     }
@@ -191,13 +224,15 @@ class BrowseSet extends React.Component {
 
     render() {
         console.log("flascardtobrowse " + JSON.stringify(this.state.flashcardsToBrowse))
-        if(this.state.flashcardsToBrowse.length !== 0) {
+          if(this.state.flashcardsToBrowse.length !== 0) {
+            console.log("inside")
             const frontHeader = this.state.showSetTitleSide ? "Title" : "Definition"
             const backHeader = this.state.showSetTitleSide ? "Definition" : "Title"
             const editUrl = "" + window.location.origin +"/set/" + this.state.setInfo.flashSetId + "/edit"
             const memorizeUrl = "" + window.location.origin + "/set/" + this.state.setInfo.flashSetId + "/memorize";
             const front = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].title : this.state.flashcardsToBrowse[this.state.index].definition;
             const back = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].definition : this.state.flashcardsToBrowse[this.state.index].title;
+            console.log("before return")
             return (
                 <div>
                     <h1>Current Flashcard Set Information</h1>
@@ -231,8 +266,8 @@ class BrowseSet extends React.Component {
                     </div>
                 </div>
             )
-        }
-    }
+         }
+     }
 }
 
 export default BrowseSet;
