@@ -35,9 +35,19 @@ class BrowseSet extends React.Component {
     async fetchSetInformation() {
         console.log(this.props.setId.id)
         console.log(this.props.currentUser.username)
-        return await DataStore.query(FlashcardSet, (set) =>
+        // return await DataStore.query(FlashcardSet, (set) =>
+        //     set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
+        // )
+        await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        )
+        ).then(result =>{
+            console.log(JSON.stringify(result))
+            this.setState({
+                fetchedSets: result
+            })
+            console.log("after fetch " + JSON.stringify(this.state))
+            console.log(JSON.stringify(this.state.fetchedSets))
+        })
     }
 
     // async fillSetInformation() {
@@ -87,9 +97,9 @@ class BrowseSet extends React.Component {
         //         definitions: currentSet[0].definitions
         //     }
         // }));
-        this.setState({
-            fetchedSets: currentSet
-        })
+        // this.setState({
+        //     fetchedSets: currentSet
+        // })
         console.log("after setstate " + JSON.stringify(this.state))
         console.log(JSON.stringify(this.state.fetchedSets))
     }
