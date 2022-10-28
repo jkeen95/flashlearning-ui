@@ -1,5 +1,5 @@
 import React from "react";
-import {DataStore} from 'aws-amplify'
+import {DataStore, JS} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import FlipFlashcard from "./FlipFlashcard";
 import {SwitchField, ToggleButton} from "@aws-amplify/ui-react";
@@ -30,9 +30,9 @@ class BrowseSet extends React.Component {
 
     componentDidMount() {
          // this.fetchSetInformation()
-        console.log("browse mount " + this.state)
+        console.log("browse mount " + JSON.stringify(this.state))
         this.setState({index: 1})
-        console.log("browse mount change " + this.state)
+        console.log("browse mount change " + JSON.stringify(this.state))
     }
 
     async fetchSetInformation() {
