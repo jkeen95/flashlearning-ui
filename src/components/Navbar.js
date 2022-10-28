@@ -12,7 +12,7 @@ const Navbar = ({ currentUser }) => {
 
                 {items = menuItems
                     .map((menu, index) => {
-                         console.log("map " + menu)
+                         //console.log("map " + menu)
                          return <MenuItems items={menu} key={index}/>;
                     }
                  )}

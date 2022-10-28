@@ -17,7 +17,7 @@ class Home extends React.Component {
     }
 
     async fetchSetInformation() {
-        console.log(this.props.currentUser.username)
+        //console.log(this.props.currentUser.username)
         await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
         ).then(result => {
@@ -30,7 +30,7 @@ class Home extends React.Component {
     }
 
     checkUsersFlashsets() {
-        console.log(this.state.usersSets)
+        //console.log(this.state.usersSets)
         if(this.state.usersSets.length !== 0) {
             return (
                 this.renderFlashSetOptions()

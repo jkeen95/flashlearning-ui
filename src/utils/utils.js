@@ -39,3 +39,12 @@ function removeIndices(array, indices) {
 export async function deleteSet(setId) {
     await DataStore.delete(FlashcardSet, setId)
 }
+
+export async function fetchSet(setId, username) {
+    await DataStore.query(FlashcardSet, (set) =>
+        set.id('eq', setId).owner('eq', username)
+    ).then(result => {
+        console.log(JSON.stringify(result))
+        return result[0]
+    })
+}
