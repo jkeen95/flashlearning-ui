@@ -42,9 +42,7 @@ class BrowseSet extends React.Component {
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         ).then(result =>{
             console.log(JSON.stringify(result))
-            this.setState({
-                fetchedSets: result
-            })
+            this.state.setInfo.flashSetId = result[0].id
             console.log("after fetch " + JSON.stringify(this.state))
             console.log(JSON.stringify(this.state.fetchedSets))
         })
