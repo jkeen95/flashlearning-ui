@@ -9,71 +9,72 @@ class BrowseSet extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            setInfo: {
-                flashSetName: '',
-                flashSetVisibility: 'public',
-                flashSetDescription: '',
-                titles: [],
-                definitions: [],
-                flashSetId: ""
-            },
-            index: 0,
-            returnedSet: {},
-            currentCardOnFront: true,
-            showSetTitleSide: true,
-            flashcardsToBrowse: [],
-            originalOrderFlashcards: [],
-            randomizeOn: true
-        };
-    }
-
-
-    async componentDidMount() {
-        // await this.fetchSetInformation()
-        // console.log("browse mount " + JSON.stringify(this.state))
-        // await this.setState({
-        //     index: 10,
-        //     returnedSet
-        // })
-        // console.log("browse mount change " + JSON.stringify(this.state))
-        const result = await DataStore.query(FlashcardSet, (set) =>
-            set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        ).then(result => {
-            console.log(JSON.stringify(result))
-            this.setState({
-                index: 10
-            })
-            console.log("after then " + JSON.stringify(this.state))
-        });
-        // console.log(JSON.stringify(result))
-        // await this.setState({
-        //     index: 10
-        // })
-            // this.state.setInfo.flashSetName = result[0].name
-            // this.state.setInfo.flashSetVisibility = result[0].visibility
-            // this.state.setInfo.flashSetDescription = result[0].description
-            // this.state.setInfo.titles = result[0].titles
-            // this.state.setInfo.definitions = result[0].definitions
-            // this.state.setInfo.flashSetId = result[0].id
-            // console.log("after fetch " + JSON.stringify(this.state))
-            // this.formOriginalOrderFlashcardsToBrowse()
-            // console.log("after original" + JSON.stringify(this.state))
-            // this.render()
-        // await this.setState({
+        console.log("constructor" + JSON.stringify(this.props))
+        // this.state = {
         //     setInfo: {
-        //         ...this.state.setInfo,
-        //         flashSetName: result[0].name,
-        //         flashSetVisibility: result[0].visibility,
-        //         flashSetDescription: result[0].description,
-        //         titles: result[0].titles,
-        //         definitions: result[0].definitions,
-        //         flashSetId: result[0].id
-        //     }
-        // })
-         console.log("before form " + JSON.stringify(this.state))
-        // await this.formOriginalOrderFlashcardsToBrowse()
+        //         flashSetName: '',
+        //         flashSetVisibility: 'public',
+        //         flashSetDescription: '',
+        //         titles: [],
+        //         definitions: [],
+        //         flashSetId: ""
+        //     },
+        //     index: 0,
+        //     returnedSet: {},
+        //     currentCardOnFront: true,
+        //     showSetTitleSide: true,
+        //     flashcardsToBrowse: [],
+        //     originalOrderFlashcards: [],
+        //     randomizeOn: true
+        // };
     }
+
+
+    // async componentDidMount() {
+    //     // await this.fetchSetInformation()
+    //     // console.log("browse mount " + JSON.stringify(this.state))
+    //     // await this.setState({
+    //     //     index: 10,
+    //     //     returnedSet
+    //     // })
+    //     // console.log("browse mount change " + JSON.stringify(this.state))
+    //     const result = await DataStore.query(FlashcardSet, (set) =>
+    //         set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
+    //     ).then(result => {
+    //         console.log(JSON.stringify(result))
+    //         this.setState({
+    //             index: 10
+    //         })
+    //         console.log("after then " + JSON.stringify(this.state))
+    //     });
+    //     // console.log(JSON.stringify(result))
+    //     // await this.setState({
+    //     //     index: 10
+    //     // })
+    //         // this.state.setInfo.flashSetName = result[0].name
+    //         // this.state.setInfo.flashSetVisibility = result[0].visibility
+    //         // this.state.setInfo.flashSetDescription = result[0].description
+    //         // this.state.setInfo.titles = result[0].titles
+    //         // this.state.setInfo.definitions = result[0].definitions
+    //         // this.state.setInfo.flashSetId = result[0].id
+    //         // console.log("after fetch " + JSON.stringify(this.state))
+    //         // this.formOriginalOrderFlashcardsToBrowse()
+    //         // console.log("after original" + JSON.stringify(this.state))
+    //         // this.render()
+    //     // await this.setState({
+    //     //     setInfo: {
+    //     //         ...this.state.setInfo,
+    //     //         flashSetName: result[0].name,
+    //     //         flashSetVisibility: result[0].visibility,
+    //     //         flashSetDescription: result[0].description,
+    //     //         titles: result[0].titles,
+    //     //         definitions: result[0].definitions,
+    //     //         flashSetId: result[0].id
+    //     //     }
+    //     // })
+    //      console.log("before form " + JSON.stringify(this.state))
+    //     // await this.formOriginalOrderFlashcardsToBrowse()
+    // }
 
     // async fetchSetInformation() {
     //     console.log(this.props.setId.id)
@@ -266,16 +267,17 @@ class BrowseSet extends React.Component {
     }
 
     render() {
-        console.log("flascardtobrowserender " + JSON.stringify(this.state.flashcardsToBrowse))
+        //console.log("flascardtobrowserender " + JSON.stringify(this.state.flashcardsToBrowse))
+        console.log("rendereee " + JSON.stringify(this.props))
           // if(this.state.flashcardsToBrowse.length !== 0) {
-            console.log("inside")
+            //console.log("inside")
             // const frontHeader = this.state.showSetTitleSide ? "Title" : "Definition"
             // const backHeader = this.state.showSetTitleSide ? "Definition" : "Title"
             // const editUrl = "" + window.location.origin +"/set/" + this.state.setInfo.flashSetId + "/edit"
             // const memorizeUrl = "" + window.location.origin + "/set/" + this.state.setInfo.flashSetId + "/memorize";
             // const front = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].title : this.state.flashcardsToBrowse[this.state.index].definition;
             // const back = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].definition : this.state.flashcardsToBrowse[this.state.index].title;
-            console.log("before return")
+            //console.log("before return")
             return (
                 <div>
                     <h1>Current Flashcard Set Information</h1>
