@@ -85,6 +85,11 @@ class EditableSetInfo extends React.Component {
         this.props.handleSubmit(this.state.setInfo)
     };
 
+    checkForDuplicates = (event, index) => {
+        console.log(this.state.setInfo.titles)
+        console.log(this.state.setInfo.titles[index])
+    }
+
     addFlashcard = () => {
         this.setState(prevState => ({
             setInfo: {
@@ -124,7 +129,7 @@ class EditableSetInfo extends React.Component {
                 {this.state.setInfo.titles.map((title, index) => {
                     console.log(JSON.stringify(title))
                     return (
-                        <FlashcardInput key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} title={title} definition={this.state.setInfo.definitions[index]}/>
+                        <FlashcardInput key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
                     )
                 })}
                 <button type="button" onClick={this.addFlashcard}>Add Flashcard</button>

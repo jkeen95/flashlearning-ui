@@ -6,7 +6,7 @@ import {SwitchField, ToggleButton} from "@aws-amplify/ui-react";
 import {logDOM} from "@testing-library/react";
 import BrowseSet from "./BrowseSet";
 
-class BrowseSetTest extends React.Component {
+class BrowseSetDataLoad extends React.Component {
 
     constructor(props) {
         super(props);
@@ -40,4 +40,4 @@ class BrowseSetTest extends React.Component {
     // }
 }
 
-export default BrowseSetTest;
+export default BrowseSetDataLoad;

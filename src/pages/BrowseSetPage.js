@@ -1,11 +1,11 @@
 import BrowseSet from "../components/BrowseSet";
 import {useParams} from "react-router-dom";
-import BrowseSetTest from "../components/BrowseSetTest";
+import BrowseSetDataLoad from "../components/BrowseSetDataLoad";
 
 const BrowseSetPage = ({ currentUser }) => {
     const setId = useParams();
     return (
-        <BrowseSetTest setId={setId} currentUser={currentUser}/>
+        <BrowseSetDataLoad setId={setId} currentUser={currentUser}/>
     );
 };
 
