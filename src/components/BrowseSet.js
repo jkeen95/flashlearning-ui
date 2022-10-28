@@ -29,12 +29,12 @@ class BrowseSet extends React.Component {
 
 
     async componentDidMount() {
-        // this.fetchSetInformation()
-        console.log("browse mount " + JSON.stringify(this.state))
-        await this.setState({
-            index: 10
-        })
-        console.log("browse mount change " + JSON.stringify(this.state))
+        await this.fetchSetInformation()
+        // console.log("browse mount " + JSON.stringify(this.state))
+        // await this.setState({
+        //     index: 10
+        // })
+        // console.log("browse mount change " + JSON.stringify(this.state))
     }
 
     async fetchSetInformation() {
