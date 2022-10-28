@@ -9,24 +9,25 @@ class BrowseSet extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("constructor" + JSON.stringify(this.props))
-        // this.state = {
-        //     setInfo: {
-        //         flashSetName: '',
-        //         flashSetVisibility: 'public',
-        //         flashSetDescription: '',
-        //         titles: [],
-        //         definitions: [],
-        //         flashSetId: ""
-        //     },
-        //     index: 0,
-        //     returnedSet: {},
-        //     currentCardOnFront: true,
-        //     showSetTitleSide: true,
-        //     flashcardsToBrowse: [],
-        //     originalOrderFlashcards: [],
-        //     randomizeOn: true
-        // };
+        console.log("constructor" + JSON.stringify(this.props.setInfo))
+        this.state = {
+            setInfo: {
+                flashSetName: this.props.setInfo.name,
+                flashSetVisibility: this.props.setInfo.visibility,
+                flashSetDescription: this.props.setInfo.description,
+                titles: this.props.setInfo.titles,
+                definitions: this.props.setInfo.definitions,
+                flashSetId: this.props.setInfo.id
+            },
+            index: 0,
+            returnedSet: {},
+            currentCardOnFront: true,
+            showSetTitleSide: true,
+            flashcardsToBrowse: [],
+            originalOrderFlashcards: [],
+            randomizeOn: true
+        };
+        //this.formOriginalOrderFlashcardsToBrowse()
     }
 
 
@@ -206,7 +207,7 @@ class BrowseSet extends React.Component {
     }
 
     formOriginalOrderFlashcardsToBrowse = () => {
-          if(this.state.originalOrderFlashcards.length === 0) {
+          if(this.state.originalOrderFlashcards.length === 0 && this.state.setInfo.titles !== undefined) {
               console.log("inside")
               const originalOrder = this.state.setInfo.titles.map((title, index) => {
                 const card = {}
@@ -268,7 +269,7 @@ class BrowseSet extends React.Component {
 
     render() {
         //console.log("flascardtobrowserender " + JSON.stringify(this.state.flashcardsToBrowse))
-        console.log("rendereee " + JSON.stringify(this.props))
+        console.log("rendereee " + JSON.stringify(this.state))
           // if(this.state.flashcardsToBrowse.length !== 0) {
             //console.log("inside")
             // const frontHeader = this.state.showSetTitleSide ? "Title" : "Definition"
