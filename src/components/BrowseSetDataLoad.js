@@ -1,9 +1,6 @@
 import React from "react";
-import {DataStore, JS} from 'aws-amplify'
+import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
-import FlipFlashcard from "./FlipFlashcard";
-import {SwitchField, ToggleButton} from "@aws-amplify/ui-react";
-import {logDOM} from "@testing-library/react";
 import BrowseSet from "./BrowseSet";
 
 class BrowseSetDataLoad extends React.Component {

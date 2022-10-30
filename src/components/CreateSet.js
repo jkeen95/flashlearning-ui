@@ -30,11 +30,11 @@ class CreateSet extends React.Component {
         const response = removeEmpties(setInfo.titles, setInfo.definitions)
         // const flashSetTitles = setInfo.titles.filter(title => title !== "");
         // const flashSetDefs = setInfo.definitions.filter(def => def !== "");
-        console.log(JSON.stringify(response))
+        //console.log(JSON.stringify(response))
         //console.log(flashSetDefs)
 
-        console.log(response.validTitles)
-        console.log(response.validDefs)
+        //console.log(response.validTitles)
+        //console.log(response.validDefs)
 
         await DataStore.save(
             new FlashcardSet({
@@ -46,7 +46,7 @@ class CreateSet extends React.Component {
                 definitions: response.validDefs,
             })
         ).then(result => {
-            console.log(JSON.stringify(result))
+            //console.log(JSON.stringify(result))
             alert('A new flashcard set was saved: ' + setInfo.flashSetName + "\n" +
                 'A visibility was saved: ' + setInfo.flashSetVisibility + "\n" +
                 'A description was saved: ' + setInfo.flashSetDescription + "\n" +

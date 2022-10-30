@@ -3,21 +3,15 @@ import {FlashcardSet} from "../models";
 
 export function removeEmpties(titles, defs) {
     const invalidTitleIndices = getInvalidIndices(titles)
-    // console.log(invalidTitleIndices)
     titles = removeIndices(titles, invalidTitleIndices)
     defs = removeIndices(defs, invalidTitleIndices)
-    // console.log(titles)
-    // console.log(defs)
     const invalidDefsIndices = getInvalidIndices(defs)
-    // console.log(invalidDefsIndices)
     defs = removeIndices(defs, invalidDefsIndices)
     titles = removeIndices(titles, invalidDefsIndices)
-    console.log(defs)
-    console.log(titles)
     return {validTitles: titles, validDefs: defs}
 }
 
-function getInvalidIndices(array) {
+export function getInvalidIndices(array) {
     return array.reduce((tempArr, current, index) => {
         if(current === "") {
             tempArr.push(index)
@@ -26,7 +20,7 @@ function getInvalidIndices(array) {
     }, []);
 }
 
-function removeIndices(array, indices) {
+export function removeIndices(array, indices) {
     const reducedArray = array.reduce((tempArr, current, index) => {
         if(!indices.includes(index)) {
             tempArr.push(current)
@@ -38,13 +32,4 @@ function removeIndices(array, indices) {
 
 export async function deleteSet(setId) {
     await DataStore.delete(FlashcardSet, setId)
-}
-
-export async function fetchSet(setId, username) {
-    await DataStore.query(FlashcardSet, (set) =>
-        set.id('eq', setId).owner('eq', username)
-    ).then(result => {
-        console.log(JSON.stringify(result))
-        return result[0]
-    })
 }

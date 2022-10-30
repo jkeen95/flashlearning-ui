@@ -1,11 +1,9 @@
 import {menuItems} from '../data/navMenuItems';
 import MenuItems from "./MenuItems";
 
-let userToCheck = {}
 
-const Navbar = ({ currentUser }) => {
+const Navbar = ()  => {
     let items;
-    userToCheck = currentUser
     return (
         <nav>
             <ul className="menus">

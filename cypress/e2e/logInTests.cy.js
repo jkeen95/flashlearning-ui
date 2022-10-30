@@ -11,6 +11,7 @@ describe('Invalid Sign In Displays Generic Message', () => {
     })
 })
 
+//Test Case ID: Test17
 describe('Login Is Successful', () => {
     it("displays the homepage with the welcome message and the user's name", () => {
         cy.visit('http://localhost:3000/')

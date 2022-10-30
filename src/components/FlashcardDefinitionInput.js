@@ -6,7 +6,7 @@ class FlashcardDefinitionInput extends React.Component {
     }
 
     handleDefChange = (event, index) => {
-        console.log("lower event " + index)
+        //console.log("lower event " + index)
         this.props.handleDefChange(event, index)
     };
 

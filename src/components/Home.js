@@ -8,11 +8,11 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usersSets: []
+            usersSets: null
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.fetchSetInformation()
     }
 
@@ -21,7 +21,7 @@ class Home extends React.Component {
         await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
         ).then(result => {
-                console.log(result)
+                //console.log(result)
                 this.setState({
                     usersSets: result
                 })
@@ -69,8 +69,8 @@ class Home extends React.Component {
 
 
     render() {
-        if(this.state.usersSets === [])
-            return <div />
+        if(this.state.usersSets === null)
+            return <div className="noDataYet"/>
         else
             return (
                 <div>

@@ -2,7 +2,6 @@ import React from "react";
 import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import EditableSetInfo from "./EditableSetInfo";
-import {removeEmpties} from "../utils/utils";
 
 class EditSet extends React.Component {
 
@@ -72,8 +71,8 @@ class EditSet extends React.Component {
                 updated.definitions =  setToSave.definitions;
             })
         ).then(result => {
-            //console.log(JSON.stringify(result))
-            alert('A new flashcard set was saved: ' + result.name + "\n" +
+            //console.log(JSON.stringify("test " + result))
+            alert('A flashcard set was saved: ' + result.name + "\n" +
                 'A visibility was saved: ' + result.visibility + "\n" +
                 'A description was saved: ' + result.description + "\n" +
                 'FlashcardInput titles were saved: ' + result.titles + "\n" +

@@ -1,8 +1,6 @@
 import React from "react";
 import FlashcardInput from "./FlashcardInput";
 import {removeEmpties} from "../utils/utils";
-import {DataStore} from "aws-amplify";
-import {FlashcardSet} from "../models";
 
 class EditableSetInfo extends React.Component {
 
@@ -179,7 +177,7 @@ class EditableSetInfo extends React.Component {
                 <div>
                     <label>
                         Set Name:
-                        <input value={this.state.setInfo.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
+                        <input placeholder="Set Name" value={this.state.setInfo.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
                     </label>
                     <label>
                         Visibility:
@@ -190,7 +188,7 @@ class EditableSetInfo extends React.Component {
                     </label>
                     <label>
                         Description:
-                        <textarea value={this.state.setInfo.flashSetDescription} onChange={this.handleDescriptionChange} />
+                        <textarea placeholder="Description" value={this.state.setInfo.flashSetDescription} onChange={this.handleDescriptionChange} />
                     </label>
                 </div>
                 {this.state.blankNameError ? <p className="errorMessage">The set must have a name</p> : ""}

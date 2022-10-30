@@ -7,7 +7,7 @@ const Header = ({ currentUser }) => {
                 <a href="/" className="logo">
                     <img id="flashLearningLogo" src={require("../images/flashlearning-logo.png")}/>
                 </a>
-                <Navbar currentUser={currentUser}/>
+                <Navbar />
             </div>
         </header>
     );

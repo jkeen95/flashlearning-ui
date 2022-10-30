@@ -1,4 +1,3 @@
-import BrowseSet from "../components/BrowseSet";
 import {useParams} from "react-router-dom";
 import BrowseSetDataLoad from "../components/BrowseSetDataLoad";
 
