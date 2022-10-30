@@ -1,7 +1,7 @@
 //Test Case ID: Test3
 describe('Sign up with password with less than 8 characters', () => {
   it('displays error message for password with less than 8 characters"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("iE1#")
@@ -14,7 +14,7 @@ describe('Sign up with password with less than 8 characters', () => {
 //Test Case ID: Test16
 describe('Sign up with password with no lower case characters', () => {
   it('displays error message for password with no lower case characters"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("EE12#$FF")
@@ -27,7 +27,7 @@ describe('Sign up with password with no lower case characters', () => {
 //Test Case ID: Test15
 describe('Sign up with password with no upper case characters', () => {
   it('displays error message for password with no upper case characters"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("ee12#$ff")
@@ -41,7 +41,7 @@ describe('Sign up with password with no upper case characters', () => {
 //Test Case ID: Test13
 describe('Sign up with password with no special characters', () => {
   it('displays error message for password with no special characters"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("EE12efFF")
@@ -54,7 +54,7 @@ describe('Sign up with password with no special characters', () => {
 //Test Case ID: Test14
 describe('Sign up with password with no numbers', () => {
   it('displays error message for password with no numbers"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("EEef#$FF")
@@ -67,7 +67,7 @@ describe('Sign up with password with no numbers', () => {
 //Test Case ID: Test2
 describe('Sign up with valid password', () => {
   it('displays no error messages when valid password is entered"', () => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:3000/')
 
     cy.contains("Create Account").click()
     cy.get('[placeholder="Password"]').type("E@e1F#f2")

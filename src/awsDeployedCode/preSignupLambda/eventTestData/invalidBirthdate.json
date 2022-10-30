@@ -1,0 +1,10 @@
+{
+  "request": {
+    "userAttributes": {
+      "email": "user@example.com",
+      "phone_number": "+12065550100",
+      "birthdate": "3000-12-12"
+    }
+  },
+  "response": {}
+}

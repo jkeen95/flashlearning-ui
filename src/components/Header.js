@@ -3,11 +3,11 @@ import Navbar from './Navbar';
 const Header = ({ currentUser }) => {
     return (
         <header>
-            <div className="nav-area">
+            <div id="nav-area">
                 <a href="/" className="logo">
-                    Logo
+                    <img id="flashLearningLogo" src={require("../images/flashlearning-logo.png")}/>
                 </a>
-                <Navbar currentUser={currentUser}/>
+                <Navbar />
             </div>
         </header>
     );
