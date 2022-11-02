@@ -85,7 +85,7 @@ class EditSet extends React.Component {
     }
 
     render() {
-        //console.log(this.state.setInfo)
+        console.log(this.state.setInfo)
         if(this.state.setInfo.flashSetName === '')
             return <div />
         else
