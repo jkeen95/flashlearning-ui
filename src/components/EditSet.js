@@ -50,7 +50,7 @@ class EditSet extends React.Component {
                 definitions: currentSet[0].definitions
             }
         }));
-        console.log(this.state.setInfo)
+        console.log("load ----" + JSON.stringify(this.state.setInfo))
     }
 
     async updateFlashcardSet(setToSave) {
@@ -71,7 +71,7 @@ class EditSet extends React.Component {
                 updated.definitions =  setToSave.definitions;
             })
         ).then(result => {
-            //console.log(JSON.stringify("test " + result))
+            console.log(JSON.stringify("test ----" + JSON.stringify(result)))
             alert('A flashcard set was saved: ' + result.name + "\n" +
                 'A visibility was saved: ' + result.visibility + "\n" +
                 'A description was saved: ' + result.description + "\n" +
