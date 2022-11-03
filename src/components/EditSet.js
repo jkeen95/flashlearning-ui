@@ -59,6 +59,7 @@ class EditSet extends React.Component {
         // const response = removeEmpties(this.state.titles, this.state.definitions)
 
 
+        console.log("before ----- " + JSON.stringify(setToSave))
         const original = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         );
@@ -85,7 +86,7 @@ class EditSet extends React.Component {
     }
 
     render() {
-        console.log("redner---- -- " + this.state.setInfo)
+        console.log("redner---- -- " + JSON.stringify(this.state.setInfo))
         if(this.state.setInfo.flashSetName === '')
             return <div />
         else
