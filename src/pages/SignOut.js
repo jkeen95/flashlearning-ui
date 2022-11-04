@@ -4,9 +4,10 @@ const SignOut = async () => {
     await signOut()
     localStorage.clear()
     window.location.replace(document.location.origin)
+    return ""
 };
 
-async function signOut() {
+export async function signOut() {
     try {
         await Auth.signOut();
         await DataStore.clear();
