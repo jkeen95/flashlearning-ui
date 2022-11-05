@@ -21,7 +21,7 @@ class Home extends React.Component {
         await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
         ).then(result => {
-                //console.log(result)
+                // console.log("result --- " + result)
                 this.setState({
                     usersSets: result
                 })
@@ -69,6 +69,7 @@ class Home extends React.Component {
 
 
     render() {
+        // console.log("usersetss ----- " + JSON.stringify(this.state.usersSets))
         if(this.state.usersSets === null)
             return <div className="noDataYet"/>
         else

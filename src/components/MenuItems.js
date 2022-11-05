@@ -1,5 +1,6 @@
 import Dropdown from './Dropdown';
 import {useState} from "react";
+import {signOut} from "../pages/SignOut";
 
 const MenuItems = ({ items }) => {
     const [dropdown, setDropdown] = useState(false);
@@ -17,7 +18,7 @@ const MenuItems = ({ items }) => {
                     <Dropdown submenus={items.submenu} dropdown={dropdown} />
                 </>
             ) : (
-                <a href={items.url}>{items.title}</a>
+                items.title === "Sign Out" ? <button onClick={signOut}>Sign Out</button> : <a href={items.url}>{items.title}</a>
             )}
         </li>
     );

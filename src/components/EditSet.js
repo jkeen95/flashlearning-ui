@@ -50,7 +50,7 @@ class EditSet extends React.Component {
                 definitions: currentSet[0].definitions
             }
         }));
-        console.log(this.state.setInfo)
+        console.log("load ----" + JSON.stringify(this.state.setInfo))
     }
 
     async updateFlashcardSet(setToSave) {
@@ -59,33 +59,37 @@ class EditSet extends React.Component {
         // const response = removeEmpties(this.state.titles, this.state.definitions)
 
 
-        const original = await DataStore.query(FlashcardSet, (set) =>
+        console.log("before ----- " + JSON.stringify(setToSave))
+        // const original = await DataStore.query(FlashcardSet, (set) =>
+        //     set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
+        // );
+        await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        );
-        await DataStore.save(
-            FlashcardSet.copyOf(original[0], updated => {
-                updated.name = setToSave.flashSetName;
-                updated.description = setToSave.flashSetDescription;
-                updated.visibility = setToSave.flashSetVisibility;
-                updated.titles = setToSave.titles;
-                updated.definitions =  setToSave.definitions;
-            })
-        ).then(result => {
-            //console.log(JSON.stringify("test " + result))
-            alert('A flashcard set was saved: ' + result.name + "\n" +
-                'A visibility was saved: ' + result.visibility + "\n" +
-                'A description was saved: ' + result.description + "\n" +
-                'FlashcardInput titles were saved: ' + result.titles + "\n" +
-                'FlashcardInput definitions were saved: ' + result.definitions + "\n"
-            );
-            const url = "" + window.location.origin + "/set/" + result.id + "/browse";
-            //console.log(url)
-            window.location.replace(url)
-        });
+        ).then(original => {
+            DataStore.save(
+                FlashcardSet.copyOf(original[0], updated => {
+                    updated.name = setToSave.flashSetName;
+                    updated.description = setToSave.flashSetDescription;
+                    updated.visibility = setToSave.flashSetVisibility;
+                    updated.titles = setToSave.titles;
+                    updated.definitions =  setToSave.definitions;
+                })
+            ).then(result => {
+                console.log(JSON.stringify("test ----" + JSON.stringify(result)))
+                alert('A flashcard set was saved: ' + result.name + "\n" +
+                    'A visibility was saved: ' + result.visibility + "\n" +
+                    'A description was saved: ' + result.description + "\n" +
+                    'FlashcardInput titles were saved: ' + result.titles + "\n" +
+                    'FlashcardInput definitions were saved: ' + result.definitions + "\n"
+                );
+                const url = "" + window.location.origin + "/set/" + result.id + "/browse";
+                //console.log(url)
+                window.location.replace(url)
+            })});
     }
 
     render() {
-        //console.log(this.state.setInfo)
+        console.log("redner---- -- " + JSON.stringify(this.state.setInfo))
         if(this.state.setInfo.flashSetName === '')
             return <div />
         else

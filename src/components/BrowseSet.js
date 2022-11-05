@@ -24,6 +24,7 @@ class BrowseSet extends React.Component {
             originalOrderFlashcards: [],
             randomizeOn: true
         };
+        // this.cardRef = React.createRef()
     }
 
     async componentDidMount() {
@@ -31,8 +32,12 @@ class BrowseSet extends React.Component {
     }
 
     swapSide = () => {
-        //console.log(this.state)
+        console.log("swapSide")
+        // let cardHeight = this.cardRef.current.getBoundingClientRect().height
+        // console.log("heightBSwap ---- " + cardHeight)
         this.setState({currentCardOnFront: !this.state.currentCardOnFront})
+        // cardHeight = this.cardRef.current.getBoundingClientRect().height
+        // console.log("heightASwap ---- " + cardHeight)
     }
 
     radioChange = () => {

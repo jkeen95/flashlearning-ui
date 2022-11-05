@@ -49,8 +49,8 @@ class App extends React.Component {
     };
 
     async componentDidMount() {
-        console.log("didCount")
-        console.log("didStart")
+        //console.log("didCount")
+        //console.log("didStart")
     }
 
     render() {
@@ -63,7 +63,7 @@ class App extends React.Component {
                   ]}>
                   {({ user }) => (
                       <div>
-                          {console.log("login" + JSON.stringify(user))}
+                          {/*{console.log("login" + JSON.stringify(user))}*/}
                           <Header currentUser={user}/>
                           <Router>
                               <Routes>
