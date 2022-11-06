@@ -25,7 +25,7 @@ class FlipFlashcard extends React.Component {
         console.log("frontheight ---- " + frontHeight)
         console.log("backheight ---- " + backHeight)
         this.setState({
-            cardHeight: Math.max(frontHeight+5, backHeight+5, 500)
+            cardHeight: Math.max(frontHeight+50, backHeight+50, 500)
         })
     }
 

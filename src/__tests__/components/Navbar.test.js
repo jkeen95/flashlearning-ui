@@ -20,8 +20,8 @@ test('renders a Navbar component with data from navMenuItems.js', async () => {
     const newClassA = screen.getByText("New Class")
     const newClassLi = newClassA.parentElement
     const createLi = newSetLi.parentElement.parentElement
-    const signOutA = screen.getByText("Sign Out")
-    const singOutLi = signOutA.parentElement
+    const signOutButton = screen.getByText("Sign Out")
+    const singOutLi = signOutButton.parentElement
 
     //console.log(nav.tagName.toLowerCase())
 
@@ -36,7 +36,7 @@ test('renders a Navbar component with data from navMenuItems.js', async () => {
     expect(newClassLi).toHaveClass(menuItemClassName)
     expect(newClassLi.parentElement).toHaveClass(dropdownClasName)
     expect(createLi.parentElement).toHaveClass(menusClassName)
-    expect(signOutA.getAttribute("href")).toMatch("/signout")
+    expect(signOutButton).toBeInTheDocument()
     expect(singOutLi).toHaveClass(menuItemClassName)
     expect(singOutLi.parentElement).toHaveClass(menusClassName)
     expect(screen.getByRole('button', { expanded: false })).toHaveTextContent("Create")

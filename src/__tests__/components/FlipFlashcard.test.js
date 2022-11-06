@@ -14,7 +14,7 @@ test('renders Front Side of a FlapFlashcard', async () => {
 
     render(<FlipFlashcard frontSide={frontSide} front={front} back={back} swapSide={mockFn}/>)
     //screen.debug()
-    const cardDiv = screen.getByText(front)
+    const cardDiv = screen.getAllByText(front)[0]
     expect(cardDiv).toHaveClass("front")
     expect(cardDiv).not.toHaveClass("back")
     expect(cardDiv.parentElement).toHaveClass("card")
@@ -28,7 +28,7 @@ test('renders Back Side of a FlapFlashcard', async () => {
 
     render(<FlipFlashcard frontSide={frontSide} front={front} back={back} swapSide={mockFn}/>)
     //screen.debug()
-    const cardDiv = screen.getByText(back)
+    const cardDiv = screen.getAllByText(back)[0]
     expect(cardDiv).toHaveClass("back")
     expect(cardDiv).not.toHaveClass("front")
     expect(cardDiv.parentElement).toHaveClass("card")
@@ -42,7 +42,7 @@ test('FlipFlashcard onClick function is called when card div is clicked', async 
 
     render(<FlipFlashcard frontSide={frontSide} front={front} back={back} swapSide={mockFn}/>)
     //screen.debug()
-    const cardClickable = screen.getByText(front).parentElement
+    const cardClickable = screen.getAllByText(front)[0].parentElement
     await act(() => {
         cardClickable.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });

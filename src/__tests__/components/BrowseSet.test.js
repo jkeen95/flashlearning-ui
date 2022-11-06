@@ -31,7 +31,7 @@ test('renders the BrowseSet component', async () => {
     const radioButtons = screen.getAllByRole("radio")
     const switchInput = screen.getByRole("switch")
     const randomizeSpan = screen.getByText("Randomize")
-    const frontCard = screen.getByText("A")
+    const frontCard = screen.getAllByText("A")[0]
     const prevButton = screen.getByText("Previous")
     const nextButton = screen.getByText("Next")
 
@@ -68,7 +68,7 @@ test('validates the Next Button displays the next Flashcard', async () => {
     await new Promise((r) => setTimeout(r, 2000))
 
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("A")).toBeInTheDocument()
+    expect(screen.queryAllByText("A")[0]).toBeInTheDocument()
 
     const nextButton = screen.getByText("Next")
 
@@ -78,7 +78,7 @@ test('validates the Next Button displays the next Flashcard', async () => {
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
     expect(screen.getByText("2 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("B")).toBeInTheDocument()
+    expect(screen.queryAllByText("B")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
 })
 
@@ -88,7 +88,7 @@ test('validates the Previous Button loops to the back of the flashcard set when 
     await new Promise((r) => setTimeout(r, 2000))
 
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("A")).toBeInTheDocument()
+    expect(screen.queryAllByText("A")[0]).toBeInTheDocument()
 
     const prevButton = screen.getByText("Previous")
 
@@ -96,9 +96,9 @@ test('validates the Previous Button loops to the back of the flashcard set when 
         prevButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
     await new Promise((r) => setTimeout(r, 2000))
-    //screen.debug()
+    screen.debug()
     expect(screen.getByText("3 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("C")).toBeInTheDocument()
+    expect(screen.queryAllByText("C")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
 })
 
@@ -108,7 +108,7 @@ test('validates the Previous Button displays the previous flashcard in the set '
     await new Promise((r) => setTimeout(r, 1000))
 
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("A")).toBeInTheDocument()
+    expect(screen.queryAllByText("A")[0]).toBeInTheDocument()
 
     const prevButton = screen.getByText("Previous")
 
@@ -118,7 +118,7 @@ test('validates the Previous Button displays the previous flashcard in the set '
     await new Promise((r) => setTimeout(r, 1000))
     // screen.debug()
     expect(screen.getByText("3 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("C")).toBeInTheDocument()
+    expect(screen.queryAllByText("C")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
     await act(() => {
         prevButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
@@ -126,7 +126,7 @@ test('validates the Previous Button displays the previous flashcard in the set '
     await new Promise((r) => setTimeout(r, 2000))
     // screen.debug()
     expect(screen.getByText("2 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("B")).toBeInTheDocument()
+    expect(screen.queryAllByText("B")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
     expect(screen.queryByText("C")).not.toBeInTheDocument()
 })
@@ -137,7 +137,7 @@ test('validates the Next Button loops to the front of the flashcard set when cli
     await new Promise((r) => setTimeout(r, 1000))
 
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("A")).toBeInTheDocument()
+    expect(screen.queryAllByText("A")[0]).toBeInTheDocument()
 
     const nextButton = screen.getByText("Next")
 
@@ -147,7 +147,7 @@ test('validates the Next Button loops to the front of the flashcard set when cli
     await new Promise((r) => setTimeout(r, 1000))
     //screen.debug()
     expect(screen.getByText("2 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("B")).toBeInTheDocument()
+    expect(screen.queryAllByText("B")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
     await act(() => {
         nextButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
@@ -155,7 +155,7 @@ test('validates the Next Button loops to the front of the flashcard set when cli
     await new Promise((r) => setTimeout(r, 1000))
     //screen.debug()
     expect(screen.getByText("3 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("C")).toBeInTheDocument()
+    expect(screen.queryAllByText("C")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
     expect(screen.queryByText("B")).not.toBeInTheDocument()
     await act(() => {
@@ -164,7 +164,7 @@ test('validates the Next Button loops to the front of the flashcard set when cli
     await new Promise((r) => setTimeout(r, 1000))
     //screen.debug()
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
-    expect(screen.queryByText("A")).toBeInTheDocument()
+    expect(screen.queryAllByText("A")[0]).toBeInTheDocument()
     expect(screen.queryByText("B")).not.toBeInTheDocument()
     expect(screen.queryByText("C")).not.toBeInTheDocument()
 })
@@ -173,7 +173,7 @@ test('validates the Next Button loops to the front of the flashcard set when cli
 test('validates clicking the flashcard element swaps the showing side of the flashcard', async () => {
     await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo} />)
     await new Promise((r) => setTimeout(r, 1000))
-    const frontCard = screen.getByText("A")
+    const frontCard = screen.getAllByText("A")[0]
     expect(frontCard).toHaveClass("front")
     expect(frontCard.parentElement).toHaveClass("card")
     expect(frontCard.parentElement).toHaveClass("flip")
@@ -184,10 +184,10 @@ test('validates clicking the flashcard element swaps the showing side of the fla
     });
     //screen.debug()
 
-    expect(screen.getByText("1")).toBeInTheDocument()
-    expect(screen.getByText("1")).toHaveClass("back")
-    expect(screen.getByText("1").parentElement).toHaveClass("card")
-    expect(screen.getByText("1").parentElement).not.toHaveClass("flip")
+    expect(screen.getAllByText("1")[0]).toBeInTheDocument()
+    expect(screen.getAllByText("1")[0]).toHaveClass("back")
+    expect(screen.getAllByText("1")[0].parentElement).toHaveClass("card")
+    expect(screen.getAllByText("1")[0].parentElement).not.toHaveClass("flip")
     expect(screen.queryByText("Definition")).toBeInTheDocument()
     expect(screen.getByText("Definition")).toHaveClass("showingSide")
 })
