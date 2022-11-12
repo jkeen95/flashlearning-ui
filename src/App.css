@@ -250,3 +250,7 @@ div[data-amplify-router] {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+
+.progressSpan {
+  font-size: 30px;
+}
