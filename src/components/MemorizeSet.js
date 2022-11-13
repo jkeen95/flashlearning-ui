@@ -19,7 +19,7 @@ class MemorizeSet extends React.Component {
             incorrectCounter: 0,
             sessionFinished: false,
             incorrectCountArray: [],
-            correctCorrectArray: [],
+            correctCountArray: [],
         };
     }
 
@@ -36,38 +36,80 @@ class MemorizeSet extends React.Component {
         this.setState({currentCardOnFront: !this.state.currentCardOnFront})
     }
 
-    incorrect = async () => {
-        if(this.state.withRepetition){
+    getOriginalIndex = async () => {
+        let originalIndex
+        if(this.state.originalOrder) {
+          return this.state.index
+        }
+        else {
+            return await this.findOriginalIndex()
+        }
+    }
 
+    findOriginalIndex = async () => {
+        const currentCard = this.state.flashcardsToBrowse[this.state.index]
+        //console.log(currentCard)
+        const originalIndex = this.state.originalOrderFlashcards.findIndex(card => {
+            return card.title === currentCard.title
+        })
+        //console.log(originalIndex)
+        return originalIndex
+    }
+
+    incorrect = async () => {
+        if(this.props.withRepetition){
+            await this.witRepetitionIncorrect()
         }
         else {
             await this.withoutRepetitionIncorrect()
         }
     }
 
-    withoutRepetitionIncorrect = async () => {
-        let originalIndex
-        if(this.state.originalOrder) {
-            originalIndex = this.state.index
-        }
-        else {
-            originalIndex = await this.findOriginalIndex()
-        }
-        this.state.incorrectCountArray[originalIndex] = this.state.incorrectCountArray[originalIndex] + 1;
-        console.log(this.state.incorrectCountArray)
-        await this.setState({
-            incorrectCounter: this.state.incorrectCounter + 1
-        })
+    witRepetitionIncorrect = async () => {
+        await this.incrementIncorrectCounts()
+        let originalIndex = await this.getOriginalIndex()
+        this.state.correctCountArray[originalIndex] = 2;
         await this.incrementIndex()
     }
 
-    correct = async () => {
-        if(this.state.withRepetition){
+    withoutRepetitionIncorrect = async () => {
+        await this.incrementIncorrectCounts()
+        await this.incrementIndex()
+    }
 
+    incrementIncorrectCounts = async () => {
+        let originalIndex = await this.getOriginalIndex()
+        this.state.incorrectCountArray[originalIndex] = this.state.incorrectCountArray[originalIndex] + 1;
+        //console.log(this.state.incorrectCountArray)
+        await this.setState({
+            incorrectCounter: this.state.incorrectCounter + 1
+        })
+    }
+
+    correct = async () => {
+        console.log(this.props.withRepetition)
+        if(this.props.withRepetition){
+            console.log("correctWith")
+            await this.withRepetitionCorrect()
         }
         else {
             await this.withoutRepetitionCorrect()
         }
+    }
+
+    withRepetitionCorrect = async () => {
+        const originalIndex = await this.getOriginalIndex()
+        console.log(originalIndex)
+        if(this.state.correctCountArray[originalIndex] === 3 || this.state.correctCountArray[originalIndex]-1 === 0) {
+            await this.setState({
+                correctCounter: this.state.correctCounter + 1
+            })
+            this.state.correctCountArray[originalIndex] = 0
+        }
+        else {
+            this.state.correctCountArray[originalIndex] = this.state.correctCountArray[originalIndex] - 1
+        }
+        await this.incrementIndex()
     }
 
     withoutRepetitionCorrect = async () => {
@@ -75,16 +117,6 @@ class MemorizeSet extends React.Component {
             correctCounter: this.state.correctCounter + 1
         })
         await this.incrementIndex()
-    }
-
-    findOriginalIndex = async () => {
-        const currentCard = this.state.flashcardsToBrowse[this.state.index]
-        console.log(currentCard)
-        const originalIndex = this.state.originalOrderFlashcards.findIndex(card => {
-            return card.title === currentCard.title
-        })
-        console.log(originalIndex)
-        return originalIndex
     }
 
     incrementIndex = async () => {
@@ -116,7 +148,7 @@ class MemorizeSet extends React.Component {
             flashcardsToBrowse: originalOrder,
             originalOrderFlashcards: JSON.parse(JSON.stringify(originalOrder)),
             incorrectCountArray: Array(originalOrder.length).fill(0),
-            correctCorrectArray: Array(originalOrder.length).fill(0),
+            correctCountArray: Array(originalOrder.length).fill(3),
         })
         console.log("original " + JSON.stringify(this.state));
     }
@@ -162,9 +194,10 @@ class MemorizeSet extends React.Component {
                     <div>
                         <h1>Finished Studying the {this.props.titleSide ? "Title" : "Definition"} side of the Flashcard Set, {this.props.setInfo.name}, in {this.props.originalOrder ? "Original" : "Randomized"} order {this.props.withRepetition ? "with" : "without"} Repetition!</h1>
                         <h2>Results</h2>
-                        <h3>Correct Percentage: {((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100}%</h3>
-                        <h3>Incorrect Guesses: {this.state.incorrectCounter}</h3>
+                        <h4>Correct Percentage: {((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100}%</h4>
+                        <h4>Incorrect Guesses: {this.state.incorrectCounter}</h4>
                         <h4>{this.printIncorrectGuesses()}</h4>
+                        <h4>{this.state.correctCountArray}</h4>
                     </div>
                 )
             }
