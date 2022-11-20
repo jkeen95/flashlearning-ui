@@ -254,3 +254,16 @@ div[data-amplify-router] {
 .progressSpan {
   font-size: 30px;
 }
+
+.memorizeFinished {
+  text-align: center;
+}
+
+.memorizeResults {
+  display: inline-block;
+  text-align: left;
+}
+
+.resultsHeader {
+  text-decoration-line: underline;
+}

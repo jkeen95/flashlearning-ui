@@ -3,6 +3,7 @@ import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import FlipFlashcard from "./FlipFlashcard";
 import {SwitchField} from "@aws-amplify/ui-react";
+import {generateRandomNumber} from "../utils/utils";
 
 class MemorizeSet extends React.Component {
 
@@ -38,7 +39,7 @@ class MemorizeSet extends React.Component {
 
     getOriginalIndex = async () => {
         let originalIndex
-        if(this.state.originalOrder) {
+        if(this.state.originalOrder && !this.props.withRepetition) {
           return this.state.index
         }
         else {
@@ -69,12 +70,14 @@ class MemorizeSet extends React.Component {
         await this.incrementIncorrectCounts()
         let originalIndex = await this.getOriginalIndex()
         this.state.correctCountArray[originalIndex] = 2;
-        await this.incrementIndex()
+        console.log(this.state.correctCountArray)
+        await this.insertRepeatCard()
+        await this.incrementIndex(false)
     }
 
     withoutRepetitionIncorrect = async () => {
         await this.incrementIncorrectCounts()
-        await this.incrementIndex()
+        await this.incrementIndex(false)
     }
 
     incrementIncorrectCounts = async () => {
@@ -98,7 +101,7 @@ class MemorizeSet extends React.Component {
     }
 
     withRepetitionCorrect = async () => {
-        const originalIndex = await this.getOriginalIndex()
+        let originalIndex = await this.getOriginalIndex()
         console.log(originalIndex)
         if(this.state.correctCountArray[originalIndex] === 3 || this.state.correctCountArray[originalIndex]-1 === 0) {
             await this.setState({
@@ -108,29 +111,78 @@ class MemorizeSet extends React.Component {
         }
         else {
             this.state.correctCountArray[originalIndex] = this.state.correctCountArray[originalIndex] - 1
+            console.log(this.state.correctCountArray)
+            this.insertRepeatCard()
         }
-        await this.incrementIndex()
+        await this.incrementIndex(true)
     }
 
     withoutRepetitionCorrect = async () => {
         await this.setState({
             correctCounter: this.state.correctCounter + 1
         })
-        await this.incrementIndex()
+        await this.incrementIndex(true)
     }
 
-    incrementIndex = async () => {
+    incrementIndex = async (correctGuess) => {
         console.log("increment")
-        if(this.state.index === this.state.flashcardsToBrowse.length-1) {
+        if(!this.props.withRepetition && this.state.index === this.state.flashcardsToBrowse.length-1) {
             await this.setState({
                 sessionFinished: true
             })
         }
-        else {
+        else if(this.state.index === this.state.flashcardsToBrowse.length-1) {
+            const originalIndex = await this.getOriginalIndex()
+            console.log("oI " + originalIndex)
+            console.log(this.state.correctCountArray[originalIndex])
+            if(this.state.correctCountArray[originalIndex] === 0) {
+                console.log("in here")
+                await this.setState({
+                    sessionFinished: true
+                })
+            }
+        }
+
+        if(!this.state.sessionFinished) {
             await this.setState({
                 index: this.state.index + 1,
                 currentCardOnFront: true,
             })
+        }
+    }
+
+    insertRepeatCard = async () => {
+        const cardToInsert = this.state.flashcardsToBrowse[this.state.index]
+        console.log(cardToInsert)
+        if(this.state.index === this.state.flashcardsToBrowse.length-1) {
+            //append to end
+            console.log("append to end")
+            await this.setState(previousState => ({
+                flashcardsToBrowse: [...previousState.flashcardsToBrowse, cardToInsert]
+            }));
+            console.log(this.state.flashcardsToBrowse)
+        }
+        else {
+            if(this.state.index+4 <= this.state.flashcardsToBrowse.length) {
+                console.log("5 cards left")
+                const newIndex = generateRandomNumber(this.state.index, this.state.index+4)
+                const temp = this.state.flashcardsToBrowse
+                temp.splice(newIndex, 0, cardToInsert);
+                await this.setState(previousState => ({
+                    flashcardsToBrowse: temp
+                }));
+                console.log(newIndex)
+            }
+            else {
+                console.log("less than 5 cards left")
+                const newIndex = generateRandomNumber(this.state.index, this.state.index+4)
+                const temp = this.state.flashcardsToBrowse
+                temp.splice(newIndex, 0, cardToInsert);
+                await this.setState(previousState => ({
+                    flashcardsToBrowse: temp
+                }));
+                console.log(newIndex)
+            }
         }
     }
 
@@ -178,7 +230,7 @@ class MemorizeSet extends React.Component {
     printIncorrectGuesses = () => {
         const incorrectGuesses = this.state.incorrectCountArray.map((incorrectCount, index) => {
             if(incorrectCount > 0) {
-                return <p>Card #{index+1} - {incorrectCount} {incorrectCount === 1 ? "time" : "times"}</p>
+                return <p>&ensp;- Card #{index+1} = {incorrectCount} {incorrectCount === 1 ? "time" : "times"}</p>
             }
         })
         return incorrectGuesses
@@ -191,13 +243,21 @@ class MemorizeSet extends React.Component {
             //console.log("inside ---" + JSON.stringify(this.state))
             if(this.state.sessionFinished) {
                 return (
-                    <div>
+                    <div className="memorizeFinished">
+                        <br />
                         <h1>Finished Studying the {this.props.titleSide ? "Title" : "Definition"} side of the Flashcard Set, {this.props.setInfo.name}, in {this.props.originalOrder ? "Original" : "Randomized"} order {this.props.withRepetition ? "with" : "without"} Repetition!</h1>
-                        <h2>Results</h2>
-                        <h4>Correct Percentage: {((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100}%</h4>
-                        <h4>Incorrect Guesses: {this.state.incorrectCounter}</h4>
-                        <h4>{this.printIncorrectGuesses()}</h4>
-                        <h4>{this.state.correctCountArray}</h4>
+                        <br />
+                        <hr />
+                        <br />
+                        <h2 className="resultsHeader">Results</h2>
+                        <br />
+                        <div className="memorizeResults">
+                            {this.props.withRepetition ? "" : <h4>Correct Percentage: {((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100}%</h4>}
+                            <h4>Incorrect Guesses: {this.state.incorrectCounter}</h4>
+                            <h4>Incorrectly Guessed Cards:</h4>
+                            {this.printIncorrectGuesses()}
+                            {/*<h4>{this.state.correctCountArray}</h4>*/}
+                        </div>
                     </div>
                 )
             }
@@ -216,7 +276,7 @@ class MemorizeSet extends React.Component {
                     <hr />
                     <br />
                     <p>{this.state.currentCardOnFront ? frontHeader : backHeader}</p>
-                    <p>{this.state.index+1} / {this.props.setInfo.titles.length}</p>
+                    <p>{this.state.index+1} / {this.state.flashcardsToBrowse.length}</p>
                     <FlipFlashcard key={this.state.index} front={front} back={back} frontSide={this.state.currentCardOnFront} swapSide={this.swapSide}/>
                     <div className="card_buttons">
                         <div className="prev_button" onClick={() => {this.incorrect()}}>Incorrect</div>
