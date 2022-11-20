@@ -172,7 +172,7 @@ class BrowseSet extends React.Component {
                         <SwitchField label="Randomize" onChange={() => this.randomOrderToggle()} />
                     </div>
                     <br />
-                    <p className="showingSide">Showing the {this.state.currentCardOnFront ? frontHeader : backHeader} side</p>
+                    <p className="showingSide">{"Showing the " + (this.state.currentCardOnFront ? frontHeader : backHeader) + " side"}</p>
                     <p className="cardIndex">{this.state.index+1} / {this.state.setInfo.titles.length}</p>
                     <FlipFlashcard key={this.state.index} front={front} back={back} frontSide={this.state.currentCardOnFront} swapSide={this.swapSide}/>
                     <div className="card_buttons">

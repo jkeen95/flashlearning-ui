@@ -316,7 +316,7 @@ class MemorizeSet extends React.Component {
                     <h3>Progress:&ensp;Correct:&nbsp;{this.state.correctCounter}&ensp;|&ensp;Incorrect:&nbsp;{this.state.incorrectCounter} </h3>
                     <hr/>
                     <br/>
-                    <p>Showing the {this.state.currentCardOnFront ? frontHeader : backHeader} side</p>
+                    <p className="showingSide">{"Showing the " + (this.state.currentCardOnFront ? frontHeader : backHeader) + " side"}</p>
                     <p>{this.state.index + 1} / {this.state.flashcardsToBrowse.length}</p>
                     {/*{this.state.originalIndex}*/}
                     {this.printRemainingCorrectGuesses()}

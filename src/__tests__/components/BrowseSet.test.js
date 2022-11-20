@@ -50,7 +50,7 @@ test('renders the BrowseSet component', async () => {
     expect(randomizeSpan).toHaveClass("amplify-switch-label")
     expect(randomizeSpan.parentElement).toHaveClass("amplify-label")
     expect(randomizeSpan.parentElement.parentElement).toHaveClass("amplify-switchfield")
-    expect(screen.getByText("Title")).toHaveClass("showingSide")
+    expect(screen.getByText("Showing the Title side")).toHaveClass("showingSide")
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
     expect(frontCard).toHaveClass("front")
     expect(frontCard.parentElement).toHaveClass("card")
@@ -176,8 +176,8 @@ test('validates clicking the flashcard element swaps the showing side of the fla
     expect(frontCard).toHaveClass("front")
     expect(frontCard.parentElement).toHaveClass("card")
     expect(frontCard.parentElement).toHaveClass("flip")
-    expect(screen.queryByText("Title")).toBeInTheDocument()
-    expect(screen.getByText("Title")).toHaveClass("showingSide")
+    expect(screen.queryByText("Showing the Title side")).toBeInTheDocument()
+    expect(screen.getByText("Showing the Title side")).toHaveClass("showingSide")
     await act(() => {
         frontCard.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
@@ -187,8 +187,8 @@ test('validates clicking the flashcard element swaps the showing side of the fla
     expect(screen.getAllByText("1")[0]).toHaveClass("back")
     expect(screen.getAllByText("1")[0].parentElement).toHaveClass("card")
     expect(screen.getAllByText("1")[0].parentElement).not.toHaveClass("flip")
-    expect(screen.queryByText("Definition")).toBeInTheDocument()
-    expect(screen.getByText("Definition")).toHaveClass("showingSide")
+    expect(screen.queryByText("Showing the Definition side")).toBeInTheDocument()
+    expect(screen.getByText("Showing the Definition side")).toHaveClass("showingSide")
 })
 
 //Test Case ID: Test76
