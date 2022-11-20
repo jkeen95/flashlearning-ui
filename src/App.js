@@ -69,7 +69,7 @@ class App extends React.Component {
                               <Routes>
                                   <Route path="/" element={<HomePage currentUser={user}/>} />
                                   <Route path="/create/set" element={<CreateSetPage currentUser={user}/>} />
-                                  <Route path="/create/class" element={<CreateSetPage currentUser={user}/>} />
+                                  {/*<Route path="/create/class" element={<CreateSetPage currentUser={user}/>} />*/}
                                   {/*<Route path="/signout" element={<SignOut />} />*/}
                                   <Route path="/set/:id/browse" element={<BrowseSetPage currentUser={user}/>} />
                                   <Route path="/set/:id/edit" element={<EditSetPage currentUser={user}/>} />

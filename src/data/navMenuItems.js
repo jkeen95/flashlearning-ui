@@ -4,18 +4,8 @@ export const menuItems = [
         url: '/',
     },
     {
-        title: 'Create',
-        url: '/',
-        submenu: [
-            {
-                title: 'New Flashcard Set',
-                url: '/create/set',
-            },
-            {
-                title: 'New Class',
-                url: '/create/class',
-            },
-        ],
+        title: 'Create New Set',
+        url: '/create/set',
     },
     {
         title: 'Sign Out',

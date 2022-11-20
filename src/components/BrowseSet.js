@@ -10,7 +10,7 @@ class BrowseSet extends React.Component {
         this.state = {
             setInfo: {
                 flashSetName: this.props.setInfo.name,
-                flashSetVisibility: this.props.setInfo.visibility,
+                // flashSetVisibility: this.props.setInfo.visibility,
                 flashSetDescription: this.props.setInfo.description,
                 titles: this.props.setInfo.titles,
                 definitions: this.props.setInfo.definitions,
@@ -157,7 +157,7 @@ class BrowseSet extends React.Component {
                     <h4>ID: {this.state.setInfo.flashSetId}</h4>
                     <h4>Name: {this.state.setInfo.flashSetName}</h4>
                     <h4>Description: {this.state.setInfo.flashSetDescription}</h4>
-                    <h4>Visibility: {this.state.setInfo.flashSetVisibility}</h4>
+                    {/*<h4>Visibility: {this.state.setInfo.flashSetVisibility}</h4>*/}
                     <br />
                     <a href={editUrl}>Edit</a>
                     <br/>

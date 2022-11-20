@@ -39,7 +39,6 @@ test('renders the BrowseSet component', async () => {
     expect(screen.getByText("ID: " + setInfo.id))
     expect(screen.getByText("Name: " + setInfo.name))
     expect(screen.getByText("Description: " + setInfo.description))
-    expect(screen.getByText("Visibility: " + setInfo.visibility))
     expect(screen.getByText("Edit").getAttribute("href")).toMatch(`/set/${setInfo.id}/edit`)
     expect(screen.getByText("Memorize").getAttribute("href")).toMatch(`/set/${setInfo.id}/memorize`)
     expect(radioButtons[0].getAttribute("name")).toEqual("Title")

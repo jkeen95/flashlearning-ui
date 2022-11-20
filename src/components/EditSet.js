@@ -76,15 +76,15 @@ class EditSet extends React.Component {
                 })
             ).then(result => {
                 console.log(JSON.stringify("test ----" + JSON.stringify(result)))
-                alert('A flashcard set was saved: ' + result.name + "\n" +
-                    'A visibility was saved: ' + result.visibility + "\n" +
-                    'A description was saved: ' + result.description + "\n" +
-                    'FlashcardInput titles were saved: ' + result.titles + "\n" +
-                    'FlashcardInput definitions were saved: ' + result.definitions + "\n"
-                );
+                // alert('A flashcard set was saved: ' + result.name + "\n" +
+                //     'A visibility was saved: ' + result.visibility + "\n" +
+                //     'A description was saved: ' + result.description + "\n" +
+                //     'FlashcardInput titles were saved: ' + result.titles + "\n" +
+                //     'FlashcardInput definitions were saved: ' + result.definitions + "\n"
+                // );
                 const url = "" + window.location.origin + "/set/" + result.id + "/browse";
                 //console.log(url)
-                window.location.replace(url)
+                window.location.assign(url)
             })});
     }
 

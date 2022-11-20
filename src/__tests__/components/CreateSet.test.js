@@ -4,9 +4,6 @@ import CreateSet from "../../components/CreateSet";
 import {DataStore} from "aws-amplify";
 import {act} from "react-dom/test-utils";
 
-window.alert = jest.fn()
-window.location = {assign: jest.fn()}
-
 let currentUser = {
     username: "testuser",
     attributes: {
@@ -70,6 +67,10 @@ test('renders the CreateSet component', async () => {
 
 //Test Case ID: Test69
 test('validates that spys are called when CreateSet component is submitted', async () => {
+    const { location } = window;
+    delete window.location
+    window.location = { replace: jest.fn()};
+
     await render(<CreateSet currentUser={currentUser} />)
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
@@ -97,5 +98,6 @@ test('validates that spys are called when CreateSet component is submitted', asy
     });
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
-    expect(window.alert).toHaveBeenCalledTimes(1)
+    expect(window.location.replace).toHaveBeenCalled()
+    window.location = location;
 })

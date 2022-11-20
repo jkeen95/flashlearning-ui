@@ -5,9 +5,6 @@ import {act} from "react-dom/test-utils";
 import EditSet from "../../components/EditSet";
 import {FlashcardSet} from "../../models";
 
-window.alert = jest.fn()
-window.location = jest.fn()
-
 let currentUser = {
     username: "testuser",
     attributes: {
@@ -92,6 +89,10 @@ test('renders the EditSet component', async () => {
 
 //Test Case ID: Test55
 test('validates the spys are called when EditSet component is submitted', async () => {
+    const { location } = window;
+    delete window.location
+    window.location = { assign: jest.fn()};
+
     await render(<EditSet setId={setId} currentUser={currentUser} />)
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
@@ -109,5 +110,6 @@ test('validates the spys are called when EditSet component is submitted', async 
     //screen.debug()
     expect(dataStoreQuerySpy).toHaveBeenCalledTimes(2)
     expect(dataStoreSaveSpy).toHaveBeenCalledTimes(1)
-    expect(window.alert).toHaveBeenCalledTimes(1)
+    expect(window.location.assign).toHaveBeenCalled()
+    window.location = location;
 })

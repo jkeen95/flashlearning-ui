@@ -47,15 +47,15 @@ class CreateSet extends React.Component {
             })
         ).then(result => {
             //console.log(JSON.stringify(result))
-            alert('A new flashcard set was saved: ' + setInfo.flashSetName + "\n" +
-                'A visibility was saved: ' + setInfo.flashSetVisibility + "\n" +
-                'A description was saved: ' + setInfo.flashSetDescription + "\n" +
-                'FlashcardInput titles were saved: ' + JSON.stringify(response.validTitles) + "\n" +
-                'FlashcardInput definitions were saved: ' + JSON.stringify(response.validDefs) + "\n"
-            );
+            // alert('A new flashcard set was saved: ' + setInfo.flashSetName + "\n" +
+            //     'A visibility was saved: ' + setInfo.flashSetVisibility + "\n" +
+            //     'A description was saved: ' + setInfo.flashSetDescription + "\n" +
+            //     'FlashcardInput titles were saved: ' + JSON.stringify(response.validTitles) + "\n" +
+            //     'FlashcardInput definitions were saved: ' + JSON.stringify(response.validDefs) + "\n"
+            // );
             const url = "" + window.location.origin + "/set/" + result.id + "/browse";
             console.log(url)
-            window.location.assign(url)
+            window.location.replace(url)
         });
     }
 

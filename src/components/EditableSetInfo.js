@@ -21,7 +21,7 @@ class EditableSetInfo extends React.Component {
 
         };
         this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+        // this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     }
 
@@ -34,14 +34,14 @@ class EditableSetInfo extends React.Component {
         }));
     }
 
-    handleVisibilityChange(event) {
-        this.setState(prevState => ({
-            setInfo: {
-                ...prevState.setInfo,
-                flashSetVisibility: event.target.value
-            }
-        }));
-    }
+    // handleVisibilityChange(event) {
+    //     this.setState(prevState => ({
+    //         setInfo: {
+    //             ...prevState.setInfo,
+    //             flashSetVisibility: event.target.value
+    //         }
+    //     }));
+    // }
 
     handleDescriptionChange(event) {
         this.setState(prevState => ({
@@ -179,13 +179,13 @@ class EditableSetInfo extends React.Component {
                         Set Name:
                         <input placeholder="Set Name" value={this.state.setInfo.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
                     </label>
-                    <label>
-                        Visibility:
-                        <select value={this.state.setInfo.flashSetVisibility} onChange={this.handleVisibilityChange}>
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
-                    </label>
+                    {/*<label>*/}
+                    {/*    Visibility:*/}
+                    {/*    <select value={this.state.setInfo.flashSetVisibility} onChange={this.handleVisibilityChange}>*/}
+                    {/*        <option value="public">Public</option>*/}
+                    {/*        <option value="private">Private</option>*/}
+                    {/*    </select>*/}
+                    {/*</label>*/}
                     <label>
                         Description:
                         <textarea placeholder="Description" value={this.state.setInfo.flashSetDescription} onChange={this.handleDescriptionChange} />
