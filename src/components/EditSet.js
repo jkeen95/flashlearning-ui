@@ -91,7 +91,7 @@ class EditSet extends React.Component {
     render() {
         console.log("redner---- -- " + JSON.stringify(this.state.setInfo))
         if(this.state.setInfo.flashSetName === '')
-            return <div />
+            return <h1>You are not permitted to view this set!</h1>
         else
             return (
                 <EditableSetInfo currentUser={this.props.currentUser} setInfo={this.state.setInfo} handleSubmit={this.handleSubmit}/>

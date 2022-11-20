@@ -68,6 +68,9 @@ class MemorizeSetDataLoad extends React.Component {
                 return <MemorizeSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo} originalOrder={this.state.originalOrder} titleSide={this.state.titleSide} withRepetition={this.state.withRepetition}/>
             }
         }
+        else {
+            return <h1>You are not permitted to view this set!</h1>
+        }
     }
     // }
 }

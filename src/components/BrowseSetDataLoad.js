@@ -33,6 +33,9 @@ class BrowseSetDataLoad extends React.Component {
             //console.log("browse test" + JSON.stringify(this.state.setInfo))
             return <BrowseSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo}/>
         }
+        else {
+            return <h1>You are not permitted to view this set!</h1>
+        }
     }
     // }
 }
