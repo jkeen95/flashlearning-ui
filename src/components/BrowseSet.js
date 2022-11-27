@@ -1,6 +1,7 @@
 import React from "react";
 import FlipFlashcard from "./FlipFlashcard";
 import {SwitchField} from "@aws-amplify/ui-react";
+import {userExists} from "../utils/utils";
 
 class BrowseSet extends React.Component {
 
@@ -22,7 +23,9 @@ class BrowseSet extends React.Component {
             showSetTitleSide: true,
             flashcardsToBrowse: [],
             originalOrderFlashcards: [],
-            randomizeOn: true
+            randomizeOn: true,
+            showShare: false,
+            userToShareWith: ""
         };
         // this.cardRef = React.createRef()
     }
@@ -136,6 +139,19 @@ class BrowseSet extends React.Component {
         }
     }
 
+    handleUsernameChange = async (event) => {
+        this.setState({userToShareWith: event.target.value})
+    }
+
+    showShareInput = async () => {
+        await this.setState({showShare: !this.state.showShare})
+        console.log(this.state.showShare)
+    }
+
+    shareSet = async () => {
+        console.log("userExisists : " + await userExists(this.state.userToShareWith))
+    }
+
     render() {
         //console.log("flascardtobrowserender " + JSON.stringify(this.state.flashcardsToBrowse))
         //console.log("rendereee " + JSON.stringify(this.state))
@@ -162,6 +178,12 @@ class BrowseSet extends React.Component {
                     <a href={editUrl}>Edit</a>
                     <br/>
                     <a href={memorizeUrl}>Memorize</a>
+                    <br />
+                    <div>
+                        <button onClick={() => this.showShareInput()}>Share With Another User</button>
+                        <input hidden={!this.state.showShare} type="text" value={this.state.userToShareWith}  onChange={this.handleUsernameChange} placeholder="Username" />
+                        <button hidden={!this.state.showShare} onClick={() => this.shareSet()}>Share</button>
+                    </div>
                     <br />
                     <hr />
                     <div>

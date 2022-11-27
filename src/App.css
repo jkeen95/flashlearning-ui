@@ -267,3 +267,7 @@ div[data-amplify-router] {
 .resultsHeader {
   text-decoration-line: underline;
 }
+
+.deleteFlashcard {
+  display: flex;
+}

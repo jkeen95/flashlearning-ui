@@ -1,4 +1,4 @@
-import {DataStore} from "aws-amplify";
+import {Auth, DataStore} from "aws-amplify";
 import {FlashcardSet} from "../models";
 
 export function removeEmpties(titles, defs) {
@@ -36,4 +36,20 @@ export async function deleteSet(setId) {
 
 export function generateRandomNumber(min, max) {
     return Math.floor(Math.random() *(max - min + 1)) + min;
+}
+
+export async function userExists(username) {
+    return Auth.signIn(username, "123").then(res => {
+        return false;
+    }).catch(error => {
+        const code = error.code;
+        console.log(error)
+        switch (code) {
+            case 'NotAuthorizedException':
+                return true;
+            default:
+                return false;
+        }
+    })
+
 }

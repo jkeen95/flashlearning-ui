@@ -170,6 +170,29 @@ class EditableSetInfo extends React.Component {
         this.state.count++
     }
 
+    deleteCard = async (index) => {
+        let tempTitles = this.state.setInfo.titles
+        let tempDefs = this.state.setInfo.definitions
+        if(tempTitles.length === 1 && index === 0) {
+            tempTitles = [""];
+            tempDefs = [""];
+        }
+        else {
+            tempTitles.splice(index, 1)
+            tempDefs.splice(index, 1)
+        }
+        console.log(tempTitles)
+        console.log(tempDefs)
+        await this.setState(prevState => ({
+            setInfo: {
+                ...prevState.setInfo,
+                titles: tempTitles,
+                definitions: tempDefs,
+            }
+        }));
+        console.log(this.state.setInfo)
+    }
+
     render() {
         //console.log(JSON.stringify(this.state.setInfo.flashSetDescription))
         return <div>
@@ -201,7 +224,10 @@ class EditableSetInfo extends React.Component {
                     // console.log(index)
                     // console.log("checkthtissss " + JSON.stringify(this.state.duplicates.includes(index)) + "  " + title)
                     return (
-                        <FlashcardInput duplicateTitle={this.state.duplicates.includes(index)} key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
+                        <div className="deleteFlashcard">
+                            <FlashcardInput duplicateTitle={this.state.duplicates.includes(index)} key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
+                            <button type="button" onClick={() => this.deleteCard(index)}>Delete Flashcard</button>
+                        </div>
                     )
                 })}
                 {this.state.flashcardError ? <p className="errorMessage">At Least One Complete Flashcard is Required</p> : ""}
