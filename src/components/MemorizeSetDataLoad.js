@@ -3,6 +3,7 @@ import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import MemorizeSet from "./MemorizeSet";
 import MemorizeSetModal from "./MemorizeSetModal";
+import {getSharedSet} from "../utils/utils";
 
 class MemorizeSetDataLoad extends React.Component {
 
@@ -13,7 +14,7 @@ class MemorizeSetDataLoad extends React.Component {
             show: true,
             originalOrder: true,
             titleSide: true,
-            withRepetition: false
+            withRepetition: false,
         };
     }
 
@@ -22,11 +23,27 @@ class MemorizeSetDataLoad extends React.Component {
         //console.log(this.props.setId.id)
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        ).then(result => {
-            //console.log(JSON.stringify(result))
-            this.setState({
-                setInfo: result[0]
-            })
+        ).then(async result => {
+            console.log("result1: " + JSON.stringify(result))
+            if (result.length === 0) {
+                // await DataStore.query(SharedSet, (set) =>
+                //     set.setId('eq', this.props.setId.id).username('eq', this.props.currentUser.username)
+                // ).then(result => {
+                //     this.setState({
+                //         setInfo: result[0]
+                //     })
+                // })
+                console.log("here")
+                const sharedSet = await getSharedSet(this.props.setId.id, this.props.currentUser.username)
+                console.log("sharedSet " + sharedSet)
+                await this.setState({
+                    setInfo: sharedSet
+                })
+            } else {
+                await this.setState({
+                    setInfo: result[0]
+                })
+            }
             //console.log("after then " + JSON.stringify(this.state))
         });
 

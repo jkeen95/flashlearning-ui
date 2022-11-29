@@ -1,5 +1,5 @@
 import {Auth, DataStore} from "aws-amplify";
-import {FlashcardSet} from "../models";
+import {FlashcardSet, SharedSet} from "../models";
 
 export function removeEmpties(titles, defs) {
     const invalidTitleIndices = getInvalidIndices(titles)
@@ -52,4 +52,28 @@ export async function userExists(username) {
         }
     })
 
+}
+
+export async function getSharedSet(setId, username) {
+    console.log(setId + " " + username)
+    let set = {}
+    const temp =  await DataStore.query(SharedSet, (set) =>
+        set.setId('eq', setId).username('eq', username)
+    ).then(async result => {
+        console.log(result)
+        if (result.length !== 0) {
+            await DataStore.query(FlashcardSet, (set) =>
+                set.id('eq', result[0].setId)
+            ).then(result => {
+                console.log(result)
+                set = result[0]
+                return result[0]
+            })
+        } else {
+            set = result[0]
+            return result[0]
+        }
+    })
+    console.log("set " + set)
+    return set
 }

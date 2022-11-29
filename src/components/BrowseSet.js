@@ -2,6 +2,8 @@ import React from "react";
 import FlipFlashcard from "./FlipFlashcard";
 import {SwitchField} from "@aws-amplify/ui-react";
 import {userExists} from "../utils/utils";
+import {DataStore} from "aws-amplify";
+import {FlashcardSet, SharedSet} from "../models";
 
 class BrowseSet extends React.Component {
 
@@ -25,7 +27,11 @@ class BrowseSet extends React.Component {
             originalOrderFlashcards: [],
             randomizeOn: true,
             showShare: false,
-            userToShareWith: ""
+            userToShareWith: "",
+            noInputError: false,
+            alreadyOwnedError: false,
+            alreadySharedError: false,
+            userDosentExistError: false,
         };
         // this.cardRef = React.createRef()
     }
@@ -148,8 +154,105 @@ class BrowseSet extends React.Component {
         console.log(this.state.showShare)
     }
 
+    alreadyOwned = async () => {
+        return await DataStore.query(FlashcardSet, (set) =>
+            set.id('eq', this.props.setId.id).owner('eq', this.state.userToShareWith)
+        ).then(result => {
+            console.log("result")
+            return true
+        }).catch(err => {
+            console.log("error")
+            return false;
+        })
+    }
+
+    alreadyShared = async () => {
+        return await DataStore.query(SharedSet, (set) =>
+            set.setId('eq', this.props.setId.id).username('eq', this.state.userToShareWith)
+        ).then(result => {
+            console.log("result")
+            return true
+        }).catch(err => {
+            console.log("error")
+            return false;
+        })
+    }
+
+    saveShareSet = async () => {
+        await DataStore.save(
+            new SharedSet({
+                setId: this.props.setId.id,
+                username: this.state.userToShareWith,
+            })
+        ).then(result => {
+            return true
+        }).catch(err => {
+            return false;
+        })
+    }
+
     shareSet = async () => {
-        console.log("userExisists : " + await userExists(this.state.userToShareWith))
+        // console.log("userExisists : " + await userExists(this.state.userToShareWith))
+        if(this.state.userToShareWith === "") {
+            await this.setState({
+                noInputError: true,
+                alreadyOwnedError: false,
+                alreadySharedError: false,
+                userDosentExistError: false
+            })
+            return
+        }
+
+        const exists = await userExists(this.state.userToShareWith)
+        console.log("exists " + exists)
+        let newlyShared = true
+
+        if(!exists) {
+            await this.setState({
+                noInputError: false,
+                alreadyOwnedError: false,
+                alreadySharedError: false,
+                userDosentExistError: true
+            })
+            return
+        }
+
+        const owned = await this.alreadyOwned()
+        console.log("owned " + owned)
+        if(owned) {
+            await this.setState({
+                noInputError: false,
+                alreadyOwnedError: true,
+                alreadySharedError: false,
+                userDosentExistError: false
+            })
+            return
+        }
+
+        const shared = await this.alreadyShared()
+        console.log("shared " + shared)
+        if(shared) {
+            await this.setState({
+                noInputError: false,
+                alreadyOwnedError: false,
+                alreadySharedError: true,
+                userDosentExistError: false
+            })
+            return
+        }
+
+        newlyShared = await this.saveShareSet()
+        console.log("newlyShared " + newlyShared)
+
+        if(newlyShared) {
+            alert("This set was shared with user: " + this.state.userToShareWith)
+            await this.setState({
+                noInputError: false,
+                alreadyOwnedError: false,
+                alreadySharedError: false,
+                userDosentExistError: false
+            })
+        }
     }
 
     render() {
@@ -175,15 +278,22 @@ class BrowseSet extends React.Component {
                     <h4>Description: {this.state.setInfo.flashSetDescription}</h4>
                     {/*<h4>Visibility: {this.state.setInfo.flashSetVisibility}</h4>*/}
                     <br />
-                    <a href={editUrl}>Edit</a>
-                    <br/>
+                    {this.props.sharedBol ? "" : <a href={editUrl}>Edit</a>}
+                    {this.props.sharedBol ? "" : <br/>}
                     <a href={memorizeUrl}>Memorize</a>
                     <br />
-                    <div>
-                        <button onClick={() => this.showShareInput()}>Share With Another User</button>
-                        <input hidden={!this.state.showShare} type="text" value={this.state.userToShareWith}  onChange={this.handleUsernameChange} placeholder="Username" />
-                        <button hidden={!this.state.showShare} onClick={() => this.shareSet()}>Share</button>
-                    </div>
+                    {this.props.sharedBol ? "" :
+                        <div>
+                            <button onClick={() => this.showShareInput()}>Share With Another User</button>
+                            <input hidden={!this.state.showShare} type="text" value={this.state.userToShareWith}  onChange={this.handleUsernameChange} placeholder="Username" />
+                            <button hidden={!this.state.showShare} onClick={() => this.shareSet()}>Share</button>
+                            {this.state.noInputError ? <p className="errorMessage">You Must Specify the Username to Share the Set With</p> : ""}
+                            {this.state.alreadyOwnedError ? <p className="errorMessage">You cannot share a set with its owner</p> : ""}
+                            {this.state.alreadySharedError ? <p className="errorMessage">This set has already been shared with this user</p> : ""}
+                            {this.state.userDosentExistError ? <p className="errorMessage">This User Does Not Exist</p> : ""}
+                            {/*{this.state.flashcardError ? <p className="errorMessage">At Least One Complete Flashcard is Required</p> : ""}*/}
+                        </div>
+                    }
                     <br />
                     <hr />
                     <div>

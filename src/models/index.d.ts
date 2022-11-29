@@ -8,6 +8,10 @@ type FlashcardSetMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type SharedSetMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 export declare class Class {
   readonly id: string;
   readonly name: string;
@@ -32,4 +36,14 @@ export declare class FlashcardSet {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<FlashcardSet, FlashcardSetMetaData>);
   static copyOf(source: FlashcardSet, mutator: (draft: MutableModel<FlashcardSet, FlashcardSetMetaData>) => MutableModel<FlashcardSet, FlashcardSetMetaData> | void): FlashcardSet;
+}
+
+export declare class SharedSet {
+  readonly id: string;
+  readonly setId: string;
+  readonly username: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  constructor(init: ModelInit<SharedSet, SharedSetMetaData>);
+  static copyOf(source: SharedSet, mutator: (draft: MutableModel<SharedSet, SharedSetMetaData>) => MutableModel<SharedSet, SharedSetMetaData> | void): SharedSet;
 }

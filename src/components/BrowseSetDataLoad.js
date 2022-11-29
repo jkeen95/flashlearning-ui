@@ -1,7 +1,8 @@
 import React from "react";
 import {DataStore} from 'aws-amplify'
-import {FlashcardSet} from "../models";
+import {FlashcardSet, SharedSet} from "../models";
 import BrowseSet from "./BrowseSet";
+import {getSharedSet} from "../utils/utils";
 
 class BrowseSetDataLoad extends React.Component {
 
@@ -9,6 +10,7 @@ class BrowseSetDataLoad extends React.Component {
         super(props);
         this.state = {
             setInfo: {},
+            sharedBol: false
         };
     }
 
@@ -16,11 +18,28 @@ class BrowseSetDataLoad extends React.Component {
     async componentDidMount() {
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        ).then(result => {
-            //console.log(JSON.stringify(result))
-            this.setState({
-                setInfo: result[0]
-            })
+        ).then(async result => {
+            console.log("result1: " + JSON.stringify(result))
+            if (result.length === 0) {
+                // await DataStore.query(SharedSet, (set) =>
+                //     set.setId('eq', this.props.setId.id).username('eq', this.props.currentUser.username)
+                // ).then(result => {
+                //     this.setState({
+                //         setInfo: result[0]
+                //     })
+                // })
+                console.log("here")
+                const sharedSet = await getSharedSet(this.props.setId.id, this.props.currentUser.username)
+                console.log("sharedSet " + sharedSet)
+                await this.setState({
+                    setInfo: sharedSet,
+                    sharedBol: true
+                })
+            } else {
+                await this.setState({
+                    setInfo: result[0]
+                })
+            }
             //console.log("after then " + JSON.stringify(this.state))
         });
 
@@ -31,7 +50,7 @@ class BrowseSetDataLoad extends React.Component {
     render() {
         if(JSON.stringify(this.state.setInfo) !== "{}") {
             //console.log("browse test" + JSON.stringify(this.state.setInfo))
-            return <BrowseSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo}/>
+            return <BrowseSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo} sharedBol={this.state.sharedBol}/>
         }
         else {
             return <h1>You are not permitted to view this set!</h1>

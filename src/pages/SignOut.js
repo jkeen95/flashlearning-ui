@@ -10,7 +10,10 @@ const SignOut = async () => {
 export async function signOut() {
     try {
         await Auth.signOut();
-        await DataStore.clear();
+        console.log("signout")
+        // await DataStore.clear();
+        // console.log("clear")
+        // alert("ok")
     } catch (error) {
         console.log('error signing out: ', error);
     }
