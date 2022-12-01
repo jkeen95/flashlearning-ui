@@ -16,42 +16,23 @@ class Home extends React.Component {
 
     async componentDidMount() {
         this.setState({ready: true})
-        console.log("mount")
         await this.fetchSetInformation()
     }
 
     async fetchSetInformation() {
-        //console.log(this.props.currentUser.username)
-        console.log("fetch")
         const userSets = await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
         ).then(result => {
-                // console.log("result --- " + result)
-                // this.setState({
-                //     usersSets: result
-                // })
             return result
         })
-        console.log("userSets: " + userSets)
+        console.log(userSets)
 
         const results = await DataStore.query(SharedSet, (set) =>
             set.username('eq', this.props.currentUser.username)
         )
         console.log(results)
 
-
         let fetchedSharedSets = []
-        // const fetchedSets = await results.map(async set => {
-        //     console.log(set)
-        //     fetchedSharedSets.push(await this.fetchedSharedSet(set))
-        //     // return await DataStore.query(FlashcardSet, (s) =>
-        //     //     s.id('eq', set.setId)
-        //     // ).then(result => {
-        //     //     console.log(result)
-        //     //     // console.log("result --- " + result)
-        //     //     return result
-        //     // })
-        // })
         for (let i = 0; i < results.length; i++) {
             fetchedSharedSets.push(await this.fetchedSharedSet(results[i]))
         }
@@ -60,24 +41,17 @@ class Home extends React.Component {
             usersSets: userSets,
             sharedSets: fetchedSharedSets
         })
-        console.log(this.state)
-        //console.log(fetchedSharedSets)
-
-        // console.log(fetchedSharedSets)
     }
 
     fetchedSharedSet = async (set) => {
         return await DataStore.query(FlashcardSet, (s) =>
             s.id('eq', set.setId)
         ).then(result => {
-            console.log(result)
-                // console.log("result --- " + result)
             return result[0]
         })
     }
 
     checkUsersSets() {
-        //console.log(this.state.usersSets)
         if(this.state.usersSets.length !== 0) {
             return (
                 this.renderFlashSetOptions(this.state.usersSets, false)
@@ -91,7 +65,6 @@ class Home extends React.Component {
     }
 
     checkSharedSets() {
-        //console.log(this.state.usersSets)
         if(this.state.sharedSets.length !== 0) {
             return (
                 this.renderFlashSetOptions(this.state.sharedSets, true)
@@ -115,11 +88,12 @@ class Home extends React.Component {
             const browseUrl = "" + window.location.origin +"/set/" + set.id + "/browse";
             const editUrl = "" + window.location.origin +"/set/" + set.id + "/edit";
             return (
-                <div key={index}>
-                    <a href={browseUrl}>{set.name}</a>
+                <div key={index} className="homLinks">
+                    <a className="homeBrowseLink" href={browseUrl}>{set.name}</a>
                     {sharedBol ? "" : <br />}
                     {sharedBol ? "" : <a href={editUrl}>Edit</a>}
-                    {sharedBol ? "" : <br />}
+                    {/*{sharedBol ? "" : <br />}*/}
+                    {sharedBol ? "" : "  |  " }
                     {sharedBol ? "" : <button onClick={() => this.removeSet(set.id)} className="deleteButton">Delete</button>}
                     <br />
                     <br />
@@ -130,7 +104,6 @@ class Home extends React.Component {
 
 
     render() {
-        // console.log("usersetss ----- " + JSON.stringify(this.state.usersSets))
         if(this.state.usersSets === null || this.state.sharedSets === null)
             return <div className="noDataYet"/>
         else

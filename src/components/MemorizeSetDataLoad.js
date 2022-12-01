@@ -20,22 +20,11 @@ class MemorizeSetDataLoad extends React.Component {
 
 
     async componentDidMount() {
-        //console.log(this.props.setId.id)
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         ).then(async result => {
-            console.log("result1: " + JSON.stringify(result))
             if (result.length === 0) {
-                // await DataStore.query(SharedSet, (set) =>
-                //     set.setId('eq', this.props.setId.id).username('eq', this.props.currentUser.username)
-                // ).then(result => {
-                //     this.setState({
-                //         setInfo: result[0]
-                //     })
-                // })
-                console.log("here")
                 const sharedSet = await getSharedSet(this.props.setId.id, this.props.currentUser.username)
-                console.log("sharedSet " + sharedSet)
                 await this.setState({
                     setInfo: sharedSet
                 })
@@ -44,40 +33,27 @@ class MemorizeSetDataLoad extends React.Component {
                     setInfo: result[0]
                 })
             }
-            //console.log("after then " + JSON.stringify(this.state))
         });
-
-        //console.log("before form " + JSON.stringify(this.state))
-
     }
 
     orderRadioChange = () => {
-        //console.log(this.state.originalOrder)
         this.setState({originalOrder: !this.state.originalOrder})
-        //console.log(this.state.originalOrder)
     }
 
     sideRadioChange = () => {
-        console.log(this.state.titleSide)
         this.setState({titleSide: !this.state.titleSide})
-        console.log(this.state.titleSide)
     }
 
     checkboxChange = () => {
-        //console.log(this.state.withRepetition)
         this.setState( {withRepetition: !this.state.withRepetition})
-        //console.log(this.state.withRepetition)
     }
 
     handleSubmit = async () => {
-        //console.log(this.state.show)
         this.setState({show: !this.state.show})
-        //console.log(this.state.show)
     }
 
     render() {
         if(JSON.stringify(this.state.setInfo) !== "{}") {
-            //console.log("browse test" + JSON.stringify(this.state.setInfo))
             if(this.state.show) {
                 return  <MemorizeSetModal originalOrder={this.state.originalOrder} orderRadioChange={this.orderRadioChange} titleSide={this.state.titleSide} sideRadioChange={this.sideRadioChange} checkboxChange={this.checkboxChange} handleSubmit={this.handleSubmit}/>
             }

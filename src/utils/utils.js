@@ -32,6 +32,11 @@ export function removeIndices(array, indices) {
 
 export async function deleteSet(setId) {
     await DataStore.delete(FlashcardSet, setId)
+    const toDelete = await DataStore.query(SharedSet, (set) => set.setId("eq", setId));
+    console.log(toDelete)
+    if(toDelete.length !== 0) {
+        await DataStore.delete(toDelete[0])
+    }
 }
 
 export function generateRandomNumber(min, max) {
@@ -70,8 +75,9 @@ export async function getSharedSet(setId, username) {
                 return result[0]
             })
         } else {
-            set = result[0]
-            return result[0]
+            // set = result[0]
+            // return result[0]
+            return {}
         }
     })
     console.log("set " + set)

@@ -271,3 +271,15 @@ div[data-amplify-router] {
 .deleteFlashcard {
   display: flex;
 }
+
+.homeBrowseLink {
+  font-size: x-large;
+}
+
+.showingSideDiv {
+  display: flex;
+}
+
+.browseControlDiv {
+  display: flex;
+}

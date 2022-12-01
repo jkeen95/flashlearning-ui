@@ -95,7 +95,7 @@ test('validates the Previous Button loops to the back of the flashcard set when 
         prevButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
     await new Promise((r) => setTimeout(r, 2000))
-    screen.debug()
+    //screen.debug()
     expect(screen.getByText("3 / 3")).toHaveClass("cardIndex")
     expect(screen.queryAllByText("C")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()

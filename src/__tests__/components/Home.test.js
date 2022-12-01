@@ -53,7 +53,7 @@ test("renders a Home component with user's sets links displayed", async () => {
     await new Promise((r) => setTimeout(r, 2000))
     // screen.debug()
 
-    const set1BrowseA = screen.getByText("Test Set 1")
+    const set1BrowseA = screen.getAllByText("Test Set 1")[0]
     const set2BrowseA = screen.getByText("Test Set 2")
     const editButtons = screen.getAllByText("Edit")
     const deleteButtons = screen.getAllByText("Delete")

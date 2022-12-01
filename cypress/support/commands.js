@@ -41,3 +41,26 @@ Cypress.Commands.add('deleteCurrentUser', () => {
         console.log('Error deleting user', error);
     }
 })
+
+Cypress.Commands.add('test88RandomConditions', () => {
+    cy.get('.front').then(($card) => {
+        if ($card.text().includes('A')) {
+            cy.get('.next_button').click()
+        } else if($card.text().includes('B')) {
+            cy.get('.prev_button').click()
+        } else if($card.text().includes('C')) {
+            cy.get('.next_button').click()
+        } else if($card.text().includes('D')) {
+            cy.get('.prev_button').click()
+        }
+    })
+})
+
+Cypress.Commands.add('fill50Flashcards', (count, data) => {
+    if(count !== 50) {
+        cy.get('[placeholder="Title"]').last().type(data[count]["title"])
+        cy.get('[placeholder="Definition"]').last().type(data[count]["def"])
+        cy.contains("Add Flashcard").click()
+        cy.fill50Flashcards(count+1, data)
+    }
+})

@@ -20,18 +20,14 @@ class EditSet extends React.Component {
     }
 
     async handleSubmit(setToSave) {
-        // event.preventDefault();
-        //console.log(JSON.stringify(setToSave))
         await this.updateFlashcardSet(setToSave);
     }
 
-    componentDidMount() {
-        this.fillSetInformation()
+    async componentDidMount() {
+        await this.fillSetInformation()
     }
 
     async fetchSetInformation() {
-        // console.log(this.props.setId.id)
-        // console.log(this.props.currentUser.username)
         return await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         )
@@ -39,30 +35,20 @@ class EditSet extends React.Component {
 
     async fillSetInformation() {
         const currentSet = await this.fetchSetInformation()
-        // console.log(JSON.stringify(currentSet))
-        this.setState(prevState => ({
-            setInfo: {
-                ...prevState.setInfo,
-                flashSetName: currentSet[0].name,
-                flashSetVisibility: currentSet[0].visibility,
-                flashSetDescription: currentSet[0].description,
-                titles: currentSet[0].titles,
-                definitions: currentSet[0].definitions
-            }
-        }));
-        console.log("load ----" + JSON.stringify(this.state.setInfo))
+        if(currentSet.length !== 0)
+            this.setState(prevState => ({
+                setInfo: {
+                    ...prevState.setInfo,
+                    flashSetName: currentSet[0].name,
+                    flashSetVisibility: currentSet[0].visibility,
+                    flashSetDescription: currentSet[0].description,
+                    titles: currentSet[0].titles,
+                    definitions: currentSet[0].definitions
+                }
+            }));
     }
 
     async updateFlashcardSet(setToSave) {
-        // const flashSetTitles = this.state.titles.filter(title => title !== "");
-        // const flashSetDefs = this.state.definitions.filter(def => def !== "");
-        // const response = removeEmpties(this.state.titles, this.state.definitions)
-
-
-        console.log("before ----- " + JSON.stringify(setToSave))
-        // const original = await DataStore.query(FlashcardSet, (set) =>
-        //     set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        // );
         await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
         ).then(original => {
@@ -75,21 +61,12 @@ class EditSet extends React.Component {
                     updated.definitions =  setToSave.definitions;
                 })
             ).then(result => {
-                console.log(JSON.stringify("test ----" + JSON.stringify(result)))
-                // alert('A flashcard set was saved: ' + result.name + "\n" +
-                //     'A visibility was saved: ' + result.visibility + "\n" +
-                //     'A description was saved: ' + result.description + "\n" +
-                //     'FlashcardInput titles were saved: ' + result.titles + "\n" +
-                //     'FlashcardInput definitions were saved: ' + result.definitions + "\n"
-                // );
                 const url = "" + window.location.origin + "/set/" + result.id + "/browse";
-                //console.log(url)
                 window.location.assign(url)
             })});
     }
 
     render() {
-        console.log("redner---- -- " + JSON.stringify(this.state.setInfo))
         if(this.state.setInfo.flashSetName === '')
             return <h1>You are not permitted to view this set!</h1>
         else
