@@ -6,7 +6,6 @@ class EditableSetInfo extends React.Component {
 
     constructor(props) {
         super(props);
-        //console.log(props)
         this.state = {
             setInfo: {
                 flashSetName: this.props.setInfo.flashSetName,
@@ -21,7 +20,6 @@ class EditableSetInfo extends React.Component {
 
         };
         this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     }
 
@@ -30,15 +28,6 @@ class EditableSetInfo extends React.Component {
             setInfo: {
                 ...prevState.setInfo,
                 flashSetName: event.target.value
-            }
-        }));
-    }
-
-    handleVisibilityChange(event) {
-        this.setState(prevState => ({
-            setInfo: {
-                ...prevState.setInfo,
-                flashSetVisibility: event.target.value
             }
         }));
     }
@@ -86,9 +75,7 @@ class EditableSetInfo extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault()
-        //console.log(this.state.setInfo)
         const response = removeEmpties(this.state.setInfo.titles, this.state.setInfo.definitions)
-        //console.log("response before submit " + JSON.stringify(response))
 
         if(this.state.setInfo.flashSetName === "") {
             await this.setState({
@@ -101,8 +88,6 @@ class EditableSetInfo extends React.Component {
             })
         }
         if(response.validTitles.length === 0 ) {
-            //console.log("validdddddd")
-            //alert("At Least One Complete Flashcard is Required")
             await this.setState({
                 flashcardError: true
             })
@@ -113,25 +98,16 @@ class EditableSetInfo extends React.Component {
             })
         }
 
-        // console.log("blankNameError " + !this.state.blankNameError)
-        // console.log("flashcardError " + !this.state.flashcardError)
-
         if(!this.state.blankNameError && !this.state.flashcardError) {
-            //console.log("error inside")
             let tempObj = this.state.setInfo
             tempObj.titles = response.validTitles
             tempObj.definitions = response.validDefs
             this.props.handleSubmit(tempObj)
         }
-        // this.props.handleSubmit(this.state.setInfo)
     };
 
     checkForDuplicates = () => {
         const tempArray = this.state.setInfo.titles
-        const arr_size = tempArray.length
-        // console.log(this.state.setInfo.titles)
-        // console.log(this.state.setInfo.titles[index])
-        let duplicateTracker = []
         let titleIndices = {}
 
         this.state.setInfo.titles.filter((title, index) => {
@@ -152,10 +128,7 @@ class EditableSetInfo extends React.Component {
                 })
             }
         })
-        //console.log(duplicateIndices)
         this.setState({duplicates : duplicateIndices})
-
-        // console.log(JSON.stringify(titleIndices))
     }
 
     addFlashcard = () => {
@@ -166,25 +139,38 @@ class EditableSetInfo extends React.Component {
                 definitions: [...this.state.setInfo.definitions, ""],
             }
         }));
-        //console.log("count " + this.state.count)
         this.state.count++
     }
 
+    deleteCard = async (index) => {
+        let tempTitles = [...this.state.setInfo.titles]
+        let tempDefs = [...this.state.setInfo.definitions]
+        if(tempTitles.length === 1 && index === 0) {
+            tempTitles = [""];
+            tempDefs = [""];
+        }
+        else {
+            console.log(tempTitles)
+            tempTitles.splice(index, 1)
+            tempDefs.splice(index, 1)
+        }
+        await this.setState(prevState => ({
+            setInfo: {
+                ...prevState.setInfo,
+                titles: tempTitles,
+                definitions: tempDefs,
+            }
+        }));
+        await this.checkForDuplicates()
+    }
+
     render() {
-        //console.log(JSON.stringify(this.state.setInfo.flashSetDescription))
         return <div>
             <form onSubmit={this.handleSubmit}>
                 <div>
                     <label>
                         Set Name:
                         <input placeholder="Set Name" value={this.state.setInfo.flashSetName} type="text" onChange={this.handleNameChange} onBlur={this.handleNameChange} />
-                    </label>
-                    <label>
-                        Visibility:
-                        <select value={this.state.setInfo.flashSetVisibility} onChange={this.handleVisibilityChange}>
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
                     </label>
                     <label>
                         Description:
@@ -196,12 +182,11 @@ class EditableSetInfo extends React.Component {
                 <hr/>
                 <br/>
                 {this.state.setInfo.titles.map((title, index) => {
-                    // console.log(JSON.stringify(title))
-                    // console.log(this.state.duplicates)
-                    // console.log(index)
-                    // console.log("checkthtissss " + JSON.stringify(this.state.duplicates.includes(index)) + "  " + title)
                     return (
-                        <FlashcardInput duplicateTitle={this.state.duplicates.includes(index)} key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
+                        <div className="deleteFlashcard">
+                            <FlashcardInput duplicateTitle={this.state.duplicates.includes(index)} key={index} index={index} handleTitleChange={this.handleTitleChange} handleDefChange={this.handleDefChange} checkForDuplicates={this.checkForDuplicates} title={title} definition={this.state.setInfo.definitions[index]}/>
+                            <button type="button" onClick={() => this.deleteCard(index)}>Delete Flashcard</button>
+                        </div>
                     )
                 })}
                 {this.state.flashcardError ? <p className="errorMessage">At Least One Complete Flashcard is Required</p> : ""}

@@ -1,11 +1,13 @@
 import {useParams} from "react-router-dom";
 import EditSet from "../components/EditSet";
+import React from "react";
 
-const EditSetPage = ({ currentUser }) => {
+const EditSetPage = ({ currentUser, ready }) => {
     const setId = useParams();
-    return (
-        <EditSet setId={setId} currentUser={currentUser}/>
-    );
+    if(ready)
+        return <EditSet setId={setId} currentUser={currentUser}/>
+    else
+        return <div className="noDataYet"/>
 };
 
 export default EditSetPage;

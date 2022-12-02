@@ -1,6 +1,6 @@
 import React from "react";
 import {DataStore} from 'aws-amplify'
-import {FlashcardSet} from "../models";
+import {FlashcardSet, SharedSet} from "../models";
 import {deleteSet} from "../utils/utils";
 
 class Home extends React.Component {
@@ -8,37 +8,71 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usersSets: null
+            usersSets: null,
+            sharedSets: null,
+            ready: false
         };
     }
 
     async componentDidMount() {
-        this.fetchSetInformation()
+        this.setState({ready: true})
+        await this.fetchSetInformation()
     }
 
     async fetchSetInformation() {
-        //console.log(this.props.currentUser.username)
-        await DataStore.query(FlashcardSet, (set) =>
+        const userSets = await DataStore.query(FlashcardSet, (set) =>
             set.owner('eq', this.props.currentUser.username)
         ).then(result => {
-                // console.log("result --- " + result)
-                this.setState({
-                    usersSets: result
-                })
-            }
+            return result
+        })
+        console.log(userSets)
+
+        const results = await DataStore.query(SharedSet, (set) =>
+            set.username('eq', this.props.currentUser.username)
         )
+        console.log(results)
+
+        let fetchedSharedSets = []
+        for (let i = 0; i < results.length; i++) {
+            fetchedSharedSets.push(await this.fetchedSharedSet(results[i]))
+        }
+
+        await this.setState({
+            usersSets: userSets,
+            sharedSets: fetchedSharedSets
+        })
     }
 
-    checkUsersFlashsets() {
-        //console.log(this.state.usersSets)
+    fetchedSharedSet = async (set) => {
+        return await DataStore.query(FlashcardSet, (s) =>
+            s.id('eq', set.setId)
+        ).then(result => {
+            return result[0]
+        })
+    }
+
+    checkUsersSets() {
         if(this.state.usersSets.length !== 0) {
             return (
-                this.renderFlashSetOptions()
+                this.renderFlashSetOptions(this.state.usersSets, false)
             )
         }
         else {
             return(
                 <p>You have no flashcard sets.</p>
+            )
+        }
+    }
+
+    checkSharedSets() {
+        if(this.state.sharedSets.length !== 0) {
+            return (
+                this.renderFlashSetOptions(this.state.sharedSets, true)
+            )
+        }
+        else {
+            return(
+                <p>You have no flashcard sets shared with you.</p>
             )
         }
     }
@@ -49,17 +83,17 @@ class Home extends React.Component {
 
     }
 
-    renderFlashSetOptions() {
-        return this.state.usersSets.map((set, index) => {
+    renderFlashSetOptions(sets, sharedBol) {
+        return sets.map((set, index) => {
             const browseUrl = "" + window.location.origin +"/set/" + set.id + "/browse";
             const editUrl = "" + window.location.origin +"/set/" + set.id + "/edit";
             return (
-                <div key={index}>
-                    <a href={browseUrl}>{set.name}</a>
-                    <br />
-                    <a href={editUrl}>Edit</a>
-                    <br />
-                    <button onClick={() => this.removeSet(set.id)} className="deleteButton">Delete</button>
+                <div key={index} className="homLinks">
+                    <a className="homeBrowseLink" href={browseUrl}>{set.name}</a>
+                    {sharedBol ? "" : <br />}
+                    {sharedBol ? "" : <a href={editUrl}>Edit</a>}
+                    {sharedBol ? "" : "  |  " }
+                    {sharedBol ? "" : <button onClick={() => this.removeSet(set.id)} className="deleteButton">Delete</button>}
                     <br />
                     <br />
                 </div>
@@ -69,8 +103,7 @@ class Home extends React.Component {
 
 
     render() {
-        // console.log("usersetss ----- " + JSON.stringify(this.state.usersSets))
-        if(this.state.usersSets === null)
+        if(this.state.usersSets === null || this.state.sharedSets === null)
             return <div className="noDataYet"/>
         else
             return (
@@ -79,7 +112,12 @@ class Home extends React.Component {
                     <br />
                     <br />
                     <h2>Your Flashcard Sets</h2>
-                    {this.checkUsersFlashsets()}
+                    {this.checkUsersSets()}
+                    <br />
+                    <hr />
+                    <br />
+                    <h2>Flashcard Sets Shared With You</h2>
+                    {this.checkSharedSets()}
                 </div>
             )
     }

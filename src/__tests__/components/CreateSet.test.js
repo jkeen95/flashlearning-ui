@@ -4,9 +4,6 @@ import CreateSet from "../../components/CreateSet";
 import {DataStore} from "aws-amplify";
 import {act} from "react-dom/test-utils";
 
-window.alert = jest.fn()
-window.location = {assign: jest.fn()}
-
 let currentUser = {
     username: "testuser",
     attributes: {
@@ -62,14 +59,20 @@ test('renders the CreateSet component', async () => {
     expect(setDefInput.getAttribute("value")).toMatch("")
     expect(setDefInput.parentElement).toHaveClass("flashcardInputDiv")
     expect(button[0]).toBeInTheDocument()
-    expect(button[0]).toHaveTextContent("Add Flashcard")
+    expect(button[0]).toHaveTextContent("Delete Flashcard")
     expect(button[1]).toBeInTheDocument()
-    expect(button[1].getAttribute("value")).toMatch("Submit")
-    expect(button[1].getAttribute("type")).toMatch("submit")
+    expect(button[1]).toHaveTextContent("Add Flashcard")
+    expect(button[2]).toBeInTheDocument()
+    expect(button[2].getAttribute("value")).toMatch("Submit")
+    expect(button[2].getAttribute("type")).toMatch("submit")
 })
 
 //Test Case ID: Test69
 test('validates that spys are called when CreateSet component is submitted', async () => {
+    const { location } = window;
+    delete window.location
+    window.location = { replace: jest.fn()};
+
     await render(<CreateSet currentUser={currentUser} />)
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
@@ -93,9 +96,10 @@ test('validates that spys are called when CreateSet component is submitted', asy
         fireEvent.change(setDefInput, {target: {value: "1"}})
     });
     await act(() => {
-        button[1].dispatchEvent(new MouseEvent('click', {bubbles: true}));
+        button[2].dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
-    expect(window.alert).toHaveBeenCalledTimes(1)
+    expect(window.location.replace).toHaveBeenCalled()
+    window.location = location;
 })

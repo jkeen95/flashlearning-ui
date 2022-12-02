@@ -4,9 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Class, FlashcardSet } = initSchema(schema);
+const { Class, FlashcardSet, SharedSet } = initSchema(schema);
 
 export {
   Class,
-  FlashcardSet
+  FlashcardSet,
+  SharedSet
 };

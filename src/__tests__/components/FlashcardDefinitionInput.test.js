@@ -31,7 +31,5 @@ test('validates that the handleDefChange function prop is called when the input 
     await act(() => {
        fireEvent.change(inputDiv, {target: {value: definitionValue}})
     });
-    //await screen.debug()
-    // console.log("input " + inputDiv.value)
     expect(mockFn).toHaveBeenCalledTimes(1)
 })

@@ -12,20 +12,11 @@ class FlipFlashcard extends React.Component {
         this.backRef = React.createRef();
     }
 
-    setMaxHeight = () => {
-        // const  cardHeight = this.props.cardRef.current.getBoundingClientRect().height
-        // console.log("height ---- " + cardHeight)
-    }
-
-    componentDidMount() {
+    async componentDidMount() {
         const frontHeight = this.frontRef.current.getBoundingClientRect().height
         const backHeight = this.backRef.current.getBoundingClientRect().height
-        // const frontWidth = this.frontRef.current.getBoundingClientRect().width
-        // const backWidth = this.backRef.current.getBoundingClientRect().width
-        console.log("frontheight ---- " + frontHeight)
-        console.log("backheight ---- " + backHeight)
-        this.setState({
-            cardHeight: Math.max(frontHeight+50, backHeight+50, 500)
+        await this.setState({
+            cardHeight: Math.max(frontHeight + 50, backHeight + 50, 500)
         })
     }
 

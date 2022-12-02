@@ -3,6 +3,7 @@ import {DataStore} from 'aws-amplify'
 import {FlashcardSet} from "../models";
 import MemorizeSet from "./MemorizeSet";
 import MemorizeSetModal from "./MemorizeSetModal";
+import {getSharedSet} from "../utils/utils";
 
 class MemorizeSetDataLoad extends React.Component {
 
@@ -10,39 +11,60 @@ class MemorizeSetDataLoad extends React.Component {
         super(props);
         this.state = {
             setInfo: {},
-            show: true
+            show: true,
+            originalOrder: true,
+            titleSide: true,
+            withRepetition: false,
         };
     }
 
 
     async componentDidMount() {
-        console.log(this.props.setId.id)
         const result = await DataStore.query(FlashcardSet, (set) =>
             set.id('eq', this.props.setId.id).owner('eq', this.props.currentUser.username)
-        ).then(result => {
-            console.log(JSON.stringify(result))
-            this.setState({
-                setInfo: result[0]
-            })
-            //console.log("after then " + JSON.stringify(this.state))
+        ).then(async result => {
+            if (result.length === 0) {
+                const sharedSet = await getSharedSet(this.props.setId.id, this.props.currentUser.username)
+                await this.setState({
+                    setInfo: sharedSet
+                })
+            } else {
+                await this.setState({
+                    setInfo: result[0]
+                })
+            }
         });
+    }
 
-        //console.log("before form " + JSON.stringify(this.state))
+    orderRadioChange = () => {
+        this.setState({originalOrder: !this.state.originalOrder})
+    }
 
+    sideRadioChange = () => {
+        this.setState({titleSide: !this.state.titleSide})
+    }
+
+    checkboxChange = () => {
+        this.setState( {withRepetition: !this.state.withRepetition})
+    }
+
+    handleSubmit = async () => {
+        this.setState({show: !this.state.show})
     }
 
     render() {
         if(JSON.stringify(this.state.setInfo) !== "{}") {
-            //console.log("browse test" + JSON.stringify(this.state.setInfo))
             if(this.state.show) {
-                return  <MemorizeSetModal />
+                return  <MemorizeSetModal originalOrder={this.state.originalOrder} orderRadioChange={this.orderRadioChange} titleSide={this.state.titleSide} sideRadioChange={this.sideRadioChange} checkboxChange={this.checkboxChange} handleSubmit={this.handleSubmit}/>
             }
             else {
-                return <MemorizeSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo}/>
+                return <MemorizeSet setId={this.props.setId} currentUser={this.props.currentUser} setInfo={this.state.setInfo} originalOrder={this.state.originalOrder} titleSide={this.state.titleSide} withRepetition={this.state.withRepetition}/>
             }
         }
+        else {
+            return <h1>You are not permitted to view this set!</h1>
+        }
     }
-    // }
 }
 
 export default MemorizeSetDataLoad;

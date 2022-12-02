@@ -250,3 +250,36 @@ div[data-amplify-router] {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+
+.progressSpan {
+  font-size: 30px;
+}
+
+.memorizeFinished {
+  text-align: center;
+}
+
+.memorizeResults {
+  display: inline-block;
+  text-align: left;
+}
+
+.resultsHeader {
+  text-decoration-line: underline;
+}
+
+.deleteFlashcard {
+  display: flex;
+}
+
+.homeBrowseLink {
+  font-size: x-large;
+}
+
+.showingSideDiv {
+  display: flex;
+}
+
+.browseControlDiv {
+  display: flex;
+}

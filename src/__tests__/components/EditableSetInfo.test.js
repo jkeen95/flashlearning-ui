@@ -20,27 +20,15 @@ test("renders a EditableSetInfo component", async () => {
     //screen.debug()
 
     const setNameInput = screen.getByLabelText("Set Name:")
-    const publicOption = screen.getByText("Public")
-    const privateOption = screen.getByText("Private")
     const setDescriptionInput = screen.getByLabelText("Description:")
     const setTitleInput = screen.getByPlaceholderText("Title")
     const setDefInput = screen.getByPlaceholderText("Definition")
     const button = screen.getAllByRole("button")
-    //const submit = screen.getByRole("submit")
-    //console.log(button)
 
     expect(setNameInput).toBeInTheDocument()
     expect(setNameInput.getAttribute("value")).toMatch("Set Name")
     expect(setNameInput.getAttribute("type")).toMatch("text")
     expect(setNameInput.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
-    expect(publicOption).toBeInTheDocument()
-    expect(publicOption.getAttribute("value")).toMatch("public")
-    expect(publicOption.parentElement.parentElement).toHaveTextContent("Visibility:")
-    expect(publicOption.parentElement.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
-    expect(privateOption).toBeInTheDocument()
-    expect(privateOption.getAttribute("value")).toMatch("private")
-    expect(privateOption.parentElement.parentElement).toHaveTextContent("Visibility:")
-    expect(privateOption.parentElement.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
     expect(setDescriptionInput).toBeInTheDocument()
     expect(setDescriptionInput).toHaveTextContent("Description")
     expect(setNameInput.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
@@ -53,10 +41,12 @@ test("renders a EditableSetInfo component", async () => {
     expect(setDefInput.getAttribute("value")).toMatch("1")
     expect(setDefInput.parentElement).toHaveClass("flashcardInputDiv")
     expect(button[0]).toBeInTheDocument()
-    expect(button[0]).toHaveTextContent("Add Flashcard")
+    expect(button[0]).toHaveTextContent("Delete Flashcard")
     expect(button[1]).toBeInTheDocument()
-    expect(button[1].getAttribute("value")).toMatch("Submit")
-    expect(button[1].getAttribute("type")).toMatch("submit")
+    expect(button[1]).toHaveTextContent("Add Flashcard")
+    expect(button[2]).toBeInTheDocument()
+    expect(button[2].getAttribute("value")).toMatch("Submit")
+    expect(button[2].getAttribute("type")).toMatch("submit")
 })
 
 //Test Case ID: Test57
@@ -140,7 +130,6 @@ test("validates that the duplicate title error message appears when there are du
     setInfo.definitions = ["1", "2"]
     await render(<EditableSetInfo setInfo={setInfo} />)
     const setTitles = screen.getAllByPlaceholderText("Title")
-    // const changedDefValue = "Changed Def Value"
     //screen.debug()
     expect(setTitles[0]).toBeInTheDocument()
     expect(setTitles[0].getAttribute("type")).toMatch("text")
@@ -169,14 +158,12 @@ test("validates that the duplicate title error message appears when there are du
     expect(screen.getByText("Submit")).toHaveAttribute("disabled")
     setInfo.titles = ["A"]
     setInfo.definitions = ["1"]
-    //screen.debug()
-    // expect(setDefInput.getAttribute("value")).toMatch(changedDefValue)
 })
 
 //Test Case ID: Test62
 test("validates new flashcard input fields are added when the Add Flashcard button is clicked", async () => {
     await render(<EditableSetInfo setInfo={setInfo} />)
-    const addFlashcardButton = screen.getAllByRole("button")[0]
+    const addFlashcardButton = screen.getAllByRole("button")[1]
     expect(addFlashcardButton).toBeInTheDocument()
     expect(addFlashcardButton).toHaveTextContent("Add Flashcard")
     expect(screen.queryByText("1.")).toBeInTheDocument()
@@ -198,7 +185,7 @@ test("validates new flashcard input fields are added when the Add Flashcard butt
 //Test Case ID: Test63
 test("validates the passed function is called when the Submit button is clicked", async () => {
     await render(<EditableSetInfo setInfo={setInfo} handleSubmit={mockFn}/>)
-    const submitButton = screen.getAllByRole("button")[1]
+    const submitButton = screen.getAllByRole("button")[2]
     expect(submitButton).toBeInTheDocument()
     expect(submitButton.getAttribute("value")).toMatch("Submit")
     await act(() => {
@@ -213,7 +200,7 @@ test("validates the passed function is called when the Submit button is clicked"
 test("validates the blank title error message is shown when the user tries to submit with a empty title", async () => {
     await render(<EditableSetInfo setInfo={setInfo} handleSubmit={mockFn}/>)
     const setNameInput = screen.getByLabelText("Set Name:")
-    const submitButton = screen.getAllByRole("button")[1]
+    const submitButton = screen.getAllByRole("button")[2]
     expect(submitButton).toBeInTheDocument()
     expect(submitButton.getAttribute("value")).toMatch("Submit")
     await act(() => {
@@ -233,7 +220,8 @@ test("validates the complete flashcard error message is shown when the user trie
     setInfo.titles = ["A", "A"]
     setInfo.definitions = ["", ""]
     await render(<EditableSetInfo setInfo={setInfo} handleSubmit={mockFn}/>)
-    const submitButton = screen.getAllByRole("button")[1]
+    //screen.debug()
+    const submitButton = screen.getAllByRole("button")[3]
     expect(submitButton).toBeInTheDocument()
     expect(submitButton.getAttribute("value")).toMatch("Submit")
     await act(() => {

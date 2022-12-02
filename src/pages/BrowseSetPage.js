@@ -1,11 +1,13 @@
 import {useParams} from "react-router-dom";
 import BrowseSetDataLoad from "../components/BrowseSetDataLoad";
+import React from "react";
 
-const BrowseSetPage = ({ currentUser }) => {
+const BrowseSetPage = ({ currentUser, ready }) => {
     const setId = useParams();
-    return (
-        <BrowseSetDataLoad setId={setId} currentUser={currentUser}/>
-    );
+    if(ready)
+        return <BrowseSetDataLoad setId={setId} currentUser={currentUser}/>
+    else
+        return <div className="noDataYet"/>
 };
 
 export default BrowseSetPage;

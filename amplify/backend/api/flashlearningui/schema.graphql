@@ -15,3 +15,9 @@ type FlashcardSet @model @auth(rules: [{allow: public}]) {
   owner: String!
   classID: ID @index(name: "byClass")
 }
+
+type SharedSet @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  setId: String!
+  username: String!
+}

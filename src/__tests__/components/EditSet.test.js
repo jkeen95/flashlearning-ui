@@ -5,9 +5,6 @@ import {act} from "react-dom/test-utils";
 import EditSet from "../../components/EditSet";
 import {FlashcardSet} from "../../models";
 
-window.alert = jest.fn()
-window.location = jest.fn()
-
 let currentUser = {
     username: "testuser",
     attributes: {
@@ -44,7 +41,6 @@ async function mockSave(model) {
 }
 
 async function mockQuery(model, predicate) {
-    //console.log("inMockQuery")
     return models
 }
 
@@ -83,15 +79,19 @@ test('renders the EditSet component', async () => {
     expect(setDefInput.getAttribute("type")).toMatch("text")
     expect(setDefInput.getAttribute("value")).toMatch(models[0].definitions[0])
     expect(setDefInput.parentElement).toHaveClass("flashcardInputDiv")
-    expect(button[0]).toBeInTheDocument()
-    expect(button[0]).toHaveTextContent("Add Flashcard")
     expect(button[1]).toBeInTheDocument()
-    expect(button[1].getAttribute("value")).toMatch("Submit")
-    expect(button[1].getAttribute("type")).toMatch("submit")
+    expect(button[1]).toHaveTextContent("Add Flashcard")
+    expect(button[2]).toBeInTheDocument()
+    expect(button[2].getAttribute("value")).toMatch("Submit")
+    expect(button[2].getAttribute("type")).toMatch("submit")
 })
 
 //Test Case ID: Test55
 test('validates the spys are called when EditSet component is submitted', async () => {
+    const { location } = window;
+    delete window.location
+    window.location = { assign: jest.fn()};
+
     await render(<EditSet setId={setId} currentUser={currentUser} />)
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
@@ -103,11 +103,12 @@ test('validates the spys are called when EditSet component is submitted', async 
         fireEvent.change(setDefInput, {target: {value: "2"}})
     });
     await act(() => {
-        button[1].dispatchEvent(new MouseEvent('click', {bubbles: true}));
+        button[2].dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
     await new Promise((r) => setTimeout(r, 2000))
     //screen.debug()
     expect(dataStoreQuerySpy).toHaveBeenCalledTimes(2)
     expect(dataStoreSaveSpy).toHaveBeenCalledTimes(1)
-    expect(window.alert).toHaveBeenCalledTimes(1)
+    expect(window.location.assign).toHaveBeenCalled()
+    window.location = location;
 })

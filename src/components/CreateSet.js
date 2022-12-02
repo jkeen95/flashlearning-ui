@@ -28,13 +28,6 @@ class CreateSet extends React.Component {
 
     async saveFlashcardSet(setInfo) {
         const response = removeEmpties(setInfo.titles, setInfo.definitions)
-        // const flashSetTitles = setInfo.titles.filter(title => title !== "");
-        // const flashSetDefs = setInfo.definitions.filter(def => def !== "");
-        //console.log(JSON.stringify(response))
-        //console.log(flashSetDefs)
-
-        //console.log(response.validTitles)
-        //console.log(response.validDefs)
 
         await DataStore.save(
             new FlashcardSet({
@@ -46,16 +39,8 @@ class CreateSet extends React.Component {
                 definitions: response.validDefs,
             })
         ).then(result => {
-            //console.log(JSON.stringify(result))
-            alert('A new flashcard set was saved: ' + setInfo.flashSetName + "\n" +
-                'A visibility was saved: ' + setInfo.flashSetVisibility + "\n" +
-                'A description was saved: ' + setInfo.flashSetDescription + "\n" +
-                'FlashcardInput titles were saved: ' + JSON.stringify(response.validTitles) + "\n" +
-                'FlashcardInput definitions were saved: ' + JSON.stringify(response.validDefs) + "\n"
-            );
             const url = "" + window.location.origin + "/set/" + result.id + "/browse";
-            console.log(url)
-            window.location.assign(url)
+            window.location.replace(url)
         });
     }
 

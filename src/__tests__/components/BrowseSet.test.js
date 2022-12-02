@@ -1,7 +1,9 @@
-import {render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import React from "react";
 import BrowseSet from "../../components/BrowseSet";
 import {act} from "react-dom/test-utils";
+import {DataStore} from "aws-amplify";
+import * as util from "../../utils/utils"
 
 let setInfo = {
     id: "2d36e43c-470b-b13e-f50ba8669d2d",
@@ -22,6 +24,10 @@ let currentUser = {
     }
 }
 
+afterEach(() => {
+    jest.resetAllMocks()
+})
+
 //Test Case ID: Test70
 test('renders the BrowseSet component', async () => {
     await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo} />)
@@ -39,7 +45,6 @@ test('renders the BrowseSet component', async () => {
     expect(screen.getByText("ID: " + setInfo.id))
     expect(screen.getByText("Name: " + setInfo.name))
     expect(screen.getByText("Description: " + setInfo.description))
-    expect(screen.getByText("Visibility: " + setInfo.visibility))
     expect(screen.getByText("Edit").getAttribute("href")).toMatch(`/set/${setInfo.id}/edit`)
     expect(screen.getByText("Memorize").getAttribute("href")).toMatch(`/set/${setInfo.id}/memorize`)
     expect(radioButtons[0].getAttribute("name")).toEqual("Title")
@@ -51,7 +56,7 @@ test('renders the BrowseSet component', async () => {
     expect(randomizeSpan).toHaveClass("amplify-switch-label")
     expect(randomizeSpan.parentElement).toHaveClass("amplify-label")
     expect(randomizeSpan.parentElement.parentElement).toHaveClass("amplify-switchfield")
-    expect(screen.getByText("Title")).toHaveClass("showingSide")
+    expect(screen.getByText("Showing the Title side")).toHaveClass("showingSide")
     expect(screen.getByText("1 / 3")).toHaveClass("cardIndex")
     expect(frontCard).toHaveClass("front")
     expect(frontCard.parentElement).toHaveClass("card")
@@ -96,7 +101,7 @@ test('validates the Previous Button loops to the back of the flashcard set when 
         prevButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
     await new Promise((r) => setTimeout(r, 2000))
-    screen.debug()
+    //screen.debug()
     expect(screen.getByText("3 / 3")).toHaveClass("cardIndex")
     expect(screen.queryAllByText("C")[0]).toBeInTheDocument()
     expect(screen.queryByText("A")).not.toBeInTheDocument()
@@ -177,8 +182,8 @@ test('validates clicking the flashcard element swaps the showing side of the fla
     expect(frontCard).toHaveClass("front")
     expect(frontCard.parentElement).toHaveClass("card")
     expect(frontCard.parentElement).toHaveClass("flip")
-    expect(screen.queryByText("Title")).toBeInTheDocument()
-    expect(screen.getByText("Title")).toHaveClass("showingSide")
+    expect(screen.queryByText("Showing the Title side")).toBeInTheDocument()
+    expect(screen.getByText("Showing the Title side")).toHaveClass("showingSide")
     await act(() => {
         frontCard.dispatchEvent(new MouseEvent('click', {bubbles: true}));
     });
@@ -188,8 +193,8 @@ test('validates clicking the flashcard element swaps the showing side of the fla
     expect(screen.getAllByText("1")[0]).toHaveClass("back")
     expect(screen.getAllByText("1")[0].parentElement).toHaveClass("card")
     expect(screen.getAllByText("1")[0].parentElement).not.toHaveClass("flip")
-    expect(screen.queryByText("Definition")).toBeInTheDocument()
-    expect(screen.getByText("Definition")).toHaveClass("showingSide")
+    expect(screen.queryByText("Showing the Definition side")).toBeInTheDocument()
+    expect(screen.getByText("Showing the Definition side")).toHaveClass("showingSide")
 })
 
 //Test Case ID: Test76
@@ -217,4 +222,89 @@ test('renders the BrowseSet swap side', async () => {
     expect(switchTrackSpan.firstChild).toHaveClass("amplify-switch-thumb")
     expect(switchTrackSpan.firstChild).toHaveClass("amplify-switch-thumb--checked")
     expect(switchTrackSpan.firstChild).toHaveAttribute("data-checked", "true")
+})
+
+//Test Case ID: Test108
+test('Validates the correct error message is shown when a set is shared with no input', async () => {
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(screen.getByText("You Must Specify the Username to Share the Set With")).toBeInTheDocument()
+})
+
+async function mockUserExists(username) {
+    if(username === "test1") {
+        return false
+    }
+    else if(username === "test2") {
+        return true
+    }
+}
+
+async function mockQuery1(model) {
+    console.log(model)
+    return ["owned"]
+}
+
+async function mockQuery2() {
+    return []
+}
+
+async function mockSave(modal) {
+    return ["stuff"]
+}
+
+//Test Case ID: Test109
+test('Validates that the user exists spy is called when a username is entered when sharing a set', async () => {
+
+    const utilUserExistsSpy = jest.spyOn(util, "userExists").mockImplementation(mockUserExists)
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const usernameInput = screen.getByPlaceholderText("Username")
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        fireEvent.change(usernameInput, {target: {value: "test1"}})
+    });
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(utilUserExistsSpy).toHaveBeenCalledTimes(1)
+})
+
+//Test Case ID: Test110
+test('Validates the correct error message is shown when the user already owns the set being shared with them', async () => {
+
+    const utilUserExistsSpy = jest.spyOn(util, "userExists").mockImplementation(mockUserExists)
+    const dataStoreQuerySpy = jest.spyOn(DataStore, "query").mockImplementation(mockQuery1)
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const usernameInput = screen.getByPlaceholderText("Username")
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        fireEvent.change(usernameInput, {target: {value: "test2"}})
+    });
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(utilUserExistsSpy).toHaveBeenCalledTimes(1)
+    expect(dataStoreQuerySpy).toHaveBeenCalledTimes(1)
+    expect(screen.getByText("You cannot share a set with its owner")).toBeInTheDocument()
 })
