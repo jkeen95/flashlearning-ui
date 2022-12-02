@@ -1,4 +1,4 @@
-import {Auth, DataStore} from "aws-amplify";
+import {Auth} from "aws-amplify";
 
 
 export async function signOut() {

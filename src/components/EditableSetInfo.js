@@ -20,7 +20,6 @@ class EditableSetInfo extends React.Component {
 
         };
         this.handleNameChange = this.handleNameChange.bind(this);
-        // this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     }
 
@@ -109,8 +108,6 @@ class EditableSetInfo extends React.Component {
 
     checkForDuplicates = () => {
         const tempArray = this.state.setInfo.titles
-        const arr_size = tempArray.length
-        let duplicateTracker = []
         let titleIndices = {}
 
         this.state.setInfo.titles.filter((title, index) => {

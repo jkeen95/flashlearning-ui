@@ -20,27 +20,15 @@ test("renders a EditableSetInfo component", async () => {
     //screen.debug()
 
     const setNameInput = screen.getByLabelText("Set Name:")
-    // const publicOption = screen.getByText("Public")
-    // const privateOption = screen.getByText("Private")
     const setDescriptionInput = screen.getByLabelText("Description:")
     const setTitleInput = screen.getByPlaceholderText("Title")
     const setDefInput = screen.getByPlaceholderText("Definition")
     const button = screen.getAllByRole("button")
-    //const submit = screen.getByRole("submit")
-    //console.log(button)
 
     expect(setNameInput).toBeInTheDocument()
     expect(setNameInput.getAttribute("value")).toMatch("Set Name")
     expect(setNameInput.getAttribute("type")).toMatch("text")
     expect(setNameInput.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
-    // expect(publicOption).toBeInTheDocument()
-    // expect(publicOption.getAttribute("value")).toMatch("public")
-    // expect(publicOption.parentElement.parentElement).toHaveTextContent("Visibility:")
-    // expect(publicOption.parentElement.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
-    // expect(privateOption).toBeInTheDocument()
-    // expect(privateOption.getAttribute("value")).toMatch("private")
-    // expect(privateOption.parentElement.parentElement).toHaveTextContent("Visibility:")
-    // expect(privateOption.parentElement.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
     expect(setDescriptionInput).toBeInTheDocument()
     expect(setDescriptionInput).toHaveTextContent("Description")
     expect(setNameInput.parentElement.parentElement.parentElement.tagName.toLowerCase()).toMatch("form")
@@ -52,6 +40,8 @@ test("renders a EditableSetInfo component", async () => {
     expect(setDefInput.getAttribute("type")).toMatch("text")
     expect(setDefInput.getAttribute("value")).toMatch("1")
     expect(setDefInput.parentElement).toHaveClass("flashcardInputDiv")
+    expect(button[0]).toBeInTheDocument()
+    expect(button[0]).toHaveTextContent("Delete Flashcard")
     expect(button[1]).toBeInTheDocument()
     expect(button[1]).toHaveTextContent("Add Flashcard")
     expect(button[2]).toBeInTheDocument()
@@ -140,7 +130,6 @@ test("validates that the duplicate title error message appears when there are du
     setInfo.definitions = ["1", "2"]
     await render(<EditableSetInfo setInfo={setInfo} />)
     const setTitles = screen.getAllByPlaceholderText("Title")
-    // const changedDefValue = "Changed Def Value"
     //screen.debug()
     expect(setTitles[0]).toBeInTheDocument()
     expect(setTitles[0].getAttribute("type")).toMatch("text")
@@ -169,8 +158,6 @@ test("validates that the duplicate title error message appears when there are du
     expect(screen.getByText("Submit")).toHaveAttribute("disabled")
     setInfo.titles = ["A"]
     setInfo.definitions = ["1"]
-    //screen.debug()
-    // expect(setDefInput.getAttribute("value")).toMatch(changedDefValue)
 })
 
 //Test Case ID: Test62

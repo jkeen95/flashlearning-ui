@@ -95,7 +95,6 @@ class BrowseSet extends React.Component {
     }
 
     formRandomOrderFlashcardsToBrowse = async () => {
-        const originalOrderFlashcards = this.state.originalOrderFlashcards
         let currentRange = this.state.flashcardsToBrowse.length
         const tempArray = this.state.flashcardsToBrowse
         while (currentRange !== 0) {

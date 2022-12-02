@@ -1,6 +1,5 @@
 import {useParams} from "react-router-dom";
 import BrowseSetDataLoad from "../components/BrowseSetDataLoad";
-import CreateSet from "../components/CreateSet";
 import React from "react";
 
 const BrowseSetPage = ({ currentUser, ready }) => {

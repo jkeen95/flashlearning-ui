@@ -8,12 +8,10 @@ class MemorizeSetModal extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault()
-        //console.log(event)
         this.props.handleSubmit()
     }
 
     render() {
-        //console.log(JSON.stringify(this.props))
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="modal">

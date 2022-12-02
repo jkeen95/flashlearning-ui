@@ -41,7 +41,6 @@ async function mockSave(model) {
 }
 
 async function mockQuery(model, predicate) {
-    //console.log("inMockQuery")
     return models
 }
 

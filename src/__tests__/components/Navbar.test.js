@@ -19,22 +19,14 @@ test('renders a Navbar component with data from navMenuItems.js', async () => {
     const signOutButton = screen.getByText("Sign Out")
     const singOutLi = signOutButton.parentElement
 
-    //console.log(nav.tagName.toLowerCase())
-
     expect(homeA.getAttribute("href")).toMatch("/")
     expect(homeLi).toHaveClass(menuItemClassName)
     expect(homeLi.parentElement).toHaveClass(menusClassName)
     expect(newSetA.getAttribute("href")).toMatch("/create/set")
     expect(newSetLi).toHaveClass(menuItemClassName)
     expect(newSetLi.parentElement).toHaveClass(menusClassName)
-    // expect(newSetLi.parentElement.parentElement).toHaveClass(menuItemClassName)
-    // expect(newClassA.getAttribute("href")).toMatch("/create/class")
-    // expect(newClassLi).toHaveClass(menuItemClassName)
-    // expect(newClassLi.parentElement).toHaveClass(dropdownClasName)
-    // expect(createLi.parentElement).toHaveClass(menusClassName)
     expect(signOutButton).toBeInTheDocument()
     expect(singOutLi).toHaveClass(menuItemClassName)
     expect(singOutLi.parentElement).toHaveClass(menusClassName)
-    //expect(screen.getByRole('button', { expanded: false })).toHaveTextContent("Create")
     expect(nav.tagName.toLowerCase()).toMatch("nav")
 })

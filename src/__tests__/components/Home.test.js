@@ -57,7 +57,6 @@ test("renders a Home component with user's sets links displayed", async () => {
     const set2BrowseA = screen.getByText("Test Set 2")
     const editButtons = screen.getAllByText("Edit")
     const deleteButtons = screen.getAllByText("Delete")
-    // console.log(deleteButtons)
 
     expect(screen.getByText("Welcome Test User").getAttribute("id")).toMatch("welcomeMessage")
     expect(set1BrowseA.getAttribute("href")).toMatch(`/set/${models[0].id}/browse`)
@@ -79,6 +78,7 @@ test("renders a Home component when the user has no sets", async () => {
 
     expect(screen.getByText("Welcome Test User").getAttribute("id")).toMatch("welcomeMessage")
     expect(screen.getByText("You have no flashcard sets.")).toBeInTheDocument()
+    expect(screen.getByText("You have no flashcard sets shared with you.")).toBeInTheDocument()
 })
 
 //Test Case ID: Test53
@@ -99,6 +99,5 @@ test("validates the deleteSpy is called when a Delete button on the Home compone
     });
 
      expect(deleteSetSpy).toHaveBeenCalledTimes(1)
-    // expect(screen.getByText("You have no flashcard sets.")).toBeInTheDocument()
 })
 

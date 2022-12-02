@@ -59,9 +59,7 @@
       "!src/reportWebVitals.js",
       "!src/models/schema.js",
       "!src/graphql/*.js",
-      "!src/awsDeployedCode/**/*.js",
-      "!src/components/MemorizeSet.js",
-      "!src/pages/MemorizeSet.js"
+      "!src/awsDeployedCode/**/*.js"
     ]
   }
 }

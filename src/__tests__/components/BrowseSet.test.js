@@ -1,7 +1,9 @@
-import {render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import React from "react";
 import BrowseSet from "../../components/BrowseSet";
 import {act} from "react-dom/test-utils";
+import {DataStore} from "aws-amplify";
+import * as util from "../../utils/utils"
 
 let setInfo = {
     id: "2d36e43c-470b-b13e-f50ba8669d2d",
@@ -21,6 +23,10 @@ let currentUser = {
         name: "Test User"
     }
 }
+
+afterEach(() => {
+    jest.resetAllMocks()
+})
 
 //Test Case ID: Test70
 test('renders the BrowseSet component', async () => {
@@ -216,4 +222,89 @@ test('renders the BrowseSet swap side', async () => {
     expect(switchTrackSpan.firstChild).toHaveClass("amplify-switch-thumb")
     expect(switchTrackSpan.firstChild).toHaveClass("amplify-switch-thumb--checked")
     expect(switchTrackSpan.firstChild).toHaveAttribute("data-checked", "true")
+})
+
+//Test Case ID: Test108
+test('Validates the correct error message is shown when a set is shared with no input', async () => {
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(screen.getByText("You Must Specify the Username to Share the Set With")).toBeInTheDocument()
+})
+
+async function mockUserExists(username) {
+    if(username === "test1") {
+        return false
+    }
+    else if(username === "test2") {
+        return true
+    }
+}
+
+async function mockQuery1(model) {
+    console.log(model)
+    return ["owned"]
+}
+
+async function mockQuery2() {
+    return []
+}
+
+async function mockSave(modal) {
+    return ["stuff"]
+}
+
+//Test Case ID: Test109
+test('Validates that the user exists spy is called when a username is entered when sharing a set', async () => {
+
+    const utilUserExistsSpy = jest.spyOn(util, "userExists").mockImplementation(mockUserExists)
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const usernameInput = screen.getByPlaceholderText("Username")
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        fireEvent.change(usernameInput, {target: {value: "test1"}})
+    });
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(utilUserExistsSpy).toHaveBeenCalledTimes(1)
+})
+
+//Test Case ID: Test110
+test('Validates the correct error message is shown when the user already owns the set being shared with them', async () => {
+
+    const utilUserExistsSpy = jest.spyOn(util, "userExists").mockImplementation(mockUserExists)
+    const dataStoreQuerySpy = jest.spyOn(DataStore, "query").mockImplementation(mockQuery1)
+    await render(<BrowseSet setId={setId} currentUser={currentUser} setInfo={setInfo}/>)
+    await new Promise((r) => setTimeout(r, 1000))
+    const shareWithButton = screen.getByText("Share With Another User")
+    await act(() => {
+        shareWithButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    const usernameInput = screen.getByPlaceholderText("Username")
+    const shareButton = screen.getByText("Share")
+    await act(() => {
+        fireEvent.change(usernameInput, {target: {value: "test2"}})
+    });
+    await act(() => {
+        shareButton.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
+    //screen.debug()
+    expect(utilUserExistsSpy).toHaveBeenCalledTimes(1)
+    expect(dataStoreQuerySpy).toHaveBeenCalledTimes(1)
+    expect(screen.getByText("You cannot share a set with its owner")).toBeInTheDocument()
 })

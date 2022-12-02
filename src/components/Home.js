@@ -92,7 +92,6 @@ class Home extends React.Component {
                     <a className="homeBrowseLink" href={browseUrl}>{set.name}</a>
                     {sharedBol ? "" : <br />}
                     {sharedBol ? "" : <a href={editUrl}>Edit</a>}
-                    {/*{sharedBol ? "" : <br />}*/}
                     {sharedBol ? "" : "  |  " }
                     {sharedBol ? "" : <button onClick={() => this.removeSet(set.id)} className="deleteButton">Delete</button>}
                     <br />

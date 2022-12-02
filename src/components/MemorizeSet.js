@@ -185,7 +185,6 @@ class MemorizeSet extends React.Component {
     }
 
     formRandomOrderFlashcardsToBrowse = async () => {
-        // const originalOrderFlashcards = this.state.originalOrderFlashcards
         let currentRange = this.state.flashcardsToBrowse.length
         const tempArray = this.state.flashcardsToBrowse
         while (currentRange !== 0) {
@@ -218,11 +217,12 @@ class MemorizeSet extends React.Component {
 
     printRemainingCorrectGuesses = () => {
         const remainingGuesses = this.state.correctCountArray[this.state.originalIndex];
+        const remainingMessage = "" + remainingGuesses + " Correct " + (remainingGuesses === 2 ? "Guesses" : "Guess") + " Remaining"
         if(remainingGuesses === 1 || remainingGuesses === 2) {
             return (
                 <div>
                     <br/>
-                    <p>{remainingGuesses} Correct {remainingGuesses === 2 ? "Guesses" : "Guess"} Remaining</p>
+                    <p>{remainingMessage}</p>
                 </div>
             )}
          return ""
@@ -232,10 +232,11 @@ class MemorizeSet extends React.Component {
         if (this.state.flashcardsToBrowse.length !== 0) {
             if (this.state.sessionFinished) {
                 const finishedMessage = "Finished Studying the " + (this.props.titleSide ? "Title" : "Definition") + " side of the Flashcard Set, " + this.props.setInfo.name + ", in " + (this.props.originalOrder ? "Original" : "Randomized") + " order " + (this.props.withRepetition ? "with" : "without") + " Repetition!"
+                const correctPer = this.props.withRepetition ? "" : "Correct Percentage: " + ((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100 + "%"
+                const incorrectPer = "Incorrect Guesses: " + this.state.incorrectCounter
                 return (
                     <div className="memorizeFinished">
                         <br/>
-                        {/*<h1>Finished Studying the {this.props.titleSide ? "Title" : "Definition"} side of the Flashcard Set, {this.props.setInfo.name}, in {this.props.originalOrder ? "Original" : "Randomized"} order {this.props.withRepetition ? "with" : "without"} Repetition!</h1>*/}
                         <h1>{finishedMessage}</h1>
                         <br/>
                         <hr/>
@@ -243,9 +244,8 @@ class MemorizeSet extends React.Component {
                         <h2 className="resultsHeader">Results</h2>
                         <br/>
                         <div className="memorizeResults">
-                            {this.props.withRepetition ? "" : <h4>Correct
-                                Percentage: {((this.state.originalOrderFlashcards.length - this.state.incorrectCounter) / this.state.originalOrderFlashcards.length) * 100}%</h4>}
-                            <h4>Incorrect Guesses: {this.state.incorrectCounter}</h4>
+                            <h4>{correctPer}</h4>
+                            <h4>{incorrectPer}</h4>
                             {this.state.incorrectCounter ? this.printIncorrectGuesses() : ""}
                         </div>
                         <br/>
@@ -265,22 +265,23 @@ class MemorizeSet extends React.Component {
             const backHeader = this.state.showSetTitleSide ? "Definition" : "Title"
             const front = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].title : this.state.flashcardsToBrowse[this.state.index].definition;
             const back = this.state.showSetTitleSide ? this.state.flashcardsToBrowse[this.state.index].definition : this.state.flashcardsToBrowse[this.state.index].title;
+            const studyingMessage = "Studying the " + (this.props.titleSide ? "Title" : "Definition") + " side of the Flashcard Set, " + this.props.setInfo.name + ", in " + (this.props.originalOrder ? "Original" : "Randomized") + " order " + (this.props.withRepetition ? "with" : "without") + " Repetition!"
+            const progressMessage = "Progress:  Correct: " + this.state.correctCounter + "  |  Incorrect: " + this.state.incorrectCounter
+            const cardIndex = this.state.index + 1 + " / " + this.state.flashcardsToBrowse.length
             return (
                 <div>
                     <br/>
-                    <h1>Studying the {this.props.titleSide ? "Title" : "Definition"} side of the Flashcard
-                        Set, {this.props.setInfo.name},
-                        in {this.props.originalOrder ? "Original" : "Randomized"} order {this.props.withRepetition ? "with" : "without"} Repetition </h1>
+                    <h1>{studyingMessage}</h1>
                     <br/>
                     <hr/>
                     <br/>
-                    <h3>Progress:&ensp;Correct:&nbsp;{this.state.correctCounter}&ensp;|&ensp;Incorrect:&nbsp;{this.state.incorrectCounter} </h3>
+                    <h3>{progressMessage}</h3>
                     <hr/>
                     <br/>
                     <div className="showingSideDiv">
                         <p className="showingSide">{"Showing the " + (this.state.currentCardOnFront ? frontHeader : backHeader) + " side"}</p>
                         &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-                        <p className="cardIndex">{this.state.index + 1} / {this.state.flashcardsToBrowse.length}</p>
+                        <p className="cardIndex">{cardIndex}</p>
                     </div>
                     {this.printRemainingCorrectGuesses()}
                     <div className="browseControlDiv">

@@ -33,7 +33,7 @@ export function removeIndices(array, indices) {
 export async function deleteSet(setId) {
     await DataStore.delete(FlashcardSet, setId)
     const toDelete = await DataStore.query(SharedSet, (set) => set.setId("eq", setId));
-    console.log(toDelete)
+    //console.log(toDelete)
     if(toDelete.length !== 0) {
         await DataStore.delete(toDelete[0])
     }
@@ -48,7 +48,7 @@ export async function userExists(username) {
         return false;
     }).catch(error => {
         const code = error.code;
-        console.log(error)
+        //console.log(error)
         switch (code) {
             case 'NotAuthorizedException':
                 return true;
@@ -60,26 +60,23 @@ export async function userExists(username) {
 }
 
 export async function getSharedSet(setId, username) {
-    console.log(setId + " " + username)
     let set = {}
     const temp =  await DataStore.query(SharedSet, (set) =>
         set.setId('eq', setId).username('eq', username)
     ).then(async result => {
-        console.log(result)
+        //console.log(result)
         if (result.length !== 0) {
             await DataStore.query(FlashcardSet, (set) =>
                 set.id('eq', result[0].setId)
             ).then(result => {
-                console.log(result)
+                //console.log(result)
                 set = result[0]
                 return result[0]
             })
         } else {
-            // set = result[0]
-            // return result[0]
             return {}
         }
     })
-    console.log("set " + set)
+    //console.log("set " + set)
     return set
 }

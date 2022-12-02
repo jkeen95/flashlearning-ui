@@ -65,7 +65,6 @@ class MemorizeSetDataLoad extends React.Component {
             return <h1>You are not permitted to view this set!</h1>
         }
     }
-    // }
 }
 
 export default MemorizeSetDataLoad;

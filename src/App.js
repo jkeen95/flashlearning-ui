@@ -7,7 +7,6 @@ import awsExports from './aws-exports';
 import HomePage from "./pages/HomePage";
 import React from "react";
 import Header from "./components/Header";
-import SignOut from "./pages/SignOut";
 import {Authenticator, useTheme} from "@aws-amplify/ui-react";
 import BrowseSetPage from "./pages/BrowseSetPage";
 import EditSetPage from "./pages/EditSetPage";
@@ -59,11 +58,6 @@ class App extends React.Component {
             );
         },
     };
-
-    async componentDidMount() {
-        //console.log("didCount")
-        //console.log("didStart")
-    }
 
     render() {
         return (

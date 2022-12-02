@@ -58,6 +58,8 @@ test('renders the CreateSet component', async () => {
     expect(setDefInput.getAttribute("type")).toMatch("text")
     expect(setDefInput.getAttribute("value")).toMatch("")
     expect(setDefInput.parentElement).toHaveClass("flashcardInputDiv")
+    expect(button[0]).toBeInTheDocument()
+    expect(button[0]).toHaveTextContent("Delete Flashcard")
     expect(button[1]).toBeInTheDocument()
     expect(button[1]).toHaveTextContent("Add Flashcard")
     expect(button[2]).toBeInTheDocument()
