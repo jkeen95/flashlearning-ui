@@ -1,7 +1,7 @@
 //Test Case ID: Test1
 describe('Sign Up Is Successful', () => {
     it("displays the homepage with the welcome message and the new user's name", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.contains("Create Account").click()
         cy.get('[placeholder="Username"]').type("signUpUser")
@@ -23,7 +23,7 @@ describe('Sign Up Is Successful', () => {
 //Test Case ID: Test19
 describe('Sign Up with Invalid Birthdate is Rejected', () => {
     it("displays the error message ", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.contains("Create Account").click()
         cy.get('[placeholder="Username"]').type("invalidBirthdate")

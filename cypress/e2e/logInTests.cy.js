@@ -1,7 +1,7 @@
 //Test Case ID: Test6
 describe('Invalid Sign In Displays Generic Message', () => {
     it('displays generic message if password is invalid"', () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type("invalidPassword")
@@ -14,7 +14,7 @@ describe('Invalid Sign In Displays Generic Message', () => {
 //Test Case ID: Test17
 describe('Login Is Successful', () => {
     it("displays the homepage with the welcome message and the user's name", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))

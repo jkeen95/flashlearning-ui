@@ -1,7 +1,7 @@
 //Test Case ID: Test105
 describe('Checks Homepage Browse Link', () => {
     it("validates that the browse link on the homepage takes the user to the browse page for the set", () => {
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
@@ -22,7 +22,7 @@ describe('Checks Homepage Browse Link', () => {
 //Test Case ID: Test106
 describe('Checks Homepage Edit Link', () => {
     it("validates that the edit link on the homepage takes the user to the edit page for the set", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()
@@ -37,7 +37,7 @@ describe('Checks Homepage Edit Link', () => {
 //Test Case ID: Test107
 describe('Checks Homepage Delete Link', () => {
     it("validates that the delete link on the homepage deletes the set entry", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()

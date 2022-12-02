@@ -1,13 +1,13 @@
 //Test Case ID: Test22
 describe('Builds a set with only complete flashcards', () => {
     it("checks that a set with only completed flashcards are created when a new set is made while there are empty flashcard input fields", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()
         cy.wait(2000)
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
         cy.get('[placeholder="Set Name"]').type("SetFor22")
         cy.get('[placeholder="Description"]').type("Test Description!!")
         cy.get('[placeholder="Title"]').last().type("A")
@@ -28,7 +28,7 @@ describe('Builds a set with only complete flashcards', () => {
         cy.contains("B").should("exist")
         cy.contains("2 / 2").should("exist")
         cy.wait(1000)
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('.deleteButton').last().click()
     })
 })
@@ -36,13 +36,13 @@ describe('Builds a set with only complete flashcards', () => {
 //Test Case ID: Test23
 describe('Builds a set with only complete flashcards when some titles are empty', () => {
     it("checks that a set with only completed flashcards are created when a new set is made while there are empty flashcard title input fields", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()
         cy.wait(2000)
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
         cy.get('[placeholder="Set Name"]').type("SetFor23")
         cy.get('[placeholder="Description"]').type("Test Description!!")
         cy.get('[placeholder="Title"]').last().type("A")
@@ -56,7 +56,7 @@ describe('Builds a set with only complete flashcards when some titles are empty'
         cy.contains("A").should("exist")
         cy.contains("1 / 1").should("exist")
         cy.wait(1000)
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('.deleteButton').last().click()
     })
 })
@@ -64,13 +64,13 @@ describe('Builds a set with only complete flashcards when some titles are empty'
 //Test Case ID: Test24
 describe('Builds a set with only complete flashcards when some definitions are empty', () => {
     it("checks that a set with only completed flashcards are created when a new set is made while there are empty flashcard definition input fields", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()
         cy.wait(2000)
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
         cy.get('[placeholder="Set Name"]').type("SetFor24")
         cy.get('[placeholder="Description"]').type("Test Description!!")
         cy.get('[placeholder="Title"]').last().type("A")
@@ -84,7 +84,7 @@ describe('Builds a set with only complete flashcards when some definitions are e
         cy.contains("A").should("exist")
         cy.contains("1 / 1").should("exist")
         cy.wait(1000)
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('.deleteButton').last().click()
     })
 })
@@ -92,13 +92,13 @@ describe('Builds a set with only complete flashcards when some definitions are e
 //Test Case ID: Test25
 describe('Requires At Least One Complete Title-Def Pair', () => {
     it("displays the homepage with the welcome message and the user's name", () => {
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
         cy.get('.amplify-button').contains("Sign in").click()
         cy.wait(2000)
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
         cy.get('[placeholder="Set Name"]').type("SetFromTest")
         cy.get('[placeholder="Description"]').type("Test Description!!")
         cy.get('[placeholder="Title"]').type("Test Title")
@@ -109,7 +109,7 @@ describe('Requires At Least One Complete Title-Def Pair', () => {
         cy.contains("Description: Test Description!!").should("exist")
         cy.contains("Test Title").should("exist")
         cy.wait(1000)
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('.deleteButton').last().click()
     })
 })
@@ -124,7 +124,7 @@ describe('Saves 50 flashcards in under 10 seconds', () => {
             {"title": "II", "def": "1"},{"title": "JJ", "def": "1"},{"title": "KK", "def": "1"},{"title": "LL", "def": "1"},{"title": "MM", "def": "1"},{"title": "NN", "def": "1"},{"title": "OO", "def": "1"},{"title": "PP", "def": "1"},
             {"title": "QQ", "def": "1"},{"title": "RR", "def": "1"},{"title": "SS", "def": "1"},{"title": "TT", "def": "1"},{"title": "UU", "def": "1"},{"title": "VV", "def": "1"},{"title": "WW", "def": "1"},{"title": "XX", "def": "1"}]
 
-        cy.visit('http://localhost:3000/create/set')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/create/set')
 
         cy.get('[placeholder="Username"]').type(Cypress.env("test1_username"))
         cy.get('[placeholder="Password"]').type(Cypress.env("test1_password"))
@@ -144,7 +144,7 @@ describe('Saves 50 flashcards in under 10 seconds', () => {
             expect(elapsed).to.be.lessThan(10000)
         })
 
-        cy.visit('http://localhost:3000/')
+        cy.visit('https://main.d38j7hxrca4p4q.amplifyapp.com/')
         cy.get('.deleteButton').last().click()
     })
 })
